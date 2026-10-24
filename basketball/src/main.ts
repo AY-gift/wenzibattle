@@ -3,7 +3,7 @@ import '@fontsource/m-plus-rounded-1c/800.css';
 import '@shared/share/share.css';
 import './ui/styles.css';
 import { setAnalyticsGame } from '@shared/share/analytics';
-import { GAME_SWITCHER_CSS, gameUrl, mountGameSwitcher } from '@shared/ui/GameSwitcher';
+import { GAME_SWITCHER_CSS, mountGameSwitcher } from '@shared/ui/GameSwitcher';
 import { BasketRenderer } from './render/BasketRenderer';
 import { initLang } from './ui/i18n';
 import { initSfx } from './ui/Sfx';
@@ -20,9 +20,6 @@ setAnalyticsGame('basketball');
   slot.className = 'gs-slot';
   document.querySelector('.topbar .tools')?.before(slot);
   mountGameSwitcher(slot, 'basketball');
-  // One catalog for all games (it lives next to the football game), opened on its basketball tab.
-  const cat = document.getElementById('btn-catalog') as HTMLAnchorElement | null;
-  if (cat) cat.href = `${gameUrl('soccer', 'basketball')}catalog.html?tab=basket`;
 }
 
 const stage = document.getElementById('stage')!;

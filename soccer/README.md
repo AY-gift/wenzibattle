@@ -131,7 +131,7 @@ Any other four glyphs that spell one of the 244 registered culture teams (film, 
 - **Limits:** at most 5 per match, 20–26 s cooldown. The 12 idiom combos keep priority. Nothing writes the score or adds a ball, and all randomness comes from the match seed.
 - **Backfires (~40 %):** a teammate trips, two collide, the kick flies wild or even towards our own goal, the team tires, the goal is left open, an early celebration, a crash into the boards. They are only announced when they actually happen.
 - **Rivalries:** 22 registered pairs (e.g. 少林足球 vs 足球小将) are recognised in either order. They are announced at kick-off and add a duel rule: counter, chaos, weather or spotlight.
-- **Catalog:** `catalog.html` (the 📖 button, also linked from basketball) lists every culture team, basketball pair, glyph/word move and rivalry, read from the same data. The implementation report is `../docs/文化技能实施报告.md` (`npm run docs:culture`).
+- **No in-game catalog:** combos are left for players to discover (the 📖 catalog page was removed on purpose). The full list for developers is `../docs/文化技能实施报告.md` (`npm run docs:culture`).
 
 ## Fights (擂台乱斗)
 

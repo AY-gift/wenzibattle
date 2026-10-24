@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
       target: 'es2022',
       chunkSizeWarningLimit: 900,
       rollupOptions: {
-        input: { main: 'index.html', catalog: 'catalog.html' },
+        input: { main: 'index.html' },
       },
     },
     test: {

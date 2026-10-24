@@ -144,7 +144,7 @@ function triggerOk(m: Match, team: 0 | 1, trig: CultureTrigger): boolean {
   }
 }
 
-/** From the team AI (every 0.1 s): fire the culture combo when its trigger holds. `force` (tests, catalog demo) skips trigger and cooldown. */
+/** From the team AI (every 0.1 s): fire the culture combo when its trigger holds. `force` (tests) skips trigger and cooldown. */
 export function tryCulture(m: Match, team: 0 | 1, force = false): boolean {
   const ts = m.teams[team];
   const c = ts.culture;

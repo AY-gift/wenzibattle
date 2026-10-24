@@ -75,7 +75,7 @@ All 262 two-glyph pairs are playable: 91 from the culture pack and 171 from the 
 - **Two shot primitives in a row** make one shot with both features (抛投: a rainbow off the glass). A defensive trigger with an attacking move defends first and attacks once the ball is won back.
 - **Rivalries:** 46 registered basketball rivalries (16 + 30 from the expansion, e.g. 冰火 vs 晴雨, 青龙 vs 白虎) are recognised in either order. They are announced at the tip-off and add a duel rule: counter, chaos, weather or spotlight.
 
-Every pair, rivalry and character move is listed in the shared catalog: the 📖 button opens `soccer/catalog.html` on its basketball tab.
+There is no in-game catalog: pairs and rivalries are left for players to discover. Developers can find the full list in `docs/文化技能实施报告.md`.
 
 ## Fights (擂台乱斗)
 
