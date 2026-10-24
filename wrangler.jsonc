@@ -7,6 +7,9 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "wenzibattle",
   "compatibility_date": "2026-10-01",
+  // Public at https://wenzibattle.<subdomain>.workers.dev; non-production branches get preview URLs.
+  "workers_dev": true,
+  "preview_urls": true,
   "assets": {
     "directory": "./dist",
     // /soccer → /soccer/, /soccer/index.html → /soccer/ (query strings are kept).
