@@ -17,3 +17,6 @@ soundeffectRaw/
 
 # Local editor / assistant settings
 .claude/settings.local.json
+
+# Raw frames recorded for the landing-page clips (scripts/capture-demos.mjs)
+.demo-frames/

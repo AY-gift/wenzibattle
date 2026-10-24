@@ -57,6 +57,8 @@ for (const game of GAMES) {
 }
 writeFileSync(join(out, 'index.html'), html);
 cpSync(join(root, 'arena', 'public', 'og.png'), join(out, 'og.png'));
+// Landing-page gameplay clips (recorded by scripts/capture-demos.mjs).
+if (existsSync(join(root, 'portal', 'media'))) cpSync(join(root, 'portal', 'media'), join(out, 'media'), { recursive: true });
 // Cloudflare Workers Static Assets: cache / security headers and the 404 page.
 cpSync(join(root, 'deploy', '_headers'), join(out, '_headers'));
 cpSync(join(root, 'portal', '404.html'), join(out, '404.html'));

@@ -18,3 +18,7 @@
 # Pages themselves: always revalidate, so a new deploy shows up at once.
 /*.html
   Cache-Control: no-cache
+
+# Landing-page clips: a day (re-recorded now and then under the same names).
+/media/*
+  Cache-Control: public, max-age=86400

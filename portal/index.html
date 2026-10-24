@@ -80,25 +80,34 @@
       .play a.soon::after { content: "· soon"; font-size: 13px; }
       .stage { position: relative; aspect-ratio: 1 / 0.82; width: 100%; }
 
-      /* ------------------------------------------------ cover */
-      .cover { background: radial-gradient(ellipse at 50% 120%, #ff4f8b 0%, rgba(255,79,139,0) 45%), radial-gradient(circle at 80% 0%, #7a3e8f, #2a1d55 50%, var(--night)); text-align: center; }
-      .cover .inner { position: relative; z-index: 2; width: min(900px, 100% - 32px); margin: 0 auto; padding: 90px 0 70px; }
-      .logo { display: inline-grid; place-items: center; width: clamp(84px, 14vw, 120px); aspect-ratio: 1; border-radius: 28%; background: var(--pink); font-size: clamp(52px, 9vw, 76px); font-weight: 900; box-shadow: 0 10px 0 #b8245a, 0 24px 50px rgba(255,79,139,0.45); animation: hop 2.4s ease-in-out infinite; }
-      .cover h1 { margin: 26px 0 4px; font-size: clamp(46px, 11vw, 120px); line-height: 0.95; font-weight: 900; letter-spacing: -0.02em; background: linear-gradient(180deg, #fff 30%, #ffd1e3); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 6px 0 rgba(0,0,0,0.25)); }
-      .cover .en { font: 900 clamp(14px, 2.4vw, 22px)/1 var(--font); letter-spacing: 0.42em; color: var(--gold); margin-left: 0.42em; }
-      .cover p.lead { margin: 22px auto 30px; max-width: 34em; font-size: clamp(16px, 2.3vw, 21px); line-height: 1.65; color: rgba(255,255,255,0.9); }
-      .demo { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 30px; padding: 10px 16px; border-radius: 16px; background: rgba(255,255,255,0.1); font-size: 15px; }
-      .demo kbd { display: inline-block; min-width: 1.6em; padding: 3px 8px; border-radius: 8px; background: #fff; color: #2b1a4a; font: 900 18px/1.2 var(--font); }
-      .demo .arrow { color: var(--gold); font-weight: 900; }
-      .picks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 640px; margin: 0 auto; }
-      .picks a { display: grid; gap: 4px; justify-items: center; padding: 16px 8px 14px; border-radius: 20px; text-decoration: none; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.12); transition: transform 0.15s, background 0.15s, border-color 0.15s; }
-      .picks a:hover { transform: translateY(-3px); background: rgba(255,255,255,0.16); border-color: var(--gold); }
-      .picks .ic { font-size: 34px; }
-      .picks strong { font-size: 16px; font-weight: 900; }
-      .picks small { font-size: 12px; color: var(--soft); }
-      .scroll { position: absolute; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 2; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px; font-size: 12px; color: rgba(255,255,255,0.7); text-decoration: none; animation: nudge 1.6s ease-in-out infinite; }
-      .floaty { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-      .floaty span { position: absolute; font-weight: 900; opacity: 0.22; animation: drift 9s ease-in-out infinite; }
+      /* ------------------------------------------------ cover: three live games side by side */
+      .cover { display: block; height: 100vh; height: 100svh; min-height: 520px; background: #000; }
+      .tri { position: absolute; inset: 0; display: flex; }
+      .tri > a { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; color: #fff; text-decoration: none; transition: flex-grow 0.45s cubic-bezier(.2,.8,.2,1); isolation: isolate; }
+      .tri > a + a { border-left: 3px solid #16122b; }
+      .tri video, .tri .poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 0.6s ease, filter 0.3s; }
+      .tri > a::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(22,18,43,0.92) 0%, rgba(22,18,43,0.55) 20%, rgba(22,18,43,0) 36%, rgba(22,18,43,0) 52%, rgba(22,18,43,0.92) 100%); }
+      .tri > a::after { content: ""; position: absolute; inset: 0; z-index: -1; box-shadow: inset 0 0 0 0 var(--accent); transition: box-shadow 0.2s; }
+      .tri > a:hover, .tri > a:focus-visible { flex-grow: 1.45; outline: none; }
+      .tri > a:hover video, .tri > a:focus-visible video { transform: scale(1.04); }
+      .tri > a:hover::after, .tri > a:focus-visible::after { box-shadow: inset 0 0 0 4px var(--accent); }
+      [data-panel="arena"] { --accent: #ff4f8b; }
+      [data-panel="soccer"] { --accent: #3ddc84; }
+      [data-panel="basketball"] { --accent: #ff9a2e; }
+      .tri .info { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 clamp(16px, 2.4vw, 32px) clamp(28px, 6vh, 64px); display: grid; gap: 8px; justify-items: start; }
+      .tri .vs { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--accent); font: 900 12px/1 var(--font); letter-spacing: 0.1em; }
+      .tri h2 { margin: 0; font-size: clamp(30px, 3.6vw, 52px); line-height: 1.05; font-weight: 900; text-shadow: 0 4px 0 rgba(0,0,0,0.3), 0 0 24px rgba(0,0,0,0.5); }
+      .tri p { margin: 0; max-width: 24em; font-size: clamp(13px, 1.15vw, 16px); line-height: 1.5; color: rgba(255,255,255,0.9); text-shadow: 0 1px 6px rgba(0,0,0,0.7); }
+      .tri .go { margin-top: 6px; display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 999px; background: var(--gold); color: #2b1a4a; font: 900 16px/1 var(--font); box-shadow: 0 5px 0 #c98f00; transition: transform 0.12s; }
+      .tri > a:hover .go { transform: translateY(-2px) scale(1.05); }
+      .tri > a.soon { pointer-events: none; filter: grayscale(0.7); }
+      .tri > a.soon .go { background: rgba(255,255,255,0.25); color: #fff; box-shadow: none; }
+      .tri > a.soon .go::after { content: "· soon"; font-size: 12px; }
+      .masthead { position: absolute; z-index: 3; left: 50%; top: max(52px, calc(env(safe-area-inset-top) + 44px)); transform: translateX(-50%); width: min(760px, 100% - 32px); text-align: center; pointer-events: none; }
+      .masthead h1 { margin: 0; display: inline-flex; align-items: center; gap: 14px; font-size: clamp(34px, 5.6vw, 72px); line-height: 1; font-weight: 900; letter-spacing: -0.01em; text-shadow: 0 5px 0 rgba(0,0,0,0.35), 0 0 30px rgba(0,0,0,0.55); }
+      .masthead h1 .mark { width: 1.15em; height: 1.15em; border-radius: 0.28em; font-size: 0.82em; box-shadow: 0 5px 0 #b8245a; animation: hop 2.4s ease-in-out infinite; }
+      .masthead p { margin: 10px auto 0; font-size: clamp(14px, 1.6vw, 19px); font-weight: 700; line-height: 1.5; text-shadow: 0 2px 10px rgba(0,0,0,0.85); }
+      .scroll { position: absolute; left: 50%; bottom: 8px; z-index: 3; transform: translateX(-50%); padding: 4px 12px; border-radius: 999px; background: rgba(22,18,43,0.6); font-size: 12px; color: rgba(255,255,255,0.8); text-decoration: none; animation: nudge 1.6s ease-in-out infinite; }
 
       /* ------------------------------------------------ arena */
       .arena { background: radial-gradient(ellipse at 60% 20%, rgba(255,210,63,0.25), rgba(255,210,63,0) 40%), radial-gradient(circle at 30% 100%, #5b2bb5, #2a1660 55%, #140b33); }
@@ -196,12 +205,22 @@
         .copy ul { margin-bottom: 22px; }
         .play a { width: 100%; justify-content: center; }
         .dots { display: none; }
-        .picks { gap: 8px; }
-        .picks a { padding: 12px 4px 10px; border-radius: 16px; }
-        .picks .ic { font-size: 28px; }
-        .picks small { display: none; }
-        .demo { font-size: 13px; flex-wrap: wrap; justify-content: center; }
         .brand .name { display: none; }
+        .cover { min-height: 560px; }
+        .tri { flex-direction: column; top: 104px; }
+        .tri > a + a { border-left: 0; border-top: 3px solid #16122b; }
+        .tri > a:hover, .tri > a:focus-visible { flex-grow: 1; }
+        .tri > a::before { background: linear-gradient(90deg, rgba(22,18,43,0.88) 0%, rgba(22,18,43,0.35) 55%, rgba(22,18,43,0) 100%); }
+        .tri .info { top: 0; bottom: 0; align-content: center; gap: 5px; padding: 0 16px; }
+        .tri h2 { font-size: 28px; }
+        .tri p { display: none; }
+        .tri .go { margin-top: 4px; padding: 9px 16px; font-size: 14px; }
+        .masthead { top: max(48px, calc(env(safe-area-inset-top) + 40px)); }
+        .masthead h1 { font-size: 30px; gap: 10px; }
+        .masthead h1 .mark { display: none; }
+        .masthead p { margin-top: 4px; font-size: 12px; }
+        .cover::before { content: ""; position: absolute; inset: 0 0 auto; height: 108px; background: linear-gradient(180deg, #2a1d55, #16122b); }
+        .scroll { display: none; }
       }
     </style>
   </head>
@@ -223,40 +242,45 @@
     </nav>
 
     <main>
-      <!-- ============================================ cover -->
+      <!-- ============================================ cover: the three games, playing -->
       <section class="cover" id="top">
-        <div class="floaty" aria-hidden="true">
-          <span style="left:6%;top:16%;font-size:64px;color:#ff9ec0;--r:-12deg">龍</span>
-          <span style="left:82%;top:12%;font-size:80px;color:#ffd23f;--r:10deg;animation-delay:-2s">火</span>
-          <span style="left:14%;top:70%;font-size:56px;--r:8deg;animation-delay:-4s">🐱</span>
-          <span style="left:74%;top:66%;font-size:46px;color:#c4b5ff;--r:-6deg;animation-delay:-1s">(・ω・)</span>
-          <span style="left:44%;top:6%;font-size:42px;color:#48d6c8;--r:14deg;animation-delay:-6s">水</span>
-          <span style="left:88%;top:40%;font-size:52px;color:#fff;--r:-14deg;animation-delay:-3s">ね</span>
-          <span style="left:2%;top:44%;font-size:48px;color:#ffd23f;--r:6deg;animation-delay:-5s">妈妈</span>
-          <span style="left:58%;top:82%;font-size:58px;--r:-10deg;animation-delay:-7s">⚡</span>
+        <div class="tri">
+          <a class="game soon" href="arena/" data-panel="arena">
+            <img class="poster" src="media/arena.jpg" alt="" />
+            <video muted loop playsinline preload="none" poster="media/arena.jpg" data-src="media/arena.mp4"></video>
+            <div class="info">
+              <span class="vs">🥊 1 VS 1</span>
+              <h2><span data-l="ja">リング</span><span data-l="zh">擂台对决</span><span data-l="en">Arena</span></h2>
+              <p><span data-l="ja">ふたつの文字がリングで殴り合い。場外まで吹っ飛ばせ！</span><span data-l="zh">两个字在擂台上硬碰硬，把对手轰出场外！</span><span data-l="en">Two glyphs slug it out. Blast your rival out of the ring!</span></p>
+              <span class="go"><span data-l="ja">プレイ</span><span data-l="zh">开打</span><span data-l="en">Play</span> ▶</span>
+            </div>
+          </a>
+          <a class="game soon" href="soccer/" data-panel="soccer">
+            <img class="poster" src="media/soccer.jpg" alt="" />
+            <video muted loop playsinline preload="none" poster="media/soccer.jpg" data-src="media/soccer.mp4"></video>
+            <div class="info">
+              <span class="vs">⚽ 4 VS 4</span>
+              <h2><span data-l="ja">サッカー</span><span data-l="zh">足球</span><span data-l="en">Soccer</span></h2>
+              <p><span data-l="ja">四字熟語でチーム結成。必殺シュートにオーバーヘッド！</span><span data-l="zh">四字成语组队，必杀射门、倒挂金钩！</span><span data-l="en">A four-glyph idiom is a team. Super shots and bicycle kicks!</span></p>
+              <span class="go"><span data-l="ja">キックオフ</span><span data-l="zh">开球</span><span data-l="en">Kick off</span> ▶</span>
+            </div>
+          </a>
+          <a class="game soon" href="basketball/" data-panel="basketball">
+            <img class="poster" src="media/basketball.jpg" alt="" />
+            <video muted loop playsinline preload="none" poster="media/basketball.jpg" data-src="media/basketball.mp4"></video>
+            <div class="info">
+              <span class="vs">🏀 2 VS 2</span>
+              <h2><span data-l="ja">バスケ</span><span data-l="zh">篮球</span><span data-l="en">Basketball</span></h2>
+              <p><span data-l="ja">二文字でコンビ結成。宙返りダンクで決めろ！</span><span data-l="zh">两个字组成搭档，空中转体暴扣！</span><span data-l="en">Two glyphs make a duo. Finish with a flipping dunk!</span></p>
+              <span class="go"><span data-l="ja">ティップオフ</span><span data-l="zh">跳球</span><span data-l="en">Tip off</span> ▶</span>
+            </div>
+          </a>
         </div>
-        <div class="inner">
-          <div class="logo" aria-hidden="true">字</div>
-          <h1>
-            <span data-l="ja">字形乱闘</span><span data-l="zh">字形乱斗</span><span data-l="en">Glyph Rumble</span>
-          </h1>
-          <div class="en"><span data-l="ja">GLYPH RUMBLE</span><span data-l="zh">GLYPH RUMBLE</span><span data-l="en">字形乱闘 · 字形乱斗</span></div>
-          <p class="lead">
-            <span data-l="ja">文字を打てば、それがキミの選手。漢字・かな・絵文字・顔文字が 3D のおもちゃになって、殴り合い、蹴り合い、跳び合う！</span>
-            <span data-l="zh">打一个字，它就是你的选手。汉字、假名、emoji、颜文字都会变成 3D 小玩具——打擂台、踢足球、打篮球！</span>
-            <span data-l="en">Type a glyph and it becomes your player. Kanji, kana, emoji and kaomoji turn into 3D toys that brawl, kick and dunk.</span>
-          </p>
-          <div class="demo" aria-hidden="true">
-            <kbd>火</kbd><span>VS</span><kbd>水</kbd><span class="arrow">→</span>
-            <span><span data-l="ja">技も強さも文字の意味から</span><span data-l="zh">招式和能力都来自字义</span><span data-l="en">moves and stats come from the meaning</span></span>
-          </div>
-          <div class="picks">
-            <a href="#arena"><span class="ic">🥊</span><strong><span data-l="ja">リング</span><span data-l="zh">擂台</span><span data-l="en">Arena</span></strong><small>1 vs 1</small></a>
-            <a href="#soccer"><span class="ic">⚽</span><strong><span data-l="ja">サッカー</span><span data-l="zh">足球</span><span data-l="en">Soccer</span></strong><small>4 vs 4</small></a>
-            <a href="#basketball"><span class="ic">🏀</span><strong><span data-l="ja">バスケ</span><span data-l="zh">篮球</span><span data-l="en">Basketball</span></strong><small>2 vs 2</small></a>
-          </div>
+        <div class="masthead">
+          <h1><span class="mark">字</span><span data-l="ja">字形乱闘</span><span data-l="zh">字形乱斗</span><span data-l="en">Glyph Rumble</span></h1>
+          <p><span data-l="ja">文字を打てば、それがキミの選手。好きなゲームを選んでね！</span><span data-l="zh">打一个字，它就是你的选手。选一个游戏开打吧！</span><span data-l="en">Type a glyph and it becomes your player. Pick a game!</span></p>
         </div>
-        <a class="scroll" href="#arena"><span data-l="ja">スクロール</span><span data-l="zh">向下滑动</span><span data-l="en">Scroll</span><span aria-hidden="true">▼</span></a>
+        <a class="scroll" href="#arena"><span data-l="ja">くわしく</span><span data-l="zh">了解更多</span><span data-l="en">More</span> ▼</a>
       </section>
 
       <!-- ============================================ arena -->
@@ -375,6 +399,24 @@
           });
         });
         show();
+        // Clips: load and play unless the viewer prefers less motion or saves data (the poster stays).
+        var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var save = navigator.connection && navigator.connection.saveData;
+        if (!calm && !save) {
+          document.querySelectorAll('.tri video').forEach(function (v) {
+            v.src = v.getAttribute('data-src');
+            v.addEventListener('playing', function () { v.previousElementSibling.style.visibility = 'hidden'; });
+            var p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          });
+          // Browsers hold back autoplay in background tabs: start them once the page is seen.
+          document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState !== 'visible') return;
+            document.querySelectorAll('.tri video').forEach(function (v) {
+              if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+            });
+          });
+        }
         // Dot nav follows the section in view.
         var dots = document.querySelectorAll('.dots a');
         if ('IntersectionObserver' in window) {
