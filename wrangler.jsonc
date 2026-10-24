@@ -5,7 +5,7 @@
 // Deploy: `npx wrangler deploy` (Workers Builds runs it for every push to the production branch).
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "glyph-rumble",
+  "name": "wenzibattle",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
