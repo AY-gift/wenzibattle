@@ -26,6 +26,10 @@ export const setFlip = (v: 1 | -1) => (FLIP = v);
 export const dirOf = (team: 0 | 1) => (team === 0 ? 1 : -1) * FLIP;
 /** Which side (±1) z is on; exactly 0 (kick-off spot) breaks the tie towards the team's own left so both halves mirror each other. */
 export const sideOf = (z: number, team: 0 | 1) => (z > 0 ? 1 : z < 0 ? -1 : dirOf(team));
+/** Plain shots that turn into a leaping 必殺 shot: base chance + this × kick power. */
+const SUPER_SHOT_BASE = 0.06, SUPER_SHOT_POWER = 0.22;
+/** Take-off speed and wind-up of that leap (struck near the top of the jump). */
+const SUPER_LEAP = 7.5, SUPER_WINDUP = 0.5;
 const DISABLED: PlayerState[] = ['down', 'freeze', 'sleep', 'confuse', 'laugh', 'money', 'charm', 'celebrate'];
 
 /** Kick-off formation in "attack coordinates" (u forward, w across), own half. */
@@ -109,6 +113,8 @@ export class Match {
           fightCd: 6 + this.rng.range(0, 6),
           grudge: -1,
           grudgeT: 0,
+          volleyT: 0,
+          volley: null,
           stats: { goals: 0, assists: 0, shots: 0, saves: 0, steals: 0, tackles: 0, passes: 0, skills: 0, skillHits: 0, ownGoals: 0, fights: 0 },
         });
       });
@@ -207,7 +213,9 @@ export class Match {
       // Hot-headed glyphs remember who did it (arena-style revenge, see brawl.ts).
       holdGrudge(this, p, by);
     }
-    p.vy = Math.max(p.vy, 3);
+    // Arcade knock-downs: off their feet and through the air, harder pushes fly higher.
+    p.vy = Math.max(p.vy, 2.6 + push * 0.55);
+    p.stateT = Math.max(p.stateT, (2 * p.vy) / FIELD.playerGravity + 0.25);
     this.emit('knockdown', p.team, p.id, { b: by?.id });
     maybeStartBrawl(this, p);
     return true;
@@ -264,6 +272,13 @@ export class Match {
   /** Start a kick (short wind-up so the renderer can show it; a tackle can still interrupt). */
   kick(p: Player, k: Kick, windup = 0.12): void {
     if (this.ball.owner !== p.id || !this.canAct(p)) return;
+    // 必殺シュート: now and then a plain shot becomes a leap and a strike from the air.
+    if (k.kind === 'shot' && k.shot === 'normal' && p.y === 0 && this.rng.chance(SUPER_SHOT_BASE + p.attr.power * SUPER_SHOT_POWER)) {
+      k = { ...k, shot: 'super', speed: k.speed * 1.18, loft: 0, power: true, fx: k.fx ?? 'super' };
+      windup = SUPER_WINDUP;
+      p.vy = SUPER_LEAP;
+      this.emit('leap', p.team, p.id, { kind: 'super' });
+    }
     p.pending = k;
     p.state = 'kick';
     p.stateT = windup;
@@ -315,7 +330,12 @@ export class Match {
         b.v.y = 0;
         b.flatT = 1.2;
       }
-      b.shot = { by: p.id, kind: k.shot, t: this.t, power: k.power ?? (k.shot === 'powerShot' || k.shot === 'beamShot' || k.shot === 'skyShot' || k.shot === 'combo'), label: k.label };
+      if (k.shot === 'super') {
+        // Struck from the top of the leap: it drives down at the goal like a missile.
+        b.v.y = (Math.min(hTarget, 1.4) - b.p.y) / tFly;
+        b.flatT = tFly + 0.1;
+      }
+      b.shot = { by: p.id, kind: k.shot, t: this.t, power: k.power ?? (k.shot === 'powerShot' || k.shot === 'beamShot' || k.shot === 'skyShot' || k.shot === 'combo' || k.shot === 'super'), label: k.label };
       p.stats.shots++;
       this.emit('shot', p.team, p.id, { kind: k.shot, label: k.label, v: speed });
       if (ts.combo?.kind === 'fuelFire') ts.heat = 0;
@@ -531,8 +551,11 @@ export class Match {
     // Safety: a wound-up kick only exists during the 'kick' state (a stale one froze carriers).
     if (p.pending && p.state !== 'kick') p.pending = null;
     // Vertical (jumps, knock-downs, dives).
+    p.volleyT = Math.max(0, p.volleyT - dt);
+    if (p.volleyT <= 0) p.volley = null;
+    if (playing) this.tryLeap(p);
     if (p.y > 0 || p.vy > 0) {
-      p.vy -= FIELD.gravity * dt;
+      p.vy -= FIELD.playerGravity * dt;
       p.y = Math.max(0, p.y + p.vy * dt);
       if (p.y === 0) p.vy = 0;
     }
@@ -635,7 +658,7 @@ export class Match {
       const bob = Math.sin(this.t * 14) * 0.08 * Math.min(1, sp / 3);
       b.p.x = p.p.x + p.face.x * (reach + bob);
       b.p.z = p.p.z + p.face.z * (reach + bob);
-      b.p.y = FIELD.ballR + p.y * 0.5;
+      b.p.y = FIELD.ballR + p.y * (p.pending?.shot === 'super' ? 0.95 : 0.5);
       b.v.x = p.v.x;
       b.v.z = p.v.z;
       b.v.y = 0;
@@ -858,6 +881,10 @@ export class Match {
       this.stopShot(p, speed);
       return;
     }
+    if (p.volley && p.y > 0.5 && b.p.y > 1.1) {
+      this.volley(p);
+      return;
+    }
     // A teammate's or loose ball: control it (fast balls can bounce off a clumsy first touch).
     if (speed > 13 && this.rng.chance(clamp((speed - 11) / 18 * (1 - p.attr.control), 0, 0.6))) {
       b.v.x = -b.v.x * 0.35 + this.rng.range(-2, 2) * dirOf(p.team);
@@ -898,9 +925,16 @@ export class Match {
       this.emit('save', p.team, p.id, { b: shot.by, kind: 'wall' });
       return;
     }
-    if (shot.power && this.rng.chance(keeper ? 0.5 - p.attr.defense * 0.2 : 0.65)) {
-      // Bursts through: the defender is flattened, the ball keeps going.
-      this.knockDown(p, this.players[shot.by], 1.0, 5);
+    const sup = shot.kind === 'super' || shot.kind === 'volley';
+    if (shot.power && this.rng.chance((keeper ? 0.5 - p.attr.defense * 0.2 : 0.65) * (sup ? 0.75 : 1))) {
+      // Bursts through: the defender is blasted off their feet, the ball keeps going.
+      this.knockDown(p, this.players[shot.by], 1.0, sup ? 9 : 6);
+      if (p.state === 'down') {
+        const l = Math.hypot(b.v.x, b.v.z) || 1;
+        p.v.x += (b.v.x / l) * (sup ? 6 : 3);
+        p.v.z += (b.v.z / l) * (sup ? 6 : 3);
+        this.emit('launch', p.team, p.id, { b: shot.by, kind: shot.kind });
+      }
       b.v.x *= 0.78;
       b.v.z *= 0.78;
       b.noPickBy = p.id;
@@ -925,6 +959,42 @@ export class Match {
     b.noPickT = 0.35;
     if (keeper) p.stats.saves++;
     this.emit(keeper ? 'save' : 'block', p.team, p.id, { b: shot.by, kind: 'parry' });
+  }
+
+  // ---------------------------------------------------------------- arcade aerials
+
+  /** An attacker under a dropping high ball near goal springs up to meet it. */
+  private tryLeap(p: Player): void {
+    const b = this.ball;
+    if (p.y > 0 || p.vy > 0 || p.volley || p.state !== 'play' || p.role === 'keeper' || b.owner >= 0 || b.homingTo >= 0) return;
+    if (b.shot && this.players[b.shot.by].team !== p.team) return;
+    if (b.p.y < 1.4 || b.p.y > 4.2 || b.v.y > 3) return;
+    const goal = this.attackGoal(p.team);
+    if (Math.hypot(goal.x - p.p.x, goal.z - p.p.z) > 15) return;
+    // Meet the ball a beat from now, where it will be.
+    const lead = 0.28;
+    const bx = b.p.x + b.v.x * lead, bz = b.p.z + b.v.z * lead;
+    if (Math.hypot(bx - p.p.x, bz - p.p.z) > 1.6 + p.attr.jump) return;
+    if (!this.rng.chance(0.25 + p.attr.jump * 0.35)) return;
+    const h = b.p.y + b.v.y * lead - 0.5 * FIELD.gravity * lead * lead - 0.9;
+    p.vy = Math.sqrt(2 * FIELD.playerGravity * Math.max(0.6, Math.min(3.2, h)));
+    // Facing the goal: a diving header; ball coming from in front of the goal line: an overhead kick.
+    const toGoal = Math.sign(goal.x - p.p.x) || 1;
+    p.volley = Math.sign(b.v.x) === toGoal && h > 1.2 ? 'bicycle' : 'header';
+    p.volleyT = 0.9;
+    this.emit('leap', p.team, p.id, { kind: p.volley });
+  }
+
+  /** Mid-air first-time strike at goal. */
+  private volley(p: Player): void {
+    const kind = p.volley!;
+    p.volley = null;
+    p.volleyT = 0;
+    this.give(p);
+    const goal = this.attackGoal(p.team);
+    const z = sideOf(this.rng.range(-1, 1), p.team) * this.rng.range(0.6, FIELD.goalHalfW - 0.6);
+    this.release(p, { kind: 'shot', target: { x: goal.x, z }, speed: this.shotSpeed(p) * (kind === 'bicycle' ? 1.12 : 1.02), loft: 0, spin: 0, shot: 'volley', to: -1, fx: kind, label: kind, power: kind === 'bicycle' });
+    p.kickCd = 0.5;
   }
 
   // ---------------------------------------------------------------- restarts

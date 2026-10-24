@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -15,46 +15,378 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="%SITE_URL%og.png" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff4f8b'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' font-family='sans-serif' font-weight='900' fill='white'%3E字%3C/text%3E%3C/svg%3E" />
+    <script>
+      // Same language key as the games, so the choice made here follows into them (and back).
+      (function () {
+        var l = null;
+        try { l = localStorage.getItem('glyph-rumble-lang'); } catch (e) {}
+        var q = new URLSearchParams(location.search).get('lang');
+        if (q === 'ja' || q === 'zh' || q === 'en') l = q;
+        if (l !== 'ja' && l !== 'zh' && l !== 'en') {
+          var n = (navigator.language || '').toLowerCase();
+          l = n.indexOf('zh') === 0 ? 'zh' : n.indexOf('ja') === 0 ? 'ja' : n ? 'en' : 'ja';
+        }
+        document.documentElement.setAttribute('data-lang', l);
+        document.documentElement.lang = l === 'zh' ? 'zh-CN' : l;
+      })();
+    </script>
     <style>
-      :root { color-scheme: dark; }
-      body { margin: 0; min-height: 100vh; font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Microsoft YaHei", sans-serif; background: radial-gradient(circle at 70% 0%, #7a3e8f, #2a1d55 45%, #16122b); color: #fff; display: grid; place-items: center; }
-      main { width: min(920px, calc(100% - 32px)); padding: 40px 0; }
-      h1 { display: flex; align-items: center; gap: 14px; margin: 0 0 6px; font-size: clamp(28px, 6vw, 48px); }
-      .mark { display: inline-grid; place-items: center; width: 1.3em; height: 1.3em; border-radius: 0.3em; background: #ff4f8b; }
-      p.sub { margin: 0 0 28px; color: #c9b8ff; }
-      .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
-      .game { display: block; padding: 20px; border-radius: 20px; background: rgba(255,255,255,0.08); color: inherit; text-decoration: none; border: 2px solid transparent; transition: transform 0.1s, border-color 0.15s; }
-      a.game:hover { transform: translateY(-2px); border-color: #ff4f8b; }
-      .game .icon { font-size: 40px; }
-      .game h2 { margin: 8px 0 4px; font-size: 22px; }
-      .game p { margin: 0; color: #d8ccff; font-size: 14px; line-height: 1.5; }
-      .soon { opacity: 0.55; }
-      .soon h2::after { content: " · 準備中 / 即将推出 / soon"; font-size: 12px; font-weight: 600; }
-      footer { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.5); }
+      :root {
+        color-scheme: dark;
+        --ink: #fff;
+        --soft: #d8ccff;
+        --pink: #ff4f8b;
+        --gold: #ffd23f;
+        --night: #16122b;
+        --font: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Microsoft YaHei", "PingFang SC", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-snap-type: y proximity; scroll-behavior: smooth; background: var(--night); }
+      body { margin: 0; font-family: var(--font); color: var(--ink); background: var(--night); overflow-x: hidden; }
+      html[data-lang="ja"] [data-l]:not([data-l="ja"]),
+      html[data-lang="zh"] [data-l]:not([data-l="zh"]),
+      html[data-lang="en"] [data-l]:not([data-l="en"]) { display: none !important; }
+      a { color: inherit; }
+
+      /* ------------------------------------------------ top bar */
+      .bar { position: fixed; inset: 0 0 auto; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: max(10px, env(safe-area-inset-top)) 16px 10px; pointer-events: none; }
+      .brand { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 15px; text-decoration: none; pointer-events: auto; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+      .mark { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--pink); font-size: 18px; }
+      .langs { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(20, 12, 45, 0.55); backdrop-filter: blur(8px); pointer-events: auto; }
+      .langs button { border: 0; background: none; color: var(--soft); font: 800 12px/1 var(--font); padding: 7px 10px; border-radius: 999px; cursor: pointer; }
+      .langs button[aria-pressed="true"] { background: #fff; color: #2b1a4a; }
+
+      /* ------------------------------------------------ dot nav */
+      .dots { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 20; display: flex; flex-direction: column; gap: 12px; }
+      .dots a { width: 11px; height: 11px; border-radius: 50%; background: rgba(255,255,255,0.35); border: 2px solid transparent; transition: transform 0.2s, background 0.2s; }
+      .dots a.on { background: #fff; transform: scale(1.35); }
+      .dots a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+      /* ------------------------------------------------ shared section layout */
+      section { position: relative; min-height: 100vh; min-height: 100svh; scroll-snap-align: start; overflow: hidden; display: grid; align-items: center; }
+      .wrap { position: relative; z-index: 2; width: min(1120px, 100% - 32px); margin: 0 auto; padding: 84px 0 56px; display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; align-items: center; }
+      .flip .wrap { grid-template-columns: 1.05fr 1fr; }
+      .flip .copy { order: 2; }
+      .tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.14); font: 900 12px/1 var(--font); letter-spacing: 0.12em; }
+      .copy h2 { margin: 14px 0 10px; font-size: clamp(36px, 6.4vw, 72px); line-height: 1.02; font-weight: 900; letter-spacing: -0.01em; text-shadow: 0 6px 0 rgba(0,0,0,0.18); }
+      .copy p.lead { margin: 0 0 18px; font-size: clamp(16px, 2vw, 20px); line-height: 1.6; color: rgba(255,255,255,0.88); }
+      .copy ul { list-style: none; margin: 0 0 26px; padding: 0; display: grid; gap: 9px; }
+      .copy li { display: flex; gap: 10px; align-items: baseline; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.86); }
+      .copy li b { flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; background: rgba(255,255,255,0.16); font-size: 13px; }
+      .play a { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 999px; background: var(--gold); color: #2b1a4a; font: 900 18px/1 var(--font); text-decoration: none; box-shadow: 0 6px 0 #c98f00, 0 14px 30px rgba(0,0,0,0.3); transition: transform 0.12s, box-shadow 0.12s; }
+      .play a:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #c98f00, 0 18px 34px rgba(0,0,0,0.35); }
+      .play a:active { transform: translateY(4px); box-shadow: 0 2px 0 #c98f00; }
+      .play a.soon { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); box-shadow: none; pointer-events: none; }
+      .play a.soon::after { content: "· soon"; font-size: 13px; }
+      .stage { position: relative; aspect-ratio: 1 / 0.82; width: 100%; }
+
+      /* ------------------------------------------------ cover */
+      .cover { background: radial-gradient(ellipse at 50% 120%, #ff4f8b 0%, rgba(255,79,139,0) 45%), radial-gradient(circle at 80% 0%, #7a3e8f, #2a1d55 50%, var(--night)); text-align: center; }
+      .cover .inner { position: relative; z-index: 2; width: min(900px, 100% - 32px); margin: 0 auto; padding: 90px 0 70px; }
+      .logo { display: inline-grid; place-items: center; width: clamp(84px, 14vw, 120px); aspect-ratio: 1; border-radius: 28%; background: var(--pink); font-size: clamp(52px, 9vw, 76px); font-weight: 900; box-shadow: 0 10px 0 #b8245a, 0 24px 50px rgba(255,79,139,0.45); animation: hop 2.4s ease-in-out infinite; }
+      .cover h1 { margin: 26px 0 4px; font-size: clamp(46px, 11vw, 120px); line-height: 0.95; font-weight: 900; letter-spacing: -0.02em; background: linear-gradient(180deg, #fff 30%, #ffd1e3); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 6px 0 rgba(0,0,0,0.25)); }
+      .cover .en { font: 900 clamp(14px, 2.4vw, 22px)/1 var(--font); letter-spacing: 0.42em; color: var(--gold); margin-left: 0.42em; }
+      .cover p.lead { margin: 22px auto 30px; max-width: 34em; font-size: clamp(16px, 2.3vw, 21px); line-height: 1.65; color: rgba(255,255,255,0.9); }
+      .demo { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 30px; padding: 10px 16px; border-radius: 16px; background: rgba(255,255,255,0.1); font-size: 15px; }
+      .demo kbd { display: inline-block; min-width: 1.6em; padding: 3px 8px; border-radius: 8px; background: #fff; color: #2b1a4a; font: 900 18px/1.2 var(--font); }
+      .demo .arrow { color: var(--gold); font-weight: 900; }
+      .picks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 640px; margin: 0 auto; }
+      .picks a { display: grid; gap: 4px; justify-items: center; padding: 16px 8px 14px; border-radius: 20px; text-decoration: none; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.12); transition: transform 0.15s, background 0.15s, border-color 0.15s; }
+      .picks a:hover { transform: translateY(-3px); background: rgba(255,255,255,0.16); border-color: var(--gold); }
+      .picks .ic { font-size: 34px; }
+      .picks strong { font-size: 16px; font-weight: 900; }
+      .picks small { font-size: 12px; color: var(--soft); }
+      .scroll { position: absolute; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 2; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px; font-size: 12px; color: rgba(255,255,255,0.7); text-decoration: none; animation: nudge 1.6s ease-in-out infinite; }
+      .floaty { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+      .floaty span { position: absolute; font-weight: 900; opacity: 0.22; animation: drift 9s ease-in-out infinite; }
+
+      /* ------------------------------------------------ arena */
+      .arena { background: radial-gradient(ellipse at 60% 20%, rgba(255,210,63,0.25), rgba(255,210,63,0) 40%), radial-gradient(circle at 30% 100%, #5b2bb5, #2a1660 55%, #140b33); }
+      .ring { position: absolute; inset: 14% 4% 6%; transform: perspective(700px) rotateX(46deg); transform-origin: 50% 100%; border-radius: 10px; background: repeating-linear-gradient(90deg, #f3eefe 0 12%, #e6ddfb 12% 24%); box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 10px #ff4f8b; }
+      .rope { position: absolute; left: 3%; right: 3%; height: 5px; border-radius: 3px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+      .rope.r1 { top: 30%; background: #ff4f8b; } .rope.r2 { top: 40%; } .rope.r3 { top: 50%; background: #48d6c8; }
+      .post { position: absolute; top: 24%; width: 12px; height: 48%; border-radius: 6px; background: linear-gradient(#ffd23f, #e19b00); }
+      .post.l { left: 2%; } .post.r { right: 2%; }
+      .fighter { position: absolute; bottom: 20%; font-size: clamp(70px, 13vw, 150px); font-weight: 900; line-height: 1; text-shadow: 0 6px 0 rgba(0,0,0,0.25), 0 0 0 #000; }
+      .fighter.a { left: 14%; color: #ff6a3d; animation: lungeA 2.2s ease-in-out infinite; }
+      .fighter.b { right: 14%; color: #3db4ff; animation: lungeB 2.2s ease-in-out infinite; }
+      .fighter::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -10px; height: 14px; border-radius: 50%; background: rgba(43,26,74,0.25); }
+      .bang { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%) scale(0); font-size: clamp(48px, 9vw, 96px); animation: bang 2.2s ease-in-out infinite; }
+      .hit { position: absolute; left: 50%; top: 14%; transform: translateX(-50%); font: 900 clamp(18px, 3.4vw, 34px)/1 var(--font); color: var(--gold); -webkit-text-stroke: 2px #2b1a4a; paint-order: stroke; white-space: nowrap; animation: hitword 2.2s ease-in-out infinite; }
+      .bars { position: absolute; inset: 0 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; font: 900 13px/1 var(--font); }
+      .bars i { height: 12px; border-radius: 6px; background: rgba(255,255,255,0.18); overflow: hidden; position: relative; }
+      .bars i::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #ff9ec0, #ff4f8b); animation: hpA 4.4s steps(1) infinite; }
+      .bars i.b::before { background: linear-gradient(270deg, #c4b5ff, #7a5cff); transform-origin: right; animation-name: hpB; }
+      .bars em { font-style: normal; padding: 5px 9px; border-radius: 8px; background: #fff; color: #2b1a4a; }
+
+      /* ------------------------------------------------ soccer */
+      .soccer { background: repeating-linear-gradient(90deg, #2fa54a 0 9vw, #279541 9vw 18vw); }
+      .soccer::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.22), rgba(255,255,255,0) 55%), linear-gradient(180deg, rgba(10,40,20,0.15), rgba(10,40,20,0.55)); }
+      .pitch { position: absolute; inset: 6% 2%; border: 4px solid rgba(255,255,255,0.85); border-radius: 8px; transform: perspective(800px) rotateX(38deg); transform-origin: 50% 100%; }
+      .pitch::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 4px solid rgba(255,255,255,0.85); }
+      .pitch::after { content: ""; position: absolute; left: 50%; top: 50%; width: 28%; aspect-ratio: 1; border: 4px solid rgba(255,255,255,0.85); border-radius: 50%; transform: translate(-50%, -50%); }
+      .goal { position: absolute; top: 33%; width: 7%; height: 34%; border: 4px solid #fff; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.35) 0 3px, transparent 3px 9px); }
+      .goal.l { left: -1%; border-left: 0; } .goal.r { right: -1%; border-right: 0; }
+      .team { position: absolute; display: grid; gap: 4%; font-weight: 900; font-size: clamp(30px, 5vw, 56px); line-height: 1; }
+      .team span { display: inline-grid; place-items: center; width: 1.35em; height: 1.35em; border-radius: 30%; box-shadow: 0 5px 0 rgba(0,0,0,0.25); animation: jog 0.7s ease-in-out infinite alternate; }
+      .team.a { left: 16%; top: 18%; grid-template-columns: repeat(2, auto); }
+      .team.a span { background: #ff4f6a; }
+      .team.b { right: 16%; top: 30%; grid-template-columns: repeat(2, auto); }
+      .team.b span { background: #3d8bff; }
+      .team span:nth-child(2) { animation-delay: -0.3s; } .team span:nth-child(3) { animation-delay: -0.5s; } .team span:nth-child(4) { animation-delay: -0.15s; }
+      .striker { position: absolute; left: 40%; bottom: 14%; display: inline-grid; place-items: center; width: 1.35em; height: 1.35em; border-radius: 30%; font: 900 clamp(34px, 6vw, 64px)/1 var(--font); background: #ffb000; color: #2b1a4a; box-shadow: 0 5px 0 rgba(0,0,0,0.25); animation: leap 3s ease-in-out infinite; }
+      .ball { position: absolute; left: 44%; bottom: 20%; font-size: clamp(26px, 4.4vw, 46px); animation: shot 3s ease-in infinite; }
+      .shout { position: absolute; left: 30%; top: 6%; font: 900 clamp(22px, 4vw, 42px)/1 var(--font); color: #ff4f8b; -webkit-text-stroke: 3px #fff; paint-order: stroke; white-space: nowrap; transform: rotate(-6deg); animation: shout 3s ease-out infinite; }
+
+      /* ------------------------------------------------ basketball */
+      .basket { background: linear-gradient(180deg, #1a0f2e 0%, #2b1648 34%, #c9874a 34.2%, #d99a5b 60%, #b9733a 100%); }
+      .basket::before { content: ""; position: absolute; inset: 34% 0 0; background: repeating-linear-gradient(90deg, rgba(0,0,0,0.07) 0 2px, transparent 2px 70px); }
+      .basket::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 34%; background: radial-gradient(circle at 20% 30%, rgba(255,210,63,0.35) 0 2px, transparent 3px) 0 0 / 46px 40px, radial-gradient(circle at 70% 60%, rgba(255,158,192,0.3) 0 2px, transparent 3px) 0 0 / 60px 36px; }
+      .court { position: absolute; inset: 40% 0 4%; }
+      .key { position: absolute; right: 6%; bottom: 8%; width: 42%; height: 64%; border: 4px solid rgba(255,255,255,0.8); border-right: 0; border-radius: 50% 0 0 50% / 40% 0 0 40%; background: rgba(255,79,139,0.22); }
+      .board { position: absolute; right: 8%; top: 4%; width: 26%; aspect-ratio: 1.6; border: 5px solid #fff; border-radius: 6px; background: rgba(255,255,255,0.18); }
+      .board::before { content: ""; position: absolute; left: 33%; right: 33%; top: 40%; bottom: 10%; border: 3px solid #fff; }
+      .board::after { content: ""; position: absolute; right: 14%; top: -100vh; width: 8px; height: 100vh; background: #6e5a8a; }
+      .rim { position: absolute; right: 13%; top: 33%; width: 16%; height: 14px; border-radius: 50%; border: 5px solid #ff6a1a; z-index: 3; }
+      .net { position: absolute; right: 14%; top: calc(33% + 10px); width: 14%; height: 12%; background: repeating-linear-gradient(60deg, rgba(255,255,255,0.8) 0 2px, transparent 2px 9px), repeating-linear-gradient(-60deg, rgba(255,255,255,0.8) 0 2px, transparent 2px 9px); clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%); animation: swish 2.6s ease-out infinite; }
+      .hoop-ball { position: absolute; left: 12%; top: 58%; font-size: clamp(30px, 5vw, 54px); z-index: 2; animation: arc 2.6s cubic-bezier(.3,.1,.6,1) infinite; }
+      .baller { position: absolute; bottom: 10%; display: inline-grid; place-items: center; width: 1.35em; height: 1.35em; border-radius: 30%; font: 900 clamp(40px, 7vw, 80px)/1 var(--font); box-shadow: 0 6px 0 rgba(0,0,0,0.25); }
+      .baller.a { left: 8%; background: #ffd23f; color: #2b1a4a; animation: shoot 2.6s ease-in-out infinite; }
+      .baller.b { left: 34%; background: #ff4f8b; animation: dunkflip 2.6s ease-in-out infinite; }
+      .baller.c { right: 30%; bottom: 6%; background: #3db4ff; font-size: clamp(32px, 5.6vw, 64px); animation: jog 0.6s ease-in-out infinite alternate; }
+      .score { position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex; gap: 8px; align-items: center; padding: 8px 14px; border-radius: 12px; background: rgba(20,12,45,0.75); font: 900 18px/1 var(--font); font-variant-numeric: tabular-nums; }
+      .score b { color: var(--gold); }
+
+      footer { padding: 26px 16px max(26px, env(safe-area-inset-bottom)); text-align: center; font-size: 12px; color: rgba(255,255,255,0.55); background: var(--night); }
+
+      /* ------------------------------------------------ keyframes */
+      @keyframes hop { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(4deg); } }
+      @keyframes nudge { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 8px); } }
+      @keyframes drift { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-26px) rotate(calc(var(--r, 0deg) * -1)); } }
+      @keyframes lungeA { 0%, 30%, 100% { transform: translateX(0) rotate(0); } 42% { transform: translateX(70%) rotate(12deg) scale(1.08); } 55% { transform: translateX(10%) rotate(-4deg); } 75% { transform: translateX(-12%) rotate(-14deg); } }
+      @keyframes lungeB { 0%, 30%, 100% { transform: translateX(0) rotate(0); } 42% { transform: translateX(10%) rotate(18deg) scale(0.94); } 55% { transform: translateX(26%) translateY(-30%) rotate(40deg); } 70% { transform: translateX(0) rotate(0); } 78% { transform: translateX(-60%) rotate(-10deg) scale(1.06); } 88% { transform: translateX(0); } }
+      @keyframes bang { 0%, 38%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 44% { transform: translate(-50%, -50%) scale(1.25) rotate(-12deg); opacity: 1; } 56% { transform: translate(-50%, -50%) scale(0.8) rotate(8deg); opacity: 0; } 77% { transform: translate(-60%, -50%) scale(0); opacity: 0; } 80% { transform: translate(-60%, -50%) scale(1); opacity: 1; } 88% { opacity: 0; } }
+      @keyframes hitword { 0%, 40%, 100% { opacity: 0; transform: translateX(-50%) scale(0.6); } 46%, 62% { opacity: 1; transform: translateX(-50%) scale(1.1); } 70% { opacity: 0; transform: translateX(-50%) translateY(-14px); } }
+      @keyframes hpA { 0% { transform: scaleX(1); } 35% { transform: scaleX(0.92); } 80% { transform: scaleX(0.66); } }
+      @keyframes hpB { 0% { transform: scaleX(1); } 18% { transform: scaleX(0.78); } 68% { transform: scaleX(0.5); } }
+      @keyframes jog { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+      @keyframes leap { 0%, 15%, 100% { transform: translateY(0) rotate(0); } 32% { transform: translateY(-120%) rotate(-200deg); } 44% { transform: translateY(-150%) rotate(-360deg); } 62% { transform: translateY(0) rotate(-360deg); } }
+      @keyframes shot { 0%, 38% { transform: translate(0, 0) scale(1); opacity: 1; } 40% { transform: translate(0, -170%) scale(1.1); } 60% { transform: translate(560%, -60%) scale(0.75) rotate(720deg); opacity: 1; } 61%, 100% { transform: translate(560%, -60%) scale(0.75); opacity: 0; } }
+      @keyframes shout { 0%, 36% { opacity: 0; transform: rotate(-6deg) scale(0.4); } 42% { opacity: 1; transform: rotate(-6deg) scale(1.15); } 70% { opacity: 1; transform: rotate(-6deg) scale(1); } 80%, 100% { opacity: 0; transform: rotate(-6deg) translateY(-16px); } }
+      @keyframes arc { 0%, 10% { transform: translate(0, 0) rotate(0); opacity: 1; } 55% { transform: translate(340%, -330%) rotate(540deg); } 78% { transform: translate(560%, -180%) rotate(720deg); opacity: 1; } 92% { transform: translate(560%, 80%) rotate(760deg); opacity: 0; } 100% { opacity: 0; } }
+      @keyframes swish { 0%, 74% { transform: scaleY(1); } 80% { transform: scaleY(1.35) skewX(6deg); } 90% { transform: scaleY(0.95); } 100% { transform: scaleY(1); } }
+      @keyframes shoot { 0%, 100% { transform: translateY(0); } 8% { transform: translateY(-40%) rotate(-8deg); } 20% { transform: translateY(0); } }
+      @keyframes dunkflip { 0%, 30% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(150%, -150%) rotate(-180deg); } 66% { transform: translate(290%, -180%) rotate(-360deg); } 84% { transform: translate(290%, 0) rotate(-360deg); } 100% { transform: translate(0, 0) rotate(-360deg); } }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation: none !important; }
+        .bang, .hit, .shout { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .hit { transform: translateX(-50%); }
+        .shout { transform: rotate(-6deg); }
+      }
+
+      /* ------------------------------------------------ phones */
+      @media (max-width: 760px) {
+        html { scroll-snap-type: none; }
+        .wrap, .flip .wrap { grid-template-columns: 1fr; gap: 18px; padding: 72px 0 44px; }
+        .flip .copy { order: 0; }
+        .stage { order: -1; max-width: 460px; margin: 0 auto; }
+        .copy h2 { margin-top: 10px; }
+        .copy ul { margin-bottom: 22px; }
+        .play a { width: 100%; justify-content: center; }
+        .dots { display: none; }
+        .picks { gap: 8px; }
+        .picks a { padding: 12px 4px 10px; border-radius: 16px; }
+        .picks .ic { font-size: 28px; }
+        .picks small { display: none; }
+        .demo { font-size: 13px; flex-wrap: wrap; justify-content: center; }
+        .brand .name { display: none; }
+      }
     </style>
   </head>
   <body>
-    <main>
-      <h1><span class="mark">字</span>Glyph Rumble</h1>
-      <p class="sub">字形乱闘 · 字形乱斗 — 一つの文字はひとりの選手。一个字是一个角色。One glyph, one player.</p>
-      <div class="games">
-        <a class="game" href="arena/">
-          <div class="icon">🥊</div>
-          <h2>Arena 1v1</h2>
-          <p>文字どうしのリング対決 / 两个字擂台对决 / Two glyphs, one ring.</p>
-        </a>
-        <a class="game soon" href="soccer/">
-          <div class="icon">⚽</div>
-          <h2>Soccer 4v4</h2>
-          <p>四字熟語でチーム結成 / 四字成语组队踢球 / A four-glyph idiom is a team.</p>
-        </a>
-        <a class="game soon" href="basketball/">
-          <div class="icon">🏀</div>
-          <h2>Basketball 2v2</h2>
-          <p>二文字でコンビ / 两个字搭档打篮球 / Two glyphs, one duo.</p>
-        </a>
+    <header class="bar">
+      <a class="brand" href="#top"><span class="mark">字</span><span class="name">Glyph Rumble</span></a>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" data-set="ja">日本語</button>
+        <button type="button" data-set="zh">中文</button>
+        <button type="button" data-set="en">EN</button>
       </div>
-      <footer>Free · no sign-up · runs in your browser</footer>
+    </header>
+
+    <nav class="dots" aria-label="Sections">
+      <a href="#top" class="on"><span>Top</span></a>
+      <a href="#arena"><span>Arena</span></a>
+      <a href="#soccer"><span>Soccer</span></a>
+      <a href="#basketball"><span>Basketball</span></a>
+    </nav>
+
+    <main>
+      <!-- ============================================ cover -->
+      <section class="cover" id="top">
+        <div class="floaty" aria-hidden="true">
+          <span style="left:6%;top:16%;font-size:64px;color:#ff9ec0;--r:-12deg">龍</span>
+          <span style="left:82%;top:12%;font-size:80px;color:#ffd23f;--r:10deg;animation-delay:-2s">火</span>
+          <span style="left:14%;top:70%;font-size:56px;--r:8deg;animation-delay:-4s">🐱</span>
+          <span style="left:74%;top:66%;font-size:46px;color:#c4b5ff;--r:-6deg;animation-delay:-1s">(・ω・)</span>
+          <span style="left:44%;top:6%;font-size:42px;color:#48d6c8;--r:14deg;animation-delay:-6s">水</span>
+          <span style="left:88%;top:40%;font-size:52px;color:#fff;--r:-14deg;animation-delay:-3s">ね</span>
+          <span style="left:2%;top:44%;font-size:48px;color:#ffd23f;--r:6deg;animation-delay:-5s">妈妈</span>
+          <span style="left:58%;top:82%;font-size:58px;--r:-10deg;animation-delay:-7s">⚡</span>
+        </div>
+        <div class="inner">
+          <div class="logo" aria-hidden="true">字</div>
+          <h1>
+            <span data-l="ja">字形乱闘</span><span data-l="zh">字形乱斗</span><span data-l="en">Glyph Rumble</span>
+          </h1>
+          <div class="en"><span data-l="ja">GLYPH RUMBLE</span><span data-l="zh">GLYPH RUMBLE</span><span data-l="en">字形乱闘 · 字形乱斗</span></div>
+          <p class="lead">
+            <span data-l="ja">文字を打てば、それがキミの選手。漢字・かな・絵文字・顔文字が 3D のおもちゃになって、殴り合い、蹴り合い、跳び合う！</span>
+            <span data-l="zh">打一个字，它就是你的选手。汉字、假名、emoji、颜文字都会变成 3D 小玩具——打擂台、踢足球、打篮球！</span>
+            <span data-l="en">Type a glyph and it becomes your player. Kanji, kana, emoji and kaomoji turn into 3D toys that brawl, kick and dunk.</span>
+          </p>
+          <div class="demo" aria-hidden="true">
+            <kbd>火</kbd><span>VS</span><kbd>水</kbd><span class="arrow">→</span>
+            <span><span data-l="ja">技も強さも文字の意味から</span><span data-l="zh">招式和能力都来自字义</span><span data-l="en">moves and stats come from the meaning</span></span>
+          </div>
+          <div class="picks">
+            <a href="#arena"><span class="ic">🥊</span><strong><span data-l="ja">リング</span><span data-l="zh">擂台</span><span data-l="en">Arena</span></strong><small>1 vs 1</small></a>
+            <a href="#soccer"><span class="ic">⚽</span><strong><span data-l="ja">サッカー</span><span data-l="zh">足球</span><span data-l="en">Soccer</span></strong><small>4 vs 4</small></a>
+            <a href="#basketball"><span class="ic">🏀</span><strong><span data-l="ja">バスケ</span><span data-l="zh">篮球</span><span data-l="en">Basketball</span></strong><small>2 vs 2</small></a>
+          </div>
+        </div>
+        <a class="scroll" href="#arena"><span data-l="ja">スクロール</span><span data-l="zh">向下滑动</span><span data-l="en">Scroll</span><span aria-hidden="true">▼</span></a>
+      </section>
+
+      <!-- ============================================ arena -->
+      <section class="arena" id="arena">
+        <div class="wrap">
+          <div class="copy">
+            <span class="tag">🥊 ARENA · 1 VS 1</span>
+            <h2><span data-l="ja">字形乱闘 3D</span><span data-l="zh">字形乱斗 3D</span><span data-l="en">Glyph Arena 3D</span></h2>
+            <p class="lead">
+              <span data-l="ja">ふたつの文字がリングで真っ向勝負。ロープに弾み、場外へ吹っ飛び、最後に立っていたほうが勝ち。</span>
+              <span data-l="zh">两个字在擂台上正面对决。撞绳反弹、轰出场外，最后站着的才是赢家。</span>
+              <span data-l="en">Two glyphs, one ring. Bounce off the ropes, blast your rival out of it, and be the one still standing.</span>
+            </p>
+            <ul>
+              <li><b>字</b><span data-l="ja">どんな文字でも参戦OK：漢字・かな・英字・絵文字・顔文字</span><span data-l="zh">任何文字都能参战：汉字、假名、字母、emoji、颜文字</span><span data-l="en">Any text can fight: kanji, kana, letters, emoji, kaomoji</span></li>
+              <li><b>技</b><span data-l="ja">「龍」は火を吐き、「猫」は引っかく——必殺技は文字の意味から</span><span data-l="zh">「龙」会喷火、「猫」会挠人——必杀技由字义决定</span><span data-l="en">龍 breathes fire, 猫 scratches: signature moves follow the meaning</span></li>
+              <li><b>③</b><span data-l="ja">1本勝負か3本勝負（2本先取）を選べる</span><span data-l="zh">可选一局定胜负或三局两胜</span><span data-l="en">Single bout or best of three</span></li>
+            </ul>
+            <div class="play"><a class="game soon" href="arena/"><span data-l="ja">リングへ</span><span data-l="zh">进入擂台</span><span data-l="en">Enter the ring</span> ▶</a></div>
+          </div>
+          <div class="stage" aria-hidden="true">
+            <div class="bars"><i></i><em>VS</em><i class="b"></i></div>
+            <div class="ring"></div>
+            <div class="post l"></div><div class="post r"></div>
+            <div class="rope r1"></div><div class="rope r2"></div><div class="rope r3"></div>
+            <div class="fighter a">火</div>
+            <div class="fighter b">水</div>
+            <div class="bang">💥</div>
+            <div class="hit"><span data-l="ja">会心の一撃！</span><span data-l="zh">暴击！</span><span data-l="en">CRITICAL!</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ soccer -->
+      <section class="soccer flip" id="soccer">
+        <div class="wrap">
+          <div class="copy">
+            <span class="tag">⚽ SOCCER · 4 VS 4</span>
+            <h2><span data-l="ja">グリフサッカー</span><span data-l="zh">字形足球</span><span data-l="en">Glyph Soccer</span></h2>
+            <p class="lead">
+              <span data-l="ja">四文字でチーム結成。「龍飛鳳舞」VS「風平浪静」——熟語の意味が、そのままチームの戦術になる。</span>
+              <span data-l="zh">四个字组成一支球队。「龙飞凤舞」VS「风平浪静」——成语的意思就是球队的打法。</span>
+              <span data-l="en">Four glyphs make a team. An idiom's meaning becomes its tactics, and its rival idiom is the derby.</span>
+            </p>
+            <ul>
+              <li><b>連</b><span data-l="ja">四字熟語・家族・属性でチーム連携技が発動</span><span data-l="zh">成语、家人、属性都能触发团队连携技</span><span data-l="en">Idioms, families and elements unlock team combos</span></li>
+              <li><b>跳</b><span data-l="ja">必殺シュート、オーバーヘッド、ダイビングヘッド、場外乱闘まで</span><span data-l="zh">必杀射门、倒挂金钩、鱼跃冲顶，甚至场上大乱斗</span><span data-l="en">Super shots, bicycle kicks, diving headers and the odd brawl</span></li>
+              <li><b>数</b><span data-l="ja">選手ひとりずつ能力値をチェック</span><span data-l="zh">每名球员都有能力值可查看</span><span data-l="en">Every player has ratings you can check</span></li>
+            </ul>
+            <div class="play"><a class="game soon" href="soccer/"><span data-l="ja">キックオフ</span><span data-l="zh">开球</span><span data-l="en">Kick off</span> ▶</a></div>
+          </div>
+          <div class="stage" aria-hidden="true">
+            <div class="pitch"></div>
+            <div class="goal l"></div><div class="goal r"></div>
+            <div class="team a"><span>龙</span><span>飞</span><span>凤</span><span>舞</span></div>
+            <div class="team b"><span>风</span><span>平</span><span>浪</span><span>静</span></div>
+            <div class="striker">龍</div>
+            <div class="ball">⚽</div>
+            <div class="shout"><span data-l="ja">必殺シュート！！</span><span data-l="zh">必杀射门！！</span><span data-l="en">SUPER SHOT!!</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ basketball -->
+      <section class="basket" id="basketball">
+        <div class="wrap">
+          <div class="copy">
+            <span class="tag">🏀 BASKETBALL · 2 VS 2</span>
+            <h2><span data-l="ja">グリフバスケ</span><span data-l="zh">字形篮球</span><span data-l="en">Glyph Basketball</span></h2>
+            <p class="lead">
+              <span data-l="ja">二文字でコンビ結成。空中で一回転するダンク、ブロック、ブザービーター——全部アーケード級に派手。</span>
+              <span data-l="zh">两个字组成搭档。空中转体扣篮、盖帽、绝杀压哨——全是街机级的夸张。</span>
+              <span data-l="en">Two glyphs make a duo. Flipping dunks, rejections and buzzer-beaters, all arcade-loud.</span>
+            </p>
+            <ul>
+              <li><b>扣</b><span data-l="ja">ジャンプ力の高い文字は宙返りダンク</span><span data-l="zh">弹跳好的字会转体暴扣</span><span data-l="en">High jumpers flip on the way to the rim</span></li>
+              <li><b>友</b><span data-l="ja">二文字の言葉ならコンビ技も</span><span data-l="zh">两个字组成词语还有组合技</span><span data-l="en">Two-glyph words unlock duo moves</span></li>
+              <li><b>数</b><span data-l="ja">選手ごとの能力値つき</span><span data-l="zh">每名球员都有能力值</span><span data-l="en">Ratings for every player</span></li>
+            </ul>
+            <div class="play"><a class="game soon" href="basketball/"><span data-l="ja">ティップオフ</span><span data-l="zh">跳球开赛</span><span data-l="en">Tip off</span> ▶</a></div>
+          </div>
+          <div class="stage" aria-hidden="true">
+            <div class="score"><span>熊猫</span><b>21 : 19</b><span>🐯🦁</span></div>
+            <div class="board"></div>
+            <div class="net"></div>
+            <div class="rim"></div>
+            <div class="court"><div class="key"></div></div>
+            <div class="hoop-ball">🏀</div>
+            <div class="baller a">熊</div>
+            <div class="baller b">猫</div>
+            <div class="baller c">🐯</div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer>
+      <span data-l="ja">無料 · 登録不要 · ブラウザで動きます</span><span data-l="zh">免费 · 无需注册 · 浏览器直接玩</span><span data-l="en">Free · no sign-up · runs in your browser</span>
+    </footer>
+
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var buttons = document.querySelectorAll('.langs button');
+        function show() {
+          var l = root.getAttribute('data-lang');
+          buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-set') === l)); });
+        }
+        buttons.forEach(function (b) {
+          b.addEventListener('click', function () {
+            var l = b.getAttribute('data-set');
+            root.setAttribute('data-lang', l);
+            root.lang = l === 'zh' ? 'zh-CN' : l;
+            try { localStorage.setItem('glyph-rumble-lang', l); } catch (e) {}
+            show();
+          });
+        });
+        show();
+        // Dot nav follows the section in view.
+        var dots = document.querySelectorAll('.dots a');
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (!e.isIntersecting) return;
+              dots.forEach(function (d) { d.classList.toggle('on', d.getAttribute('href') === '#' + e.target.id); });
+            });
+          }, { threshold: 0.55 });
+          document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
+        }
+      })();
+    </script>
   </body>
 </html>

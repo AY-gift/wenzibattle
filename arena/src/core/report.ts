@@ -2,7 +2,7 @@
  * Picks the funniest, most explanatory moments of a finished battle and returns them as
  * language-neutral report lines ({key, a, b}); the UI localises them.
  */
-import type { BattleEvent, BattleResult, EventType } from './battle/types';
+import { MAX_HP, type BattleEvent, type BattleResult, type EventType } from './battle/types';
 
 export interface ReportLine {
   key: string;
@@ -56,8 +56,8 @@ export function buildReport(r: BattleResult): ReportLine[] {
   // Derived highlights.
   if (r.winner !== null) {
     const w = r.winner;
-    if (r.counters[w].minHp < 22 && r.counters[w].minHp > 0) cands.push({ line: { key: 'comeback', a: w, b: other(w) }, score: 9, t: 99 });
-    if (r.hp[w] >= 99.5) cands.push({ line: { key: 'perfect', a: w, b: other(w) }, score: 7, t: 99 });
+    if (r.counters[w].minHp < MAX_HP * 0.22 && r.counters[w].minHp > 0) cands.push({ line: { key: 'comeback', a: w, b: other(w) }, score: 9, t: 99 });
+    if (r.hp[w] >= MAX_HP - 0.5) cands.push({ line: { key: 'perfect', a: w, b: other(w) }, score: 7, t: 99 });
     const big = Math.max(r.counters[w].maxHit, 0);
     if (big > 24) cands.push({ line: { key: 'bigHit', a: w, b: other(w), n: Math.round(big) }, score: 5, t: 98 });
   }

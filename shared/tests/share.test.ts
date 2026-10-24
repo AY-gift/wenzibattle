@@ -52,6 +52,17 @@ describe('share links', () => {
     expect(result.result).toEqual(rec);
   });
 
+  it('carries the best-of-three format and the series score', () => {
+    const rec: ResultRecord = { winner: 1, reason: 'ringout', time: 12.3, hp: [0, 40] };
+    const p = parseLink(search(buildLink({ mode: 'arena', a: '火', b: '水' }, { base: BASE, seed: 5, result: rec, bestOf: 3, series: [1, 2] })))!;
+    expect(p.bestOf).toBe(3);
+    expect(p.series).toEqual([1, 2]);
+    const single = parseLink(search(buildLink({ mode: 'arena', a: '火', b: '水' }, { base: BASE, bestOf: 1 })))!;
+    expect(single.bestOf).toBe(1);
+    expect(single.series).toBeNull();
+    expect(parseLink('?a=x&b=y&bo=7&sc=9-9')!).toMatchObject({ bestOf: 1, series: null });
+  });
+
   it('result codes are strict', () => {
     const ok: ResultRecord = { winner: null, reason: 'draw', time: 15, hp: [10, 10] };
     expect(decodeResult(encodeResult(ok))).toEqual(ok);

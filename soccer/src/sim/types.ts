@@ -21,6 +21,8 @@ export const FIELD = {
   postR: 0.12,
   ballR: 0.32,
   gravity: 18,
+  /** Players fall slower than the ball (arcade rules: big leaps, long flights when knocked over). */
+  playerGravity: 10,
 } as const;
 
 export const MATCH_TIME = 120;
@@ -91,10 +93,15 @@ export interface Player {
   fightCd: number;
   grudge: number;
   grudgeT: number;
+  /** Leaping for a high ball: seconds the volley stays on, and which trick it is. */
+  volleyT: number;
+  volley: 'bicycle' | 'header' | null;
   stats: PlayerStats;
 }
 
-export type ShotKind = 'normal' | 'powerShot' | 'curveShot' | 'beamShot' | 'skyShot' | 'combo' | 'bonus';
+export type ShotKind = 'normal' | 'powerShot' | 'curveShot' | 'beamShot' | 'skyShot' | 'combo' | 'bonus'
+  /** Arcade extras: a leaping 必殺 shot, and a bicycle kick / diving header off a high ball. */
+  | 'super' | 'volley';
 
 export interface Kick {
   kind: 'pass' | 'shot' | 'clear';
@@ -149,7 +156,9 @@ export type EventType =
   /** Arena-style fighting on the pitch. */
   | 'fight' | 'fightHit' | 'fightMiss' | 'brawl' | 'brawlEnd'
   /** Culture combos: the primitive that just took real effect, and a matchup intro. */
-  | 'prim' | 'rivalry';
+  | 'prim' | 'rivalry'
+  /** Arcade: someone blasted off their feet by a shot, a leap for a high ball. */
+  | 'launch' | 'leap';
 
 export interface MatchEvent {
   t: number;

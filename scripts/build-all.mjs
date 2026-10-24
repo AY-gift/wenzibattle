@@ -52,8 +52,8 @@ let html = readFileSync(join(root, 'portal', 'index.html'), 'utf8').replace(/%SI
 // Games that were built light up; the others stay "coming soon" without a link.
 for (const game of GAMES) {
   html = built.includes(game)
-    ? html.replace(`class="game soon" href="${game}/"`, `class="game" href="${game}/"`)
-    : html.replace(`class="game soon" href="${game}/"`, `class="game soon"`);
+    ? html.replaceAll(`class="game soon" href="${game}/"`, `class="game" href="${game}/"`)
+    : html.replaceAll(`class="game soon" href="${game}/"`, `class="game soon"`);
 }
 writeFileSync(join(out, 'index.html'), html);
 cpSync(join(root, 'arena', 'public', 'og.png'), join(out, 'og.png'));

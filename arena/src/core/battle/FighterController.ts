@@ -7,7 +7,7 @@ import type { BehaviorTag } from '@shared/core/BehaviorResolver';
 import type { FighterSpec } from '@shared/core/StatGenerator';
 import type { BattleSimulator } from './BattleSimulator';
 import { moveRange, RANDOM_KINDS, type MoveKind } from '@shared/core/SignatureMoves';
-import type { AttackKind, Combat, Counters, FState } from './types';
+import { MAX_HP, type AttackKind, type Combat, type Counters, type FState } from './types';
 
 const SIG_DURATION: Record<MoveKind, number> = {
   barrage: 1.1, uppercut: 0.9, quake: 1.4, beam: 1.0, whirlwind: 1.3, charge: 0.95, giant: 0.7, freeze: 0.7, heal: 1.1,
@@ -75,8 +75,8 @@ export class FighterState {
   tumbling = false;
   spin = 0;
   spinV = 0;
-  hp = 100;
-  readonly maxHp = 100;
+  hp = MAX_HP;
+  readonly maxHp = MAX_HP;
   state: FState = 'intro';
   stateT = 0;
   stateDur = 0;

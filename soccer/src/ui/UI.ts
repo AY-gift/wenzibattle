@@ -14,7 +14,7 @@ import { clip } from '@shared/share/sns';
 import { comboFor, SOCCER_COMBOS } from '@shared/sports/combos';
 import { cultureFor, cultureSummary, matchupFor, PRIM_WORD, TAG_TEXT } from '@shared/sports/culture';
 import { kitsFor, type Kit } from '@shared/sports/kits';
-import { sportSkillFor } from '@shared/sports/skills';
+import { RATING_KEYS, sportRatings, sportSkillFor } from '@shared/sports/skills';
 import { buildTeam, type TeamHow, type TeamInput } from '@shared/sports/team';
 import { buildTeamLink, parseTeamLink, type ParsedTeamLink } from '@shared/sports/teamLinks';
 import { buildReport, decodeResult, encodeResult, highlightOf, statLines, teamOfId, type ReportLine, type ResultCode } from '../report';
@@ -22,7 +22,7 @@ import type { SoccerRenderer } from '../render/SoccerRenderer';
 import { Match } from '../sim/Match';
 import { MATCH_TIME, TEAM_SIZE, type MatchEvent, type MatchResult } from '../sim/types';
 import { COMMENTARY, type CrowdMood } from './commentaryText';
-import { getLang, hasReportKey, LANGS, onLangChange, reportText, setLang, skillKindName, t, type Lang } from './i18n';
+import { describeFighter, getLang, hasReportKey, LANGS, onLangChange, reportText, setLang, skillKindName, t, type Lang } from './i18n';
 import { click, playClip, setAudioScene, setSfxEnabled, sfxEnabled, sfxForEvent, unlockAudio } from './Sfx';
 
 const $ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector(sel) as T;
@@ -274,7 +274,37 @@ export class App {
       const kind = document.createElement('span');
       kind.className = 'kind';
       kind.textContent = skillKindName(sportSkillFor(b.spec.signature).kind);
-      li.append(name, mv, kind);
+      // Ball-game ratings, like the arena's stat bars; tap a player for the full description.
+      const rt = sportRatings(b.spec);
+      const row = document.createElement('span');
+      row.className = 'rstats';
+      for (const k of RATING_KEYS) {
+        const cell = document.createElement('span');
+        cell.className = `st st-${k}`;
+        cell.title = `${t('rf_' + k)} ${rt[k]}`;
+        const lbl = document.createElement('em');
+        lbl.textContent = t('r_' + k);
+        const bar = document.createElement('i');
+        bar.style.setProperty('--v', `${rt[k]}%`);
+        const val = document.createElement('span');
+        val.textContent = String(rt[k]);
+        cell.append(lbl, bar, val);
+        row.append(cell);
+      }
+      const more = document.createElement('span');
+      more.className = 'more';
+      more.textContent = `${describeFighter(b.spec)}\n${RATING_KEYS.map((k) => `${t('rf_' + k)} ${rt[k]}`).join(' · ')}`;
+      li.append(name, mv, kind, row, more);
+      li.tabIndex = 0;
+      li.title = t('ratingsHint');
+      const flip = () => li.classList.toggle('open');
+      li.onclick = flip;
+      li.onkeydown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          flip();
+        }
+      };
       roster.append(li);
     }
     const combo = $('.combo', el);
@@ -556,6 +586,9 @@ export class App {
         break;
       case 'knockdown':
         if (Math.random() < 0.3) this.crowdBubble('knock', undefined, pl);
+        break;
+      case 'launch':
+        this.crowdBubble('knock', undefined, pl);
         break;
       case 'post':
         this.crowdBubble('post', undefined, pl);

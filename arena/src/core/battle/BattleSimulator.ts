@@ -11,10 +11,10 @@ import { FighterController, FighterState, type V2 } from './FighterController';
 import type { AttackKind, BattleEvent, BattleResult, EndReason } from './types';
 
 export const DT = 1 / 60;
-export const BATTLE_TIME = 15;
+export const BATTLE_TIME = 25;
 export const INTRO_TIME = 1.4;
 export const EPILOGUE_TIME = 2.4;
-export const SUDDEN_DEATH_AT = 10;
+export const SUDDEN_DEATH_AT = 17;
 
 /** Square boxing ring with three elastic ropes on every side. */
 export const ARENA = {
@@ -27,7 +27,15 @@ export const ARENA = {
   ropeStiffness: 95,
   /** Canvas height above the arena floor (where ring-outs land). */
   ringHeight: 1.2,
+  /** Ropes hold a healthy fighter tighter: stiffness × (1 + ropeGrit × HP share). */
+  ropeGrit: 6,
 };
+/** Knockback grows as a fighter wears down (×KB_FRESH at full HP, ×KB_SPENT when empty). */
+const KB_FRESH = 0.8, KB_SPENT = 1.3;
+/** 逆境: a fighter on its last legs hits harder and further, so long matches keep their upsets. */
+const RAGE_BELOW = 0.4, RAGE_MULT = 1.5;
+const rage = (f: FighterState) => (f.hp > 0 && f.hp < f.maxHp * RAGE_BELOW ? RAGE_MULT : 1);
+const kbWear = (f: FighterState) => KB_FRESH + (KB_SPENT - KB_FRESH) * (1 - Math.max(0, f.hp) / f.maxHp);
 export type ArenaConfig = typeof ARENA;
 
 const POWER: Record<AttackKind, number> = { lunge: 1, dash: 1.25, stomp: 1.25, spin: 0.7, pounce: 1.15, panic: 1.45, surprise: 1.3, charge: 1.8, kick: 1.6 };
@@ -395,7 +403,7 @@ export class BattleSimulator {
     const elem = elementMultiplier(att.spec.element, def.spec.element);
     if (elem > 1) this.emit({ type: 'elementBonus', a: att.idx, b: def.idx, v: elem });
     const taunting = def.state === 'taunt' ? 1.3 : 1;
-    const dmg = Math.min(40, att.sizeMul * (4 + closing * 1.25) * power * att.c.dmgMult * def.c.takenMult * massF * elem * (crit ? 1.7 : 1) * taunting);
+    const dmg = Math.min(40, att.sizeMul * (4 + closing * 1.25) * power * att.c.dmgMult * def.c.takenMult * massF * elem * (crit ? 1.7 : 1) * taunting * rage(att));
     def.hp -= this.blameSplit(att, def, dmg);
     if (att.burning) {
       // 引火烧身: being rammed by a fireball hurts extra.
@@ -406,7 +414,7 @@ export class BattleSimulator {
     att.counters.damageDealt += dmg;
     att.counters.maxHit = Math.max(att.counters.maxHit, dmg);
 
-    const kb = ((1.6 + closing * 0.56) * power * Math.pow(att.mass, 0.4)) / (Math.pow(def.mass, 0.45) * def.c.kbResist) * (crit ? 1.4 : 1) * (def.lying ? 0.6 : 1);
+    const kb = ((1.6 + closing * 0.56) * power * Math.pow(att.mass, 0.4)) / (Math.pow(def.mass, 0.45) * def.c.kbResist) * (crit ? 1.4 : 1) * (def.lying ? 0.6 : 1) * kbWear(def) * rage(att);
     def.v.x += n.x * kb;
     def.v.z += n.z * kb;
     const launch = Math.max(0, kb - 7.5) * 0.55 + (crit ? 1.5 : 0);
@@ -485,7 +493,9 @@ export class BattleSimulator {
       return;
     }
     // Below the canvas the ropes can't reach (they'd push a falling fighter back under the ring).
-    if (f.overRope || f.y > A.ropes[2] * lvl * 0.8 || f.y < -0.05) return;
+    // A healthy fighter still snags the top rope on the way past; a worn-out one sails over it.
+    const grit = Math.max(0, f.hp) / f.maxHp;
+    if (f.overRope || f.y > A.ropes[2] * lvl * (0.8 + 0.6 * grit) || f.y < -0.05) return;
 
     // Corner post: rigid and painful.
     if (penX > 0.05 && penZ > 0.05) {
@@ -514,7 +524,7 @@ export class BattleSimulator {
     const pen = alongX ? penX : penZ;
     const s = Math.sign(alongX ? f.p.x : f.p.z);
     const vOut = (alongX ? f.v.x : f.v.z) * s;
-    if (pen > A.ropeGive * (0.75 + 0.25 * lvl)) {
+    if (pen > A.ropeGive * (0.75 + 0.25 * lvl) ) {
       // Over the top rope and out of the ring.
       f.overRope = true;
       f.onRope = false;
@@ -526,7 +536,8 @@ export class BattleSimulator {
       this.emit({ type: 'overRope', a: f.idx, b: (1 - f.idx) as 0 | 1, v: vOut });
       return;
     }
-    const k = A.ropeStiffness * (0.55 + 0.45 * lvl);
+    // …and the ropes hold a fresh fighter much tighter, so early hits bounce instead of ejecting.
+    const k = A.ropeStiffness * (0.55 + 0.45 * lvl) * (1 + A.ropeGrit * grit);
     const dv = -s * (k * pen + Math.max(0, vOut) * 2) * dt;
     if (alongX) f.v.x += dv;
     else f.v.z += dv;
@@ -604,12 +615,12 @@ export class BattleSimulator {
     const n = dir ?? { x: dx / d, z: dz / d };
     const crit = this.rng.chance(att.c.critChance);
     const elem = elementMultiplier(att.spec.element, def.spec.element);
-    const dmg = Math.min(30, base * att.c.dmgMult * def.c.takenMult * att.sizeMul * elem * (crit ? 1.5 : 1));
+    const dmg = Math.min(30, base * att.c.dmgMult * def.c.takenMult * att.sizeMul * elem * (crit ? 1.5 : 1) * rage(att));
     def.hp -= this.blameSplit(att, def, dmg);
     att.counters.hits++;
     att.counters.damageDealt += dmg;
     att.counters.maxHit = Math.max(att.counters.maxHit, dmg);
-    const k = kb / (Math.pow(def.mass, 0.45) * def.c.kbResist);
+    const k = (kb * kbWear(def) * rage(att)) / (Math.pow(def.mass, 0.45) * def.c.kbResist);
     def.v.x += n.x * k;
     def.v.z += n.z * k;
     if (up > 0.5) {

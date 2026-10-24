@@ -62,6 +62,11 @@
             </div>
           </div>
           <div class="examples" id="examples"></div>
+          <div class="format" id="format" role="radiogroup">
+            <span class="fmt-label" data-i18n="fmtLabel"></span>
+            <button type="button" role="radio" data-bo="1" data-i18n="fmt1"></button>
+            <button type="button" role="radio" data-bo="3" data-i18n="fmt3"></button>
+          </div>
           <div class="actions">
             <button id="btn-random-match" class="btn secondary" type="button" data-i18n="randomMatch"></button>
             <button id="btn-fight" class="btn primary big" type="button" data-i18n="fight"></button>
@@ -81,6 +86,7 @@
             <div class="hpbar"><i></i><b></b></div>
           </div>
         </div>
+        <div class="series-hud hidden" id="series-hud" aria-live="polite"></div>
         <div class="hud-buttons">
           <button id="btn-pause" class="round" type="button" aria-label="pause">❚❚</button>
           <button id="btn-rematch-live" class="round" type="button" aria-label="rematch">↻</button>
@@ -102,6 +108,7 @@
           <div class="winner-label">WINNER</div>
           <div class="winner-name" id="winner-name"></div>
           <div class="reason" id="reason"></div>
+          <div class="series-score hidden" id="series-score"></div>
           <ul class="report" id="report"></ul>
           <div class="mini-stats" id="mini-stats"></div>
           <div class="result-actions">

@@ -22,6 +22,8 @@ export interface ViewPlayer {
   wallT: number;
   ghostT: number;
   attr: { radius: number };
+  /** Soccer: an airborne trick in progress (a bicycle kick flips backwards). */
+  volley?: string | null;
 }
 
 const UP = new THREE.Vector3(0, 1, 0);
@@ -53,10 +55,12 @@ export class PlayerView {
   private qF = new THREE.Quaternion();
   private flipAxis = new THREE.Vector3();
   height = 1.3;
-  /** Basketball: flips on dunks and twirls on big jumps (arcade style). */
+  /** Arcade style: flips on dunks and leaping shots, twirls on big jumps, tumbles when sent flying. */
   acrobatic = false;
   private airT = 0;
   private flipping = false;
+  /** Cartwheel angle while knocked through the air; eased back to a whole turn on landing. */
+  private tumble = 0;
 
   constructor(
     scene: THREE.Scene,
@@ -157,14 +161,26 @@ export class PlayerView {
     // Air acrobatics: a full forward flip on a dunk, a twirl on any other big jump.
     let twirl = 0;
     this.qF.identity();
-    if (this.acrobatic && p.y > 0.35 && p.state !== 'down') {
+    if (this.acrobatic && p.y > 0.35 && p.state === 'down') {
+      // Sent flying: tumble backwards head over heels.
+      this.tumble = Math.min(Math.PI * 4, this.tumble + dt * 9);
+      this.qF.setFromAxisAngle(this.flipAxis.set(-p.face.z, 0, p.face.x), this.tumble);
+    } else if (this.acrobatic && p.y > 0.35) {
       this.airT += dt;
-      if (p.state === 'dunk') this.flipping = true;
-      if (this.flipping) this.qF.setFromAxisAngle(this.flipAxis.set(p.face.z, 0, -p.face.x), Math.min(Math.PI * 2, this.airT * 8.5));
+      if (p.state === 'dunk' || p.state === 'kick') this.flipping = true;
+      const back = p.volley === 'bicycle' ? -1 : 1;
+      if (this.flipping || back < 0) this.qF.setFromAxisAngle(this.flipAxis.set(p.face.z * back, 0, -p.face.x * back), Math.min(Math.PI * 2, this.airT * 8.5));
       else if (p.y > 1.2) twirl = Math.min(Math.PI * 2, (this.airT - 0.15) * 9);
     } else {
       this.airT = 0;
       this.flipping = false;
+    }
+    if (this.tumble > 0 && !(p.y > 0.35 && p.state === 'down')) {
+      // Landed: finish the turn quickly rather than snapping.
+      const whole = Math.ceil(this.tumble / (Math.PI * 2) - 0.25) * Math.PI * 2;
+      this.tumble += (whole - this.tumble) * Math.min(1, dt * 14);
+      if (Math.abs(whole - this.tumble) < 0.05) this.tumble = 0;
+      else this.qF.setFromAxisAngle(this.flipAxis.set(-p.face.z, 0, p.face.x), this.tumble);
     }
     this.qY.setFromAxisAngle(UP, this.yaw + Math.max(0, twirl));
     this.tiltG.quaternion.copy(this.qF).multiply(this.qT).multiply(this.qY);

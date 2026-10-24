@@ -36,6 +36,19 @@ const STAT_COLORS: Record<keyof Stats, string> = {
 
 type Screen = 'select' | 'battle' | 'result';
 
+/** A best-of-three ends after this many rounds even if draws kept it level. */
+const MAX_ROUNDS = 5;
+const FORMAT_KEY = 'glyph-arena-bestof';
+
+/** One match: a single bout, or rounds until someone has two. Round k replays from the series seed. */
+interface Series {
+  seed: number;
+  bestOf: 1 | 3;
+  wins: [number, number];
+  rounds: BattleResult[];
+}
+const roundSeed = (seed: number, k: number) => (k === 0 ? seed : (seed + k * 0x2f6b9) % 2 ** 31);
+
 /** Public site address for links and the report image (set VITE_SITE_URL when deploying). */
 const SITE_URL: string = import.meta.env?.VITE_SITE_URL || '';
 /** Optional share endpoint that serves per-match OG tags, e.g. https://example.com/s/arena (see deploy/). */
@@ -55,6 +68,9 @@ export class App {
   private hudRaf = 0;
   private commentary: Commentary;
   private lastResult: BattleResult | null = null;
+  private bestOf: 1 | 3 = 1;
+  private series: Series | null = null;
+  private roundTimer = 0;
   private sharePanel: SharePanel;
   /** Set when the page was opened from a challenge / result link (for attribution). */
   private arrival: { src: ShareSource | null; kind: 'config' | 'result'; started: boolean } | null = null;
@@ -74,6 +90,11 @@ export class App {
     this.buildLangSelect();
     this.buildStatRows();
     this.buildExamples();
+    try {
+      if (localStorage.getItem(FORMAT_KEY) === '3') this.bestOf = 3;
+    } catch {
+      /* storage blocked: keep the default */
+    }
     this.bind();
     this.applyI18n();
     onLangChange(() => this.applyI18n());
@@ -105,12 +126,14 @@ export class App {
       a = link.lineup.a;
       b = link.lineup.b;
       this.pendingSeed = link.seed;
+      this.bestOf = link.bestOf;
       this.arrival = { src: link.source, kind: link.result ? 'result' : 'config', started: false };
       track('challenge_link_open', { src: link.source ?? 'direct', kind: this.arrival.kind });
       stripSourceParam();
     }
     this.inputs[0].value = a;
     this.inputs[1].value = b;
+    this.renderFormat();
     this.showScreen('select');
     await Promise.all([this.load(0, a), this.load(1, b)]);
     if (link?.result) this.showSharedReport(link);
@@ -193,6 +216,9 @@ export class App {
       const b = (e.target as HTMLElement).closest('button');
       if (b && !b.classList.contains('dice') && b.id !== 'btn-fight') playClip('ui_click', 0.5);
     });
+    document.querySelectorAll<HTMLButtonElement>('#format button').forEach((btn) =>
+      btn.addEventListener('click', () => this.setFormat(btn.dataset.bo === '3' ? 3 : 1)),
+    );
     $('#btn-random-match').addEventListener('click', () => this.randomMatch());
     $('#btn-random2').addEventListener('click', () => this.randomMatch());
     $('#btn-again').addEventListener('click', () => this.fight());
@@ -343,6 +369,21 @@ export class App {
 
   // ---------------------------------------------------------------- battle
 
+  private setFormat(bo: 1 | 3): void {
+    this.bestOf = bo;
+    try {
+      localStorage.setItem(FORMAT_KEY, String(bo));
+    } catch {
+      /* storage blocked: the choice lasts for this visit */
+    }
+    this.renderFormat();
+  }
+
+  private renderFormat(): void {
+    document.querySelectorAll<HTMLButtonElement>('#format button').forEach((btn) => btn.setAttribute('aria-checked', String(btn.dataset.bo === String(this.bestOf))));
+  }
+
+  /** Starts a new match (one bout or a best-of-three) from round 1. */
   private fight(): void {
     const [a, b] = this.bundles;
     if (!a || !b || this.cards.some((c) => c.classList.contains('invalid'))) return;
@@ -354,6 +395,17 @@ export class App {
       this.arrival.started = true;
       track('challenge_match_started', { src: this.arrival.src ?? 'direct', kind: this.arrival.kind });
     }
+    this.series = { seed, bestOf: this.bestOf, wins: [0, 0], rounds: [] };
+    this.startRound();
+  }
+
+  private startRound(): void {
+    const [a, b] = this.bundles;
+    const series = this.series;
+    if (!a || !b || !series) return;
+    clearTimeout(this.roundTimer);
+    const k = series.rounds.length;
+    const seed = roundSeed(series.seed, k);
     // A different crowd every match.
     this.arena.stage.reshuffle(seed);
     this.syncArenaFighters();
@@ -365,7 +417,9 @@ export class App {
     });
     this.setPaused(false);
     this.showScreen('battle');
-    this.banner(t('ready'), false);
+    this.renderSeriesHud();
+    const decider = series.bestOf === 3 && series.wins[0] === 1 && series.wins[1] === 1;
+    this.banner(series.bestOf === 1 ? t('ready') : decider ? t('finalRound') : t('round', { n: k + 1 }), false);
     cancelAnimationFrame(this.hudRaf);
     const tick = () => {
       this.updateHud();
@@ -434,18 +488,91 @@ export class App {
 
   // ---------------------------------------------------------------- result
 
+  private renderSeriesHud(): void {
+    const el = $('#series-hud');
+    const s = this.series;
+    el.classList.toggle('hidden', !s || s.bestOf === 1);
+    if (!s || s.bestOf === 1) return;
+    const names = this.bundles.map((x) => x?.spec.name ?? '');
+    const side = (i: 0 | 1) => {
+      const wrap = document.createElement('span');
+      wrap.className = `pips ${i === 0 ? 'a' : 'b'}`;
+      for (let p = 0; p < 2; p++) {
+        const dot = document.createElement('i');
+        if (p < s.wins[i]) dot.className = 'on';
+        wrap.appendChild(dot);
+      }
+      wrap.title = names[i];
+      return wrap;
+    };
+    const label = document.createElement('span');
+    const live = this.sim !== null && this.sim.phase !== 'done';
+    label.textContent = t('roundOf', { n: s.rounds.length + (live ? 1 : 0) });
+    el.replaceChildren(side(0), label, side(1));
+  }
+
+  /** Who took the series (null = level after the round cap). */
+  private seriesWinner(s: Series): 0 | 1 | null {
+    return s.wins[0] === s.wins[1] ? null : s.wins[0] > s.wins[1] ? 0 : 1;
+  }
+
+  private seriesOver(s: Series): boolean {
+    return s.bestOf === 1 || s.wins[0] >= 2 || s.wins[1] >= 2 || s.rounds.length >= MAX_ROUNDS;
+  }
+
   private showResult(sim: BattleSimulator): void {
     if (sim !== this.sim || !sim.result) return;
-    this.lastResult = sim.result;
-    this.renderResult(sim.result);
+    const r = sim.result;
+    this.lastResult = r;
+    const s = this.series;
+    if (s) {
+      s.rounds.push(r);
+      if (r.winner !== null) s.wins[r.winner]++;
+      if (!this.seriesOver(s)) {
+        // Between rounds: show the score, then ring the bell again.
+        this.renderSeriesHud();
+        const w = r.winner;
+        this.banner(w === null ? t('draw') : t('roundWin', { w: r.names[w], a: s.wins[0], b: s.wins[1] }), true);
+        this.roundTimer = window.setTimeout(() => {
+          if (this.series === s && this.sim === sim && this.screen === 'battle') this.startRound();
+        }, 1900);
+        return;
+      }
+    }
+    this.renderResult(r);
     this.showScreen('result');
+  }
+
+  /** The finished best-of-three this result closed, if any. */
+  private seriesOf(r: BattleResult): Series | null {
+    const s = this.series;
+    return s && s.bestOf === 3 && s.rounds.includes(r) ? s : null;
   }
 
   private renderResult(r: BattleResult): void {
     const names = r.names;
-    $('#winner-name').textContent = r.winner === null ? t('draw') : names[r.winner];
-    ($('.winner-label') as HTMLElement).style.visibility = r.winner === null ? 'hidden' : 'visible';
-    $('#reason').textContent = `${t('reason_' + r.reason)} · ${t('time')} ${r.time.toFixed(1)}s`;
+    const s = this.seriesOf(r);
+    const winner = s ? this.seriesWinner(s) : r.winner;
+    $('#winner-name').textContent = winner === null ? t('draw') : names[winner];
+    ($('.winner-label') as HTMLElement).style.visibility = winner === null ? 'hidden' : 'visible';
+    $('#reason').textContent = s
+      ? winner === null
+        ? t('seriesDraw', { a: s.wins[0], b: s.wins[1] })
+        : t('seriesLine', { w: names[winner], a: s.wins[0], b: s.wins[1] })
+      : `${t('reason_' + r.reason)} · ${t('time')} ${r.time.toFixed(1)}s`;
+    const sc = $('#series-score');
+    sc.classList.toggle('hidden', !s);
+    sc.replaceChildren();
+    if (s) {
+      const big = document.createElement('b');
+      big.textContent = t('seriesScore', { a: s.wins[0], b: s.wins[1] });
+      sc.appendChild(big);
+      s.rounds.forEach((x, i) => {
+        const chip = document.createElement('span');
+        chip.textContent = `${t('roundOf', { n: i + 1 })} ${x.winner === null ? t('draw') : names[x.winner]} · ${t('reason_' + x.reason)} ${x.time.toFixed(1)}s`;
+        sc.appendChild(chip);
+      });
+    }
     const ul = $('#report');
     ul.replaceChildren();
     for (const text of this.reportTexts(r)) {
@@ -469,6 +596,8 @@ export class App {
   }
 
   private backToSelect(): void {
+    clearTimeout(this.roundTimer);
+    this.series = null;
     this.sim = null;
     this.commentary.stop();
     this.arena.stopBattle();
@@ -495,8 +624,17 @@ export class App {
     return l ? { key: l.key, a: l.a, ...(l.n !== undefined ? { n: Math.round(l.n) } : {}) } : undefined;
   }
 
+  /** The last bout's record; for a best-of-three the winner is the series winner. */
   private recordOf(r: BattleResult): ResultRecord {
-    return { winner: r.winner, reason: r.reason, time: Math.round(r.time * 10) / 10, hp: [Math.max(0, Math.round(r.hp[0])), Math.max(0, Math.round(r.hp[1]))], highlight: this.highlightOf(r) };
+    const s = this.seriesOf(r);
+    const winner = s ? this.seriesWinner(s) : r.winner;
+    const reason = s && winner === null ? 'draw' : s && r.winner === null ? 'timeup' : r.reason;
+    return { winner, reason, time: Math.round(r.time * 10) / 10, hp: [Math.max(0, Math.round(r.hp[0])), Math.max(0, Math.round(r.hp[1]))], highlight: this.highlightOf(r) };
+  }
+
+  private seriesScoreOf(r: BattleResult): [number, number] | undefined {
+    const s = this.seriesOf(r);
+    return s ? [s.wins[0], s.wins[1]] : undefined;
   }
 
   private highlightText(rec: ResultRecord, names: [string, string], moves: [string, string]): string {
@@ -506,8 +644,9 @@ export class App {
     return reportLine(h.key, { a: names[h.a], b: names[b], n: h.n, move: moves[h.a] });
   }
 
-  private resultHeadline(rec: ResultRecord, names: [string, string]): string {
-    return rec.winner === null ? t('draw') : t('shareWin', { w: names[rec.winner] });
+  private resultHeadline(rec: ResultRecord, names: [string, string], series?: [number, number] | null): string {
+    const head = rec.winner === null ? t('draw') : t('shareWin', { w: names[rec.winner] });
+    return series ? `${head} ${t('seriesScore', { a: series[0], b: series[1] })}` : head;
   }
 
   private siteHost(): string {
@@ -524,7 +663,7 @@ export class App {
       title: t('title'),
       modeLabel: t('modeArena'),
       teams: [{ name: names[0], color: '#ff7aa2' }, { name: names[1], color: '#7cc8ff' }],
-      headline: this.resultHeadline(rec, names),
+      headline: this.resultHeadline(rec, names, this.lastResult ? this.seriesScoreOf(this.lastResult) : null),
       detail: `${t('reason_' + rec.reason)} · ${rec.time.toFixed(1)}s`,
       score: t('hpScore', { a: rec.hp[0], b: rec.hp[1] }),
       mvp: w !== null ? { label: t('mvp'), text: t('mvpText', { w: names[w], move: moves[w], hits: hits ? hits[w] : '—' }) } : undefined,
@@ -537,7 +676,11 @@ export class App {
   private linkFor(rec: ResultRecord | null, seed: number | undefined, src: ShareSource): string {
     const r = this.lastResult!;
     const base = SHARE_BASE || (SITE_URL ? new URL(SITE_URL).toString() : undefined);
-    return buildLink({ mode: 'arena', a: r.names[0], b: r.names[1] }, { seed, result: rec ?? undefined, source: src, lang: getLang(), base });
+    const s = this.seriesOf(r);
+    return buildLink(
+      { mode: 'arena', a: r.names[0], b: r.names[1] },
+      { seed, result: rec ?? undefined, source: src, lang: getLang(), base, bestOf: s ? 3 : this.bestOf, series: rec ? this.seriesScoreOf(r) : undefined },
+    );
   }
 
   private async saveImage(): Promise<void> {
@@ -561,11 +704,12 @@ export class App {
     const moves: [string, string] = [r.signatures[0].name[lang], r.signatures[1].name[lang]];
     const shot = this.arena.capture();
     const a = clip(r.names[0]), b = clip(r.names[1]);
-    const res = rec.winner === null ? t('shareDraw') : t('shareWin', { w: clip(r.names[rec.winner]) });
+    const sc = this.seriesScoreOf(r);
+    const res = (rec.winner === null ? t('shareDraw') : t('shareWin', { w: clip(r.names[rec.winner]) })) + (sc ? ` ${t('seriesScore', { a: sc[0], b: sc[1] })}` : '');
     await this.sharePanel.open({
       title: t('title'),
       text: `${t('sharePost', { a, b, res, detail: `${t('reason_' + rec.reason)} ${rec.time.toFixed(1)}s` })} ${t('shareTag')}`,
-      resultUrl: (src) => this.linkFor(rec, r.seed, src),
+      resultUrl: (src) => this.linkFor(rec, this.seriesOf(r)?.seed ?? r.seed, src),
       challengeUrl: this.linkFor(null, undefined, 'challenge'),
       challengeText: `${t('shareChallenge', { a, b })} ${t('shareTag')}`,
       image: () => renderCard(this.cardData(rec, r.names, moves, [r.counters[0].hits, r.counters[1].hits]), shot),
@@ -591,7 +735,7 @@ export class App {
     };
     add('div', 'sr-title', t('reportTitle'));
     add('div', 'sr-names', `${names[0]}  VS  ${names[1]}`);
-    add('div', 'sr-head', this.resultHeadline(rec, names));
+    add('div', 'sr-head', this.resultHeadline(rec, names, link.series));
     add('div', 'sr-detail', `${t('reason_' + rec.reason)} · ${rec.time.toFixed(1)}s · ${t('hpScore', { a: rec.hp[0], b: rec.hp[1] })}`);
     const hl = this.highlightText(rec, names, moves);
     if (hl) add('div', 'sr-hl', hl);
@@ -609,6 +753,8 @@ export class App {
     };
     const replay = mk(t('watchReplay'), 'primary', () => {
       this.pendingSeed = link.seed;
+      this.bestOf = link.bestOf;
+      this.renderFormat();
       this.fight();
     });
     replay.title = t('replayNote');

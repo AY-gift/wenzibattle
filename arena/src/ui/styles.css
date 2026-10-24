@@ -294,6 +294,35 @@ button {
   background: #fff;
 }
 
+.format {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.fmt-label {
+  font: 800 13px/1 var(--round);
+  color: #fff;
+  text-shadow: 0 2px 0 var(--purple-dark);
+  margin-right: 2px;
+}
+.format button {
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.35);
+  color: #fff;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 800 14px/1 var(--round);
+  text-shadow: 0 1px 0 rgba(60, 30, 110, 0.4);
+  cursor: pointer;
+}
+.format button[aria-checked="true"] {
+  background: #fff;
+  color: var(--pink);
+  text-shadow: none;
+  box-shadow: 0 3px 0 rgba(60, 30, 110, 0.18);
+}
 .actions {
   display: flex;
   justify-content: center;
@@ -418,6 +447,44 @@ button {
 }
 .timer.hurry {
   color: var(--yellow);
+}
+.series-hud {
+  position: absolute;
+  top: max(64px, calc(env(safe-area-inset-top) + 58px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(43, 26, 74, 0.55);
+  color: #fff;
+  font: 800 13px/1 var(--round);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.series-hud.hidden {
+  display: none;
+}
+.series-hud .pips {
+  display: inline-flex;
+  gap: 3px;
+}
+.series-hud .pips i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+}
+.series-hud .pips i.on {
+  background: currentColor;
+}
+.series-hud .a {
+  color: #ff9ec0;
+}
+.series-hud .b {
+  color: #c4b5ff;
 }
 .hud-buttons {
   position: absolute;
@@ -671,6 +738,29 @@ button {
 .reason {
   font: 800 15px/1.3 var(--round);
   color: var(--ink-soft);
+}
+.series-score {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.series-score.hidden {
+  display: none;
+}
+.series-score b {
+  font: 800 22px/1 var(--round);
+  color: var(--purple);
+  margin-right: 4px;
+}
+.series-score span {
+  background: #fff;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font: 800 12px/1.2 var(--round);
+  color: var(--ink-soft);
+  box-shadow: 0 2px 0 #eee6ff;
 }
 .report {
   list-style: none;

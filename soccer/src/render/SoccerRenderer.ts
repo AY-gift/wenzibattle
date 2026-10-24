@@ -19,7 +19,7 @@ export interface RenderLabels {
   move(p: Player): string;
   /** Name of a team's combo. */
   combo(team: 0 | 1): string;
-  word(key: 'goal' | 'save' | 'post' | 'steal' | 'lucky' | 'block' | 'ownGoal' | 'bonus' | 'miss' | 'brawl' | 'ko'): string;
+  word(key: 'goal' | 'save' | 'post' | 'steal' | 'lucky' | 'block' | 'ownGoal' | 'bonus' | 'miss' | 'brawl' | 'ko' | 'super' | 'bicycle' | 'header' | 'launch'): string;
   /** Short word for a culture primitive / backfire ('risk:…'). */
   prim(kind: string): string;
 }
@@ -154,7 +154,13 @@ export class SoccerRenderer {
   setTeams(bundles: [FighterBundle[] | null, FighterBundle[] | null]): void {
     for (const v of this.views) v?.dispose();
     this.views = [];
-    bundles.forEach((list, team) => list?.forEach((b, i) => (this.views[team * 4 + i] = new PlayerView(this.scene, b, this.kits[team], this.shadowTex))));
+    bundles.forEach((list, team) =>
+      list?.forEach((b, i) => {
+        const v = new PlayerView(this.scene, b, this.kits[team], this.shadowTex);
+        v.acrobatic = true;
+        this.views[team * 4 + i] = v;
+      }),
+    );
   }
 
   setKits(kits: [Kit, Kit]): void {
@@ -339,7 +345,33 @@ export class SoccerRenderer {
       case 'shot':
         v?.kick(0.35, 0.3);
         fx.emit('dust', at.setY(0.3), 6, { speed: 3, up: 1.5, life: 0.4, size: 0.5 });
-        this.stadium.cheer(0.4);
+        if ((e.kind === 'super' || e.kind === 'volley') && p) {
+          // The strike itself: a shockwave ring of sparks at the boot, and a beat of slow motion.
+          const boot = new THREE.Vector3(m.ball.p.x, m.ball.p.y, m.ball.p.z);
+          for (let i = 0; i < 18; i++) fx.emit('spark', boot, 1, { speed: 9, up: 0.4, gravity: 0, life: 0.4, size: 0.6, dir: new THREE.Vector3(Math.cos(i * 0.35), Math.sin(i * 0.9) * 0.4, Math.sin(i * 0.35)) });
+          fx.emit('flame', boot, 10, { speed: 4, up: 1, life: 0.5, size: 0.7, color: this.kits[e.team].hex });
+          this.slowMo = Math.max(this.slowMo, 0.55);
+          this.stadium.cheer(1.2, e.team);
+        } else this.stadium.cheer(0.4);
+        break;
+      case 'leap':
+        if (p && v && L) {
+          const word = e.kind === 'super' ? 'super' : e.kind === 'bicycle' ? 'bicycle' : 'header';
+          fx.word(L.word(word), new THREE.Vector3(p.p.x, v.height + 2.2, p.p.z), e.kind === 'super' ? '#ff4f8b' : '#ffd23f', e.kind === 'super' ? 1.9 : 1.5);
+          fx.emit('dust', at.clone().setY(0.2), 16, { speed: 5, up: 0.6, life: 0.5, size: 0.8 });
+          v.kick(-0.4, 0.6);
+          this.slowMo = Math.max(this.slowMo, 0.45);
+          if (!this.focus) this.focus = { x: THREE.MathUtils.clamp(p.p.x, -13, 13), z: p.p.z * 0.5, t: 1.1, zoom: 0.76 };
+        }
+        break;
+      case 'launch':
+        if (p && L) {
+          const pos = new THREE.Vector3(p.p.x, 1.4, p.p.z);
+          fx.word(L.word('launch'), pos.clone().setY(3), '#ff3b3b', 1.4);
+          fx.emit('star', pos, 16, { speed: 5, up: 4, life: 0.8, size: 0.6 });
+          fx.emit('spark', pos, 12, { speed: 7, up: 2, life: 0.4, size: 0.5 });
+          this.stadium.cheer(1.4);
+        }
         break;
       case 'pass':
         v?.kick(0.15);
@@ -400,8 +432,9 @@ export class SoccerRenderer {
         if (L && Math.random() < 0.4) fx.word(L.word('steal'), at.setY(2.2), '#ffd23f', 0.9);
         break;
       case 'knockdown':
-        fx.emit('star', at.setY(1.1), 6, { speed: 2.5, up: 2, life: 0.6, size: 0.45 });
-        v?.kick(0.4);
+        fx.emit('star', at.setY(1.1), 10, { speed: 3.5, up: 3, life: 0.7, size: 0.5 });
+        fx.emit('dust', at.clone().setY(0.2), 10, { speed: 4, up: 0.8, life: 0.5, size: 0.7 });
+        v?.kick(0.5);
         break;
       case 'luckyBounce':
         if (L) fx.word(L.word('lucky'), new THREE.Vector3(m.ball.p.x, 3, m.ball.p.z), '#ffd23f', 1.8);

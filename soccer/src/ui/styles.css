@@ -315,6 +315,63 @@ a.chip {
   font-size: 11px;
   color: var(--ink-soft);
 }
+.roster li {
+  cursor: pointer;
+}
+.rstats {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 3px 6px;
+  margin-top: 2px;
+}
+.rstats .st {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 4px;
+  column-gap: 3px;
+  align-items: center;
+  font: 800 10px/1 var(--round);
+  color: var(--ink);
+  min-width: 0;
+}
+.rstats em {
+  font-style: normal;
+  color: var(--ink-soft);
+}
+.rstats .st > span {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.rstats i {
+  grid-column: 1 / -1;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--rc, #7a5cff) var(--v), rgba(43, 26, 74, 0.1) var(--v));
+}
+.rstats .st-pace { --rc: #48d6c8; }
+.rstats .st-power { --rc: #ff4f8b; }
+.rstats .st-control { --rc: #ffb347; }
+.rstats .st-defense { --rc: #5aa9ff; }
+.rstats .st-accuracy { --rc: #a58bff; }
+.rstats .st-jump { --rc: #6bd36b; }
+.roster .more {
+  display: none;
+  grid-column: 1 / -1;
+  white-space: pre-line;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  border-top: 1px dashed rgba(43, 26, 74, 0.15);
+  padding-top: 4px;
+  margin-top: 2px;
+}
+.roster li.open .more {
+  display: block;
+}
+.roster li.open {
+  background: rgba(122, 92, 255, 0.1);
+}
 .combo {
   font-size: 12px;
   border-radius: 10px;

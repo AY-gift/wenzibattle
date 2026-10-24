@@ -70,6 +70,8 @@ export function audioForEvent(e: MatchEvent): string[] {
     case 'tackleWin': return ['tackle_slide'];
     case 'tackleFail': return ['trip_stumble'];
     case 'knockdown': return ['stomp'];
+    case 'leap': return ['whoosh_dash'];
+    case 'launch': return ['hit_heavy', 'crowd_ooh'];
     case 'skill': return ['signature_start', ...skillClip(e.kind)];
     case 'combo': return e.kind === 'culture' ? ['culture_sting', 'crowd_cheer'] : ['signature_start', 'crowd_cheer'];
     case 'prim': return primClip(e.kind);

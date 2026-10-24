@@ -155,3 +155,21 @@ export function sportAttributes(spec: FighterSpec): SportAttributes {
     element: spec.element,
   };
 }
+
+export type RatingKey = 'pace' | 'power' | 'control' | 'defense' | 'accuracy' | 'jump';
+export const RATING_KEYS: RatingKey[] = ['pace', 'power', 'control', 'defense', 'accuracy', 'jump'];
+/** The clamp range of each attribute above, so a rating spans the whole range a glyph can reach. */
+const RATING_RANGE: Record<RatingKey, [number, number]> = {
+  pace: [5.2, 7.0], power: [0.15, 0.9], control: [0.3, 0.75], defense: [0.3, 0.75], accuracy: [0.15, 0.95], jump: [0.05, 1],
+};
+
+/** Ball-game attributes as 20‥99 ratings for the team sheet (display only; the sim uses the raw values). */
+export function sportRatings(spec: FighterSpec): Record<RatingKey, number> {
+  const a = sportAttributes(spec);
+  const out = {} as Record<RatingKey, number>;
+  for (const k of RATING_KEYS) {
+    const [lo, hi] = RATING_RANGE[k];
+    out[k] = Math.round(20 + 79 * clamp((a[k] - lo) / (hi - lo), 0, 1));
+  }
+  return out;
+}

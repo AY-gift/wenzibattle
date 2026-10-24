@@ -14,6 +14,7 @@ const ja: Dict = {
   errCount: '{n}文字です。ちょうど4文字にしてください（言葉のまま使うなら自由編成へ）', errEmpty: '文字を入れてください', errMember: '{n}人目が読めません',
   kickoff: 'キックオフ！', randomMatch: 'おまかせ対戦', combo: '連携', catalogLink: '📖 図鑑', cultureCombo: '文化連携', rivalry: '宿命の対決', noCombo: '特別な連携なし（通常の戦術で戦う）',
   pause: '一時停止', resume: '再開', restart: 'やり直し', change: 'チームを変える', speed: '倍速',
+  r_pace: '速', r_power: '力', r_control: '技', r_defense: '守', r_accuracy: '精', r_jump: '跳', rf_pace: 'スピード', rf_power: 'キック力', rf_control: 'ボール扱い', rf_defense: '守備', rf_accuracy: '精度', rf_jump: 'ジャンプ', ratingsHint: '選手をタップで詳細',
   again: 'もう一試合', share: 'シェア', save: '画像を保存', win: '勝利！', draw: '引き分け', goldenGoal: 'Vゴール',
   winText: '「{w}」の勝ち！', drawText: '引き分け', mvp: 'MVP', goalsTitle: 'ゴール', noGoals: 'ゴールなし',
   copied: 'リンクをコピーしました', imageSaved: '画像を保存しました', challengeCopied: '挑戦リンクをコピーしました', copyFailed: 'コピーできませんでした',
@@ -23,7 +24,7 @@ const ja: Dict = {
   copyLink: '試合リンクをコピー', saveCard: '試合画像を保存（PNG）', challengeLink: 'このカードで挑戦状を送る', shareHint: 'ボタンは各サービスの投稿画面を開くだけです。投稿するかどうかはあなたが決めます。',
   sharePost: '『グリフサッカー』{a} {sa}-{sb} {b} → {res}', shareChallenge: '『グリフサッカー』{a} VS {b} — あなたのチームで勝てる？', shareTag: '#グリフサッカー',
   modeSoccer: 'サッカー · 4 VS 4', cardFooter: '{site} で遊べる・登録不要', highlight: '名場面', mvpText: '「{p}」— {goals} ゴール・必殺「{move}」',
-  w_goal: 'ゴーール！', w_save: 'ナイスセーブ！', w_post: 'カーン！', w_steal: '奪った！', w_lucky: '大吉！', w_block: 'ブロック！', w_ownGoal: 'オウンゴール！', w_bonus: '蛇足キック！', w_miss: 'スカッ', w_brawl: '大乱闘！', w_ko: 'KO',
+  w_goal: 'ゴーール！', w_save: 'ナイスセーブ！', w_post: 'カーン！', w_steal: '奪った！', w_lucky: '大吉！', w_block: 'ブロック！', w_ownGoal: 'オウンゴール！', w_bonus: '蛇足キック！', w_miss: 'スカッ', w_brawl: '大乱闘！', w_ko: 'KO', w_super: '必殺シュート！！', w_bicycle: 'オーバーヘッド！', w_header: 'ダイビングヘッド！', w_launch: 'ふっとんだ！',
   footer: 'Emoji: Twemoji (CC-BY 4.0) / Font: M PLUS Rounded 1c (OFL)', quality: '画質', high: '高', low: '低', sound: '音', on: 'ON', off: 'OFF',
 };
 
@@ -35,6 +36,7 @@ const zh: Dict = {
   errCount: '现在是 {n} 个字，请输入正好 4 个字（想保留整词请用自由组队）', errEmpty: '请输入文字', errMember: '第 {n} 名球员无法识别',
   kickoff: '开球！', randomMatch: '随机对战', combo: '连携', catalogLink: '📖 图鉴', cultureCombo: '文化连携', rivalry: '宿敌对决', noCombo: '无特殊连携（普通战术）',
   pause: '暂停', resume: '继续', restart: '重新开始', change: '换队伍', speed: '倍速',
+  r_pace: '速', r_power: '力', r_control: '控', r_defense: '守', r_accuracy: '准', r_jump: '跳', rf_pace: '速度', rf_power: '射门力量', rf_control: '控球', rf_defense: '防守', rf_accuracy: '精准', rf_jump: '弹跳', ratingsHint: '点球员看详情',
   again: '再来一场', share: '分享', save: '保存图片', win: '胜利！', draw: '平局', goldenGoal: '金球',
   winText: '「{w}」获胜！', drawText: '平局', mvp: 'MVP', goalsTitle: '进球', noGoals: '没有进球',
   copied: '链接已复制', imageSaved: '图片已保存', challengeCopied: '挑战链接已复制', copyFailed: '复制失败',
@@ -44,7 +46,7 @@ const zh: Dict = {
   copyLink: '复制战报链接', saveCard: '保存战报 PNG', challengeLink: '挑战这个阵容（复制挑战链接）', shareHint: '按钮只会打开对应平台的发帖页面，发不发由你决定。',
   sharePost: '《字形足球》{a} {sa}:{sb} {b} → {res}', shareChallenge: '《字形足球》{a} VS {b} —— 你的队能赢吗？', shareTag: '#字形足球',
   modeSoccer: '足球 · 4 VS 4', cardFooter: '在 {site} 免费玩 · 无需注册', highlight: '本场名场面', mvpText: '「{p}」— {goals} 球 · 必杀「{move}」',
-  w_goal: '进球！！', w_save: '神扑救！', w_post: '哐！', w_steal: '抢断！', w_lucky: '大吉大利！', w_block: '封堵！', w_ownGoal: '乌龙球！', w_bonus: '多此一脚！', w_miss: '打空了', w_brawl: '大乱斗！', w_ko: 'KO',
+  w_goal: '进球！！', w_save: '神扑救！', w_post: '哐！', w_steal: '抢断！', w_lucky: '大吉大利！', w_block: '封堵！', w_ownGoal: '乌龙球！', w_bonus: '多此一脚！', w_miss: '打空了', w_brawl: '大乱斗！', w_ko: 'KO', w_super: '必杀射门！！', w_bicycle: '倒挂金钩！', w_header: '鱼跃冲顶！', w_launch: '被轰飞了！',
   footer: 'Emoji: Twemoji (CC-BY 4.0) / Font: M PLUS Rounded 1c (OFL)', quality: '画质', high: '高', low: '低', sound: '声音', on: '开', off: '关',
 };
 
@@ -56,6 +58,7 @@ const en: Dict = {
   errCount: '{n} characters — need exactly 4 (use Pick 4 to keep whole words)', errEmpty: 'Type something', errMember: 'Player {n} can’t be read',
   kickoff: 'KICK OFF!', randomMatch: 'Random match', combo: 'Combo', catalogLink: '📖 Catalog', cultureCombo: 'Culture combo', rivalry: 'Rivalry', noCombo: 'No special combo (normal tactics)',
   pause: 'Pause', resume: 'Resume', restart: 'Restart', change: 'Change teams', speed: 'Speed',
+  r_pace: 'SPD', r_power: 'PWR', r_control: 'CTL', r_defense: 'DEF', r_accuracy: 'ACC', r_jump: 'JMP', rf_pace: 'Pace', rf_power: 'Shot power', rf_control: 'Ball control', rf_defense: 'Defense', rf_accuracy: 'Accuracy', rf_jump: 'Jump', ratingsHint: 'Tap a player for details',
   again: 'Play again', share: 'Share', save: 'Save image', win: 'WINS!', draw: 'Draw', goldenGoal: 'golden goal',
   winText: '“{w}” wins!', drawText: 'Draw', mvp: 'MVP', goalsTitle: 'Goals', noGoals: 'No goals',
   copied: 'Link copied', imageSaved: 'Image saved', challengeCopied: 'Challenge link copied', copyFailed: 'Couldn’t copy',
@@ -65,7 +68,7 @@ const en: Dict = {
   copyLink: 'Copy match link', saveCard: 'Save match image (PNG)', challengeLink: 'Challenge a friend with this lineup', shareHint: 'These buttons only open each site’s own post screen — you decide whether to post.',
   sharePost: 'Glyph Soccer: {a} {sa}-{sb} {b} → {res}', shareChallenge: 'Glyph Soccer: {a} VS {b} — can your team win?', shareTag: '#GlyphSoccer',
   modeSoccer: 'SOCCER · 4 VS 4', cardFooter: 'Play free at {site} · no sign-up', highlight: 'Best moment', mvpText: '“{p}” — {goals} goals · special “{move}”',
-  w_goal: 'GOOOAL!', w_save: 'SAVE!', w_post: 'CLANG!', w_steal: 'STOLEN!', w_lucky: 'LUCKY!', w_block: 'BLOCKED!', w_ownGoal: 'OWN GOAL!', w_bonus: 'ONE MORE KICK!', w_miss: 'WHIFF', w_brawl: 'BRAWL!', w_ko: 'KO',
+  w_goal: 'GOOOAL!', w_save: 'SAVE!', w_post: 'CLANG!', w_steal: 'STOLEN!', w_lucky: 'LUCKY!', w_block: 'BLOCKED!', w_ownGoal: 'OWN GOAL!', w_bonus: 'ONE MORE KICK!', w_miss: 'WHIFF', w_brawl: 'BRAWL!', w_ko: 'KO', w_super: 'SUPER SHOT!!', w_bicycle: 'BICYCLE KICK!', w_header: 'DIVING HEADER!', w_launch: 'SENT FLYING!',
   footer: 'Emoji: Twemoji (CC-BY 4.0) / Font: M PLUS Rounded 1c (OFL)', quality: 'Quality', high: 'High', low: 'Low', sound: 'Sound', on: 'On', off: 'Off',
 };
 

@@ -88,3 +88,6 @@ export interface Combat {
 }
 
 export type { FighterSpec };
+
+/** Hit points at the bell (the HUD and the result card show HP as a share of this). */
+export const MAX_HP = 140;

@@ -1,7 +1,7 @@
 /**
  * Share links. Two kinds, deliberately different:
  *  - **Challenge / config link** — who fights (and optionally a seed): opens the game with the
- *    lineup filled in, ready for a NEW match.  ?mode=arena&v=1&a=火&b=水[&seed=…]
+ *    lineup filled in, ready for a NEW match.  ?mode=arena&v=1&a=火&b=水[&seed=…][&bo=3]
  *  - **Result link** — the same plus `r`, a compact record of what actually happened (winner,
  *    finish, time, HP, one highlight). It is displayed as a report, never re-simulated and
  *    passed off as the original: a replay is offered separately (fonts can differ per device).
@@ -47,6 +47,10 @@ export interface ParsedLink {
   result: ResultRecord | null;
   source: ShareSource | null;
   lang: string | null;
+  /** Match format: a single bout or best of three (arena). */
+  bestOf: 1 | 3;
+  /** Final series score of a best-of-three result link. */
+  series: [number, number] | null;
 }
 
 function cleanName(raw: string | null): string | null {
@@ -98,6 +102,8 @@ export interface LinkOptions {
   result?: ResultRecord;
   source?: ShareSource;
   lang?: string;
+  bestOf?: 1 | 3;
+  series?: [number, number];
   /** Page to link to; defaults to the current page without query/hash. */
   base?: string;
 }
@@ -112,7 +118,9 @@ export function buildLink(lineup: Lineup, o: LinkOptions = {}): string {
   q.set('a', Array.from(lineup.a).slice(0, MAX_NAME).join(''));
   q.set('b', Array.from(lineup.b).slice(0, MAX_NAME).join(''));
   if (o.seed !== undefined) q.set('seed', String(o.seed));
+  if (o.bestOf === 3) q.set('bo', '3');
   if (o.result) q.set('r', encodeResult(o.result));
+  if (o.result && o.series) q.set('sc', o.series.join('-'));
   if (o.lang) q.set('lang', o.lang);
   if (o.source) q.set('src', o.source);
   return u.toString();
@@ -127,12 +135,15 @@ export function parseLink(search = location.search, isKnownKey?: (k: string) => 
   if (!a || !b) return null;
   const src = q.get('src') as ShareSource | null;
   const lang = q.get('lang');
+  const sc = /^([0-3])-([0-3])$/.exec(q.get('sc') ?? '');
   return {
     lineup: { mode, a, b },
     seed: cleanSeed(q.get('seed')),
     result: decodeResult(q.get('r'), isKnownKey),
     source: src && SOURCES.includes(src) ? src : null,
     lang: lang && /^(ja|zh|en)$/.test(lang) ? lang : null,
+    bestOf: q.get('bo') === '3' ? 3 : 1,
+    series: sc ? [Number(sc[1]), Number(sc[2])] : null,
   };
 }
 
