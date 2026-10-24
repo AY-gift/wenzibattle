@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Glyph Rumble — 字形乱闘 / 字形乱斗</title>
+    <meta name="description" content="文字が戦う・蹴る・跳ぶ。输入文字，看它们打擂台、踢足球、打篮球。Type text, watch it fight, play soccer and basketball." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Glyph Rumble — 字形乱闘 / 字形乱斗" />
+    <meta property="og:description" content="文字・絵文字・顔文字が3Dのおもちゃになって勝負！ 文字变成 3D 玩具：擂台、足球、篮球。" />
+    <meta property="og:url" content="%SITE_URL%" />
+    <meta property="og:image" content="%SITE_URL%og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE_URL%og.png" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff4f8b'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' font-family='sans-serif' font-weight='900' fill='white'%3E字%3C/text%3E%3C/svg%3E" />
+    <style>
+      :root { color-scheme: dark; }
+      body { margin: 0; min-height: 100vh; font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Microsoft YaHei", sans-serif; background: radial-gradient(circle at 70% 0%, #7a3e8f, #2a1d55 45%, #16122b); color: #fff; display: grid; place-items: center; }
+      main { width: min(920px, calc(100% - 32px)); padding: 40px 0; }
+      h1 { display: flex; align-items: center; gap: 14px; margin: 0 0 6px; font-size: clamp(28px, 6vw, 48px); }
+      .mark { display: inline-grid; place-items: center; width: 1.3em; height: 1.3em; border-radius: 0.3em; background: #ff4f8b; }
+      p.sub { margin: 0 0 28px; color: #c9b8ff; }
+      .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+      .game { display: block; padding: 20px; border-radius: 20px; background: rgba(255,255,255,0.08); color: inherit; text-decoration: none; border: 2px solid transparent; transition: transform 0.1s, border-color 0.15s; }
+      a.game:hover { transform: translateY(-2px); border-color: #ff4f8b; }
+      .game .icon { font-size: 40px; }
+      .game h2 { margin: 8px 0 4px; font-size: 22px; }
+      .game p { margin: 0; color: #d8ccff; font-size: 14px; line-height: 1.5; }
+      .soon { opacity: 0.55; }
+      .soon h2::after { content: " · 準備中 / 即将推出 / soon"; font-size: 12px; font-weight: 600; }
+      footer { margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.5); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1><span class="mark">字</span>Glyph Rumble</h1>
+      <p class="sub">字形乱闘 · 字形乱斗 — 一つの文字はひとりの選手。一个字是一个角色。One glyph, one player.</p>
+      <div class="games">
+        <a class="game" href="arena/">
+          <div class="icon">🥊</div>
+          <h2>Arena 1v1</h2>
+          <p>文字どうしのリング対決 / 两个字擂台对决 / Two glyphs, one ring.</p>
+        </a>
+        <a class="game soon" href="soccer/">
+          <div class="icon">⚽</div>
+          <h2>Soccer 4v4</h2>
+          <p>四字熟語でチーム結成 / 四字成语组队踢球 / A four-glyph idiom is a team.</p>
+        </a>
+        <a class="game soon" href="basketball/">
+          <div class="icon">🏀</div>
+          <h2>Basketball 2v2</h2>
+          <p>二文字でコンビ / 两个字搭档打篮球 / Two glyphs, one duo.</p>
+        </a>
+      </div>
+      <footer>Free · no sign-up · runs in your browser</footer>
+    </main>
+  </body>
+</html>

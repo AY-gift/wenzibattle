@@ -1,0 +1,22 @@
+{
+  "name": "@glyph/soccer",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Glyph Soccer — 4v4 arcade football with glyph characters.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "docs:audio": "node scripts/gen-audio-docs.mjs",
+    "docs:culture": "node scripts/gen-culture-report.mjs",
+    "audio:index": "node scripts/audio-index.mjs"
+  },
+  "dependencies": {
+    "@fontsource/m-plus-rounded-1c": "^5.3.0",
+    "@glyph/shared": "*",
+    "three": "^0.186.1"
+  }
+}

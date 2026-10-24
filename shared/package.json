@@ -1,0 +1,15 @@
+{
+  "name": "@glyph/shared",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Glyph character system shared by every Glyph game: input → glyph analysis → stats, personality and signature moves; 3D glyph models; share links / cards / SNS.",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "docs:skills": "node scripts/gen-skill-docs.mjs"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  }
+}

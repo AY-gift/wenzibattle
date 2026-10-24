@@ -1,0 +1,22 @@
+{
+  "name": "@glyph/arena",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "start": "vite --open",
+    "docs:audio": "node scripts/gen-audio-docs.mjs",
+    "audio:index": "node scripts/audio-index.mjs"
+  },
+  "dependencies": {
+    "@fontsource/m-plus-rounded-1c": "^5.3.0",
+    "three": "^0.186.1",
+    "@glyph/shared": "*"
+  },
+  "description": "字形乱斗 3D — 1v1 boxing-ring arena."
+}

@@ -1,0 +1,3443 @@
+{
+  "metadata": {
+    "project": "Glyph Rumble Basketball",
+    "basis": "current uploaded 文化技能实施报告.md & 文字技能设计指南.md",
+    "status": "design candidates not implemented",
+    "legacy_basketball_combos_count": 91,
+    "legacy_matchups_count": 16
+  },
+  "roles": [
+    {
+      "text": "球",
+      "aliases": "",
+      "kind": "whirlwind",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "ボール回し",
+      "nameZh": "球球滚滚",
+      "nameEn": "Ball Roll",
+      "description": "整字旋转撞人，碰撞后足球篮球都带旋转感",
+      "basketballInterpretation": "篮球转身护球并传出弧线球"
+    },
+    {
+      "text": "篮",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {
+        "prop": "🏀",
+        "hold": true
+      },
+      "normal": "heavy",
+      "nameJa": "バスケットの盾",
+      "nameZh": "大篮筐护盾",
+      "nameEn": "Basket Guard",
+      "description": "变成巨大篮圈边框阻挡冲锋，不能直接改分",
+      "basketballInterpretation": "篮下封盖区域增加，外线防守变差"
+    },
+    {
+      "text": "板",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {
+        "prop": "🪧",
+        "hold": true
+      },
+      "normal": "heavy",
+      "nameJa": "ボード返し",
+      "nameZh": "木板反弹",
+      "nameEn": "Board Rebound",
+      "description": "举起巨大板子弹回一次冲击",
+      "basketballInterpretation": "作为篮板防守者提高争板，但必须真实跳到球"
+    },
+    {
+      "text": "框",
+      "aliases": "",
+      "kind": "giant",
+      "opts": {
+        "grow": 1.5
+      },
+      "normal": "heavy",
+      "nameJa": "巨大フレーム",
+      "nameZh": "框住了！",
+      "nameEn": "Frame Trap",
+      "description": "放大成框形本体堵住通道",
+      "basketballInterpretation": "篮下短时屏障，不阻挡球穿过真实篮筐"
+    },
+    {
+      "text": "筐",
+      "aliases": "",
+      "kind": "drop",
+      "opts": {
+        "prop": "🧺",
+        "count": 2
+      },
+      "normal": "chaos",
+      "nameJa": "かご落とし",
+      "nameZh": "篮筐套头",
+      "nameEn": "Basket Drop",
+      "description": "大竹筐掉下使对手看不清方向",
+      "basketballInterpretation": "篮下产生短暂视觉干扰"
+    },
+    {
+      "text": "帽",
+      "aliases": "",
+      "kind": "drop",
+      "opts": {
+        "prop": "🎩",
+        "count": 2,
+        "onHit": "confuse"
+      },
+      "normal": "royal",
+      "nameJa": "帽子マジック",
+      "nameZh": "盖帽就戴帽",
+      "nameEn": "Hat Trick",
+      "description": "帽子套在对手头上使其晕眩",
+      "basketballInterpretation": "干扰投篮后抢断，不自动盖掉真实球"
+    },
+    {
+      "text": "哨",
+      "aliases": "",
+      "kind": "roar",
+      "opts": {
+        "pulses": 2
+      },
+      "normal": "hasty",
+      "nameJa": "ホイッスル連打",
+      "nameZh": "乱吹哨子",
+      "nameEn": "Whistle Panic",
+      "description": "哨音把附近敌人震退半步",
+      "basketballInterpretation": "对持球人造成短暂失衡，无判罚"
+    },
+    {
+      "text": "汗",
+      "aliases": "",
+      "kind": "poison",
+      "opts": {
+        "fx": "water"
+      },
+      "normal": "slip",
+      "nameJa": "汗だくスリップ",
+      "nameZh": "汗水打滑",
+      "nameEn": "Sweat Slip",
+      "description": "脚下汗滴变成小范围滑地",
+      "basketballInterpretation": "让近身防守更容易滑倒，自己也可能踩中"
+    },
+    {
+      "text": "肘",
+      "aliases": "",
+      "kind": "sweep",
+      "opts": {},
+      "normal": "angry",
+      "nameJa": "ひじスイング",
+      "nameZh": "肘击旋风",
+      "nameEn": "Elbow Spin",
+      "description": "身体两侧猛甩出夸张肘影",
+      "basketballInterpretation": "卡位扩大但有过度动作冷却"
+    },
+    {
+      "text": "膝",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "ひざ跳ね",
+      "nameZh": "膝盖火箭",
+      "nameEn": "Knee Rocket",
+      "description": "膝字突然弹向空中撞击",
+      "basketballInterpretation": "提高争抢篮板跳跃一瞬"
+    },
+    {
+      "text": "腕",
+      "aliases": "",
+      "kind": "throw",
+      "opts": {},
+      "normal": "hasty",
+      "nameJa": "手首スロー",
+      "nameZh": "甩腕传球",
+      "nameEn": "Wrist Flick",
+      "description": "像弹簧般甩动文字本体把对手推开",
+      "basketballInterpretation": "普通出手变快，但抛球角度需判定"
+    },
+    {
+      "text": "腰",
+      "aliases": "",
+      "kind": "whirlwind",
+      "opts": {},
+      "normal": "spinner",
+      "nameJa": "腰ぐるぐる",
+      "nameZh": "扭腰过人",
+      "nameEn": "Hip Twist",
+      "description": "整个字扭成快速旋转的陀螺",
+      "basketballInterpretation": "转身突破与错位挡拆"
+    },
+    {
+      "text": "踝",
+      "aliases": "",
+      "kind": "freeze",
+      "opts": {
+        "onHit": "freeze"
+      },
+      "normal": "slip",
+      "nameJa": "足首フリーズ",
+      "nameZh": "脚踝冻结",
+      "nameEn": "Ankle Freeze",
+      "description": "地面出现滑线绊住急转弯者",
+      "basketballInterpretation": "晃人之后短暂降低防守转向"
+    },
+    {
+      "text": "胸",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {},
+      "normal": "heavy",
+      "nameJa": "胸板ガード",
+      "nameZh": "胸膛防护",
+      "nameEn": "Chest Guard",
+      "description": "挺起胸脯把前进攻击推回去",
+      "basketballInterpretation": "篮下站位强，但速度降低"
+    },
+    {
+      "text": "背",
+      "aliases": "",
+      "kind": "clones",
+      "opts": {
+        "count": 2
+      },
+      "normal": "ghost",
+      "nameJa": "背中に注意",
+      "nameZh": "背后有人",
+      "nameEn": "Behind You",
+      "description": "背后出现同形残影吸引追击",
+      "basketballInterpretation": "背身挡拆后队友反跑空切"
+    },
+    {
+      "text": "肌",
+      "aliases": "",
+      "kind": "giant",
+      "opts": {
+        "grow": 1.3
+      },
+      "normal": "heavy",
+      "nameJa": "筋肉マッチョ",
+      "nameZh": "肌肉膨胀",
+      "nameEn": "Muscle Flex",
+      "description": "字体笔画像充气肌肉一样变粗",
+      "basketballInterpretation": "篮下提高掩护力量，投篮准备时间变长"
+    },
+    {
+      "text": "筋",
+      "aliases": "",
+      "kind": "charge",
+      "opts": {},
+      "normal": "hasty",
+      "nameJa": "筋肉ダッシュ",
+      "nameZh": "抽筋冲刺",
+      "nameEn": "Cramp Dash",
+      "description": "突然抽筋弹射撞人随后站不稳",
+      "basketballInterpretation": "高速快攻后疲劳"
+    },
+    {
+      "text": "骨",
+      "aliases": "",
+      "kind": "topple",
+      "opts": {
+        "selfFall": true
+      },
+      "normal": "slip",
+      "nameJa": "骨バラバラ",
+      "nameZh": "散架反弹",
+      "nameEn": "Bone Rattle",
+      "description": "本体短暂散成骨节弹飞目标后倒地",
+      "basketballInterpretation": "抢板碰撞失败时碎骨视觉特效，碰撞仍按代理体"
+    },
+    {
+      "text": "弹",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "ばねジャンプ",
+      "nameZh": "弹上云霄",
+      "nameEn": "Spring Jump",
+      "description": "文字像压紧的弹簧向上弹出",
+      "basketballInterpretation": "跳投和盖帽弹跳强化"
+    },
+    {
+      "text": "投",
+      "aliases": "",
+      "kind": "throw",
+      "opts": {},
+      "normal": "hasty",
+      "nameJa": "投げつけ",
+      "nameZh": "投掷大王",
+      "nameEn": "Throw Master",
+      "description": "用抛物线甩出自身残影",
+      "basketballInterpretation": "篮球快速远传，不强制得分"
+    },
+    {
+      "text": "传",
+      "aliases": "",
+      "kind": "magnet",
+      "opts": {},
+      "normal": "charm",
+      "nameJa": "パスをよこせ",
+      "nameZh": "传给我！",
+      "nameEn": "Pass Here",
+      "description": "两侧出现传球吸引箭头",
+      "basketballInterpretation": "在合适角度吸引队友传球，球仍按真实轨迹飞"
+    },
+    {
+      "text": "接",
+      "aliases": "",
+      "kind": "magnet",
+      "opts": {},
+      "normal": "royal",
+      "nameJa": "キャッチ上手",
+      "nameZh": "稳稳接住",
+      "nameEn": "Safe Catch",
+      "description": "变成一对大夹子把飞来的道具夹住",
+      "basketballInterpretation": "接球控制较稳，必须满足接球碰撞"
+    },
+    {
+      "text": "抢",
+      "aliases": "",
+      "kind": "barrage",
+      "opts": {},
+      "normal": "angry",
+      "nameJa": "とったぞ",
+      "nameZh": "抢抢抢！",
+      "nameEn": "Snatch Frenzy",
+      "description": "快速小手影在目标旁乱抢",
+      "basketballInterpretation": "抢断时冲刺，但失败更容易失位"
+    },
+    {
+      "text": "防",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {},
+      "normal": "heavy",
+      "nameJa": "絶対守備",
+      "nameZh": "防住再说",
+      "nameEn": "Defend First",
+      "description": "双层防线浮现一秒",
+      "basketballInterpretation": "篮下短暂防守强化"
+    },
+    {
+      "text": "切",
+      "aliases": "",
+      "kind": "sweep",
+      "opts": {},
+      "normal": "hasty",
+      "nameJa": "切り込み",
+      "nameZh": "切入如刀",
+      "nameEn": "Sharp Cut",
+      "description": "角色像刀片一样斜向横扫",
+      "basketballInterpretation": "跑出斜向空切线路"
+    },
+    {
+      "text": "盖",
+      "aliases": "",
+      "kind": "giantFall",
+      "opts": {
+        "selfFall": true
+      },
+      "normal": "heavy",
+      "nameJa": "ふたをする",
+      "nameZh": "一盖定音",
+      "nameEn": "Cover Down",
+      "description": "盖子般从空中落下压住目标",
+      "basketballInterpretation": "提高一次盖帽时机，落地延迟"
+    },
+    {
+      "text": "扣",
+      "aliases": "",
+      "kind": "quake",
+      "opts": {},
+      "normal": "angry",
+      "nameJa": "ダンクどん",
+      "nameZh": "扣出地震",
+      "nameEn": "Dunk Quake",
+      "description": "猛烈向地面一扣引起圆形震波",
+      "basketballInterpretation": "扣篮落地伴有近距离震波，得分依赖球"
+    },
+    {
+      "text": "跳跃",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {
+        "countdown": true
+      },
+      "normal": "bouncy",
+      "nameJa": "三段ジャンプ",
+      "nameZh": "三段起跳",
+      "nameEn": "Triple Hop",
+      "description": "先蹲后连续三段弹跳",
+      "basketballInterpretation": "空中接力争板但容易跳过头"
+    },
+    {
+      "text": "三分球",
+      "aliases": "",
+      "kind": "beam",
+      "opts": {
+        "prop": "🏀"
+      },
+      "normal": "hasty",
+      "nameJa": "超ロングスリー",
+      "nameZh": "三分穿云箭",
+      "nameEn": "Three Point Arrow",
+      "description": "像光束一样抛出道具球影",
+      "basketballInterpretation": "高速度远投，球与真实篮筐仍需碰撞"
+    },
+    {
+      "text": "乌龙球",
+      "aliases": "",
+      "kind": "random",
+      "opts": {
+        "selfStun": true
+      },
+      "normal": "chaos",
+      "nameJa": "オウンゴール!?",
+      "nameZh": "谁把球投反了",
+      "nameEn": "Wrong Basket",
+      "description": "随机动作令本人摸不着头脑",
+      "basketballInterpretation": "有小概率误向自家篮投，不直接计分"
+    },
+    {
+      "text": "球鞋",
+      "aliases": "",
+      "kind": "charge",
+      "opts": {
+        "prop": "👟",
+        "hold": true
+      },
+      "normal": "hasty",
+      "nameJa": "スニーカーダッシュ",
+      "nameZh": "球鞋冒火",
+      "nameEn": "Sneaker Sprint",
+      "description": "踩着运动鞋残影冲得停不下来",
+      "basketballInterpretation": "快速突破但急停时容易滑"
+    },
+    {
+      "text": "护腕",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {
+        "prop": "🧤",
+        "hold": true
+      },
+      "normal": "royal",
+      "nameJa": "リストガード",
+      "nameZh": "护腕开盾",
+      "nameEn": "Wrist Guard",
+      "description": "护腕护住躯干阻挡冲刺",
+      "basketballInterpretation": "贴身防守减少被撞后退"
+    },
+    {
+      "text": "发球",
+      "aliases": "",
+      "kind": "throw",
+      "opts": {
+        "prop": "🏀"
+      },
+      "normal": "royal",
+      "nameJa": "はじめのスロー",
+      "nameZh": "开球投送",
+      "nameEn": "Opening Throw",
+      "description": "大字浮现指示箭头完成一次投送",
+      "basketballInterpretation": "开球或抢断后的传球精度加强"
+    },
+    {
+      "text": "篮球",
+      "aliases": "",
+      "kind": "kick",
+      "opts": {
+        "prop": "🏀",
+        "hold": true
+      },
+      "normal": "bouncy",
+      "nameJa": "バスケットキック",
+      "nameZh": "篮球踢踢",
+      "nameEn": "Basket Kick",
+      "description": "文字像拿篮球当足球一样使劲踢开",
+      "basketballInterpretation": "过猛抛球可能砸篮板外，纯夸张表现"
+    },
+    {
+      "text": "篮圈",
+      "aliases": "",
+      "kind": "magnet",
+      "opts": {
+        "prop": "⭕"
+      },
+      "normal": "charm",
+      "nameJa": "リングの誘惑",
+      "nameZh": "篮圈吸引力",
+      "nameEn": "Rim Attraction",
+      "description": "巨大圆环吸引附近道具",
+      "basketballInterpretation": "争篮板时更快跑向落点，不改变球物理"
+    },
+    {
+      "text": "篮架",
+      "aliases": "",
+      "kind": "mountain",
+      "opts": {},
+      "normal": "heavy",
+      "nameJa": "リングの柱",
+      "nameZh": "篮架铁柱",
+      "nameEn": "Hoop Pillar",
+      "description": "本体像篮架立柱一样扎稳地面",
+      "basketballInterpretation": "护框更强但移动迟钝"
+    },
+    {
+      "text": "篮网",
+      "aliases": "",
+      "kind": "clones",
+      "opts": {
+        "count": 3
+      },
+      "normal": "spinner",
+      "nameJa": "ネットの幻",
+      "nameZh": "篮网假影",
+      "nameEn": "Net Mirage",
+      "description": "网格残影让对手判断方向困难",
+      "basketballInterpretation": "造成短暂视觉误判，不拦阻实际球"
+    },
+    {
+      "text": "罚球",
+      "aliases": "",
+      "kind": "lecture",
+      "opts": {
+        "countdown": true
+      },
+      "normal": "royal",
+      "nameJa": "フリースロー講座",
+      "nameZh": "罚球礼仪",
+      "nameEn": "Free Throw Lesson",
+      "description": "长篇解释罚球规则令敌人打哈欠",
+      "basketballInterpretation": "抛投稳定略好，准备时间更长"
+    },
+    {
+      "text": "绝杀",
+      "aliases": "",
+      "kind": "rage",
+      "opts": {
+        "countdown": true
+      },
+      "normal": "angry",
+      "nameJa": "最後の一投",
+      "nameZh": "最后一球",
+      "nameEn": "Last Shot",
+      "description": "开始倒数后拼命冲向目标",
+      "basketballInterpretation": "最后阶段积极射篮但可能超远强投"
+    },
+    {
+      "text": "逆转",
+      "aliases": "",
+      "kind": "heal",
+      "opts": {},
+      "normal": "royal",
+      "nameJa": "逆転スイッチ",
+      "nameZh": "逆转开关",
+      "nameEn": "Comeback Switch",
+      "description": "失败时打气激活跳跃力",
+      "basketballInterpretation": "比分落后时短时提升队友恢复和跑位"
+    },
+    {
+      "text": "新秀",
+      "aliases": "",
+      "kind": "charge",
+      "opts": {
+        "selfFall": true
+      },
+      "normal": "hasty",
+      "nameJa": "新人の全力",
+      "nameZh": "菜鸟猛冲",
+      "nameEn": "Rookie Rush",
+      "description": "看见篮球就疯狂前冲直到摔倒",
+      "basketballInterpretation": "抢断快攻强但急停容易摔"
+    },
+    {
+      "text": "老将",
+      "aliases": "",
+      "kind": "lecture",
+      "opts": {},
+      "normal": "royal",
+      "nameJa": "ベテラン授業",
+      "nameZh": "老将指导",
+      "nameEn": "Veteran Advice",
+      "description": "拿出旧照片给敌人讲当年故事",
+      "basketballInterpretation": "沉稳打板，不容易被假动作骗"
+    },
+    {
+      "text": "主场",
+      "aliases": "",
+      "kind": "roar",
+      "opts": {
+        "pulses": 2
+      },
+      "normal": "royal",
+      "nameJa": "ホームの声援",
+      "nameZh": "主场欢呼",
+      "nameEn": "Home Cheer",
+      "description": "观众齐声喊叫推出冲击波",
+      "basketballInterpretation": "主场队移动士气短暂增强"
+    },
+    {
+      "text": "客场",
+      "aliases": "",
+      "kind": "lazy",
+      "opts": {
+        "counter": true
+      },
+      "normal": "royal",
+      "nameJa": "アウェイの冷静",
+      "nameZh": "客场冷面",
+      "nameEn": "Away Calm",
+      "description": "嘘声中泰然自若地躲过攻击",
+      "basketballInterpretation": "被围堵时更不容易失衡"
+    },
+    {
+      "text": "教练",
+      "aliases": "",
+      "kind": "lecture",
+      "opts": {
+        "prop": "📋"
+      },
+      "normal": "royal",
+      "nameJa": "監督の説教",
+      "nameZh": "战术板说教",
+      "nameEn": "Coach Lecture",
+      "description": "巨大战术板遮住对手视野",
+      "basketballInterpretation": "短暂误导防守后寻找传球"
+    },
+    {
+      "text": "队长",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {
+        "prop": "📣"
+      },
+      "normal": "royal",
+      "nameJa": "キャプテン集合",
+      "nameZh": "队长集合！",
+      "nameEn": "Captain Call",
+      "description": "喊话队员站成一列冲撞",
+      "basketballInterpretation": "篮下协防协调提高"
+    },
+    {
+      "text": "替补",
+      "aliases": "",
+      "kind": "vanish",
+      "opts": {},
+      "normal": "ghost",
+      "nameJa": "ベンチから出現",
+      "nameZh": "板凳奇兵",
+      "nameEn": "Bench Surprise",
+      "description": "从替补席下突然现身后跳跃",
+      "basketballInterpretation": "进攻时假身藏身影，队友从另一边突破"
+    },
+    {
+      "text": "暂停",
+      "aliases": "",
+      "kind": "freeze",
+      "opts": {
+        "prop": "⏸️"
+      },
+      "normal": "royal",
+      "nameJa": "タイムアウト",
+      "nameZh": "全场暂停！",
+      "nameEn": "Time Out",
+      "description": "巨大的暂停标志一闪而过",
+      "basketballInterpretation": "只让局部对手停顿，不改变比赛计时"
+    },
+    {
+      "text": "录像",
+      "aliases": "",
+      "kind": "clones",
+      "opts": {
+        "count": 2
+      },
+      "normal": "ghost",
+      "nameJa": "リプレイ分身",
+      "nameZh": "录像回放",
+      "nameEn": "Instant Replay",
+      "description": "同一动作重复出现多个残影",
+      "basketballInterpretation": "用复制动作骗过防守，不倒转比分"
+    },
+    {
+      "text": "弹幕",
+      "aliases": "",
+      "kind": "drop",
+      "opts": {
+        "props": [
+          "💬",
+          "📢"
+        ],
+        "count": 3
+      },
+      "normal": "chaos",
+      "nameJa": "コメントの雨",
+      "nameZh": "弹幕遮屏",
+      "nameEn": "Comment Storm",
+      "description": "字幕气泡砸向对手",
+      "basketballInterpretation": "让某区域球员短时视线受阻"
+    },
+    {
+      "text": "网球",
+      "aliases": "",
+      "kind": "throw",
+      "opts": {
+        "prop": "🎾"
+      },
+      "normal": "bouncy",
+      "nameJa": "テニスボール",
+      "nameZh": "打错球了",
+      "nameEn": "Wrong Sport",
+      "description": "擂台上丢出网球乱弹",
+      "basketballInterpretation": "篮球里不生成第二个实际可得分球，只做假道具"
+    },
+    {
+      "text": "排球",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {
+        "prop": "🏐"
+      },
+      "normal": "bouncy",
+      "nameJa": "バレーボール",
+      "nameZh": "把球拍上天",
+      "nameEn": "Volley Shot",
+      "description": "向上挥击把道具拍高",
+      "basketballInterpretation": "转化为高吊传球视觉效果，不改变真球数量"
+    },
+    {
+      "text": "足球",
+      "aliases": "",
+      "kind": "kick",
+      "opts": {
+        "prop": "⚽"
+      },
+      "normal": "hasty",
+      "nameJa": "サッカーキック",
+      "nameZh": "踢错项目",
+      "nameEn": "Wrong Ball Game",
+      "description": "一脚飞踢道具足球幻影",
+      "basketballInterpretation": "篮球里只出 ⚽ 贴图特效，不生成真球"
+    },
+    {
+      "text": "乒乓",
+      "aliases": "",
+      "kind": "barrage",
+      "opts": {
+        "prop": "🏓"
+      },
+      "normal": "hasty",
+      "nameJa": "ピンポン連打",
+      "nameZh": "乒乓连击",
+      "nameEn": "Ping Pong Rush",
+      "description": "乒乓球拍残影快速连打",
+      "basketballInterpretation": "高速二传，过快可能传丢"
+    },
+    {
+      "text": "摇滚",
+      "aliases": "",
+      "kind": "roar",
+      "opts": {
+        "pulses": 3
+      },
+      "normal": "angry",
+      "nameJa": "ロック爆音",
+      "nameZh": "摇滚震场",
+      "nameEn": "Rock Blast",
+      "description": "音箱突然轰鸣让对手转圈",
+      "basketballInterpretation": "制造短暂投篮干扰但也暴露跑位"
+    },
+    {
+      "text": "嘻哈",
+      "aliases": "",
+      "kind": "whirlwind",
+      "opts": {},
+      "normal": "spinner",
+      "nameJa": "ヒップホップ回転",
+      "nameZh": "嘻哈转身",
+      "nameEn": "Hip Hop Spin",
+      "description": "像街舞一样旋转踢向敌人",
+      "basketballInterpretation": "花式 crossover 后的带球过人"
+    },
+    {
+      "text": "说唱",
+      "aliases": "",
+      "kind": "barrage",
+      "opts": {},
+      "normal": "hasty",
+      "nameJa": "ラップ連射",
+      "nameZh": "连珠炮说唱",
+      "nameEn": "Rap Barrage",
+      "description": "每唱一字就飞出一个小字打人",
+      "basketballInterpretation": "篮球时配节奏快速传切，仍受抢断"
+    },
+    {
+      "text": "卧底",
+      "aliases": "",
+      "kind": "feint",
+      "opts": {},
+      "normal": "ghost",
+      "nameJa": "スパイの影",
+      "nameZh": "卧底反扑",
+      "nameEn": "Undercover Flip",
+      "description": "对手以为站在身旁的是友军",
+      "basketballInterpretation": "假动作吸引防守，真实队友并不改变阵营"
+    },
+    {
+      "text": "路人",
+      "aliases": "",
+      "kind": "lazy",
+      "opts": {
+        "counter": true
+      },
+      "normal": "tiny",
+      "nameJa": "通りすがり",
+      "nameZh": "路过而已",
+      "nameEn": "Just Passing",
+      "description": "角色低头走过反弹来袭者",
+      "basketballInterpretation": "低调空切时更难被盯防"
+    },
+    {
+      "text": "观众",
+      "aliases": "",
+      "kind": "roar",
+      "opts": {
+        "pulses": 2
+      },
+      "normal": "charm",
+      "nameJa": "観客の声",
+      "nameZh": "观众助攻",
+      "nameEn": "Crowd Assist",
+      "description": "看台嘴巴像号角呼喊",
+      "basketballInterpretation": "聚光灯吸引敌人注意,队友得空位"
+    },
+    {
+      "text": "摄影",
+      "aliases": "",
+      "kind": "clones",
+      "opts": {
+        "count": 2
+      },
+      "normal": "royal",
+      "nameJa": "カメラ分身",
+      "nameZh": "全场拍照",
+      "nameEn": "Photo Moment",
+      "description": "快门发出闪光留下残影",
+      "basketballInterpretation": "防守者出现短暂错误盯人标记"
+    },
+    {
+      "text": "键帽",
+      "aliases": "",
+      "kind": "drop",
+      "opts": {
+        "props": [
+          "⌨️",
+          "💻"
+        ],
+        "count": 2
+      },
+      "normal": "chaos",
+      "nameJa": "キーの雨",
+      "nameZh": "键帽雨",
+      "nameEn": "Keycap Rain",
+      "description": "键帽像大雨一样掉落",
+      "basketballInterpretation": "场地小区域短暂干扰跑位"
+    },
+    {
+      "text": "社交",
+      "aliases": "",
+      "kind": "joke",
+      "opts": {},
+      "normal": "charm",
+      "nameJa": "コミュ力爆発",
+      "nameZh": "社交达人",
+      "nameEn": "Social Butterfly",
+      "description": "对每个人打招呼直到对手笑倒",
+      "basketballInterpretation": "吸引防守者注意，队友空切"
+    },
+    {
+      "text": "尴尬",
+      "aliases": "",
+      "kind": "topple",
+      "opts": {
+        "selfFall": true
+      },
+      "normal": "slip",
+      "nameJa": "気まずい空気",
+      "nameZh": "全场尬住",
+      "nameEn": "Awkward Freeze",
+      "description": "尴尬到地板开裂自己先摔",
+      "basketballInterpretation": "夸张滑倒形成意外挡拆"
+    },
+    {
+      "text": "再见",
+      "aliases": "",
+      "kind": "vanish",
+      "opts": {},
+      "normal": "ghost",
+      "nameJa": "またね",
+      "nameZh": "拜拜闪现",
+      "nameEn": "Goodbye Blink",
+      "description": "说声再见就短暂消失再出现",
+      "basketballInterpretation": "无球突然换位,冲向篮下"
+    },
+    {
+      "text": "你好",
+      "aliases": "",
+      "kind": "roar",
+      "opts": {
+        "pulses": 1
+      },
+      "normal": "charm",
+      "nameJa": "こんにちは",
+      "nameZh": "打个招呼",
+      "nameEn": "Hello Wave",
+      "description": "大声你好把所有人吓一跳",
+      "basketballInterpretation": "开球期间吸引盯防目光"
+    },
+    {
+      "text": "追星",
+      "aliases": "",
+      "kind": "magnet",
+      "opts": {
+        "prop": "⭐"
+      },
+      "normal": "charm",
+      "nameJa": "推しを追え",
+      "nameZh": "全场追星",
+      "nameEn": "Star Chase",
+      "description": "敌人被明星贴纸吸引跑错",
+      "basketballInterpretation": "聚焦球员吸防,让队友反跑"
+    },
+    {
+      "text": "ダンク",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "ダンクジャンプ",
+      "nameZh": "暴跳灌篮",
+      "nameEn": "Dunk Jump",
+      "description": "文字像弹簧一样向上跃起",
+      "basketballInterpretation": "提高一次扣篮起跳，仍可能被盖"
+    },
+    {
+      "text": "バスケ",
+      "aliases": "",
+      "kind": "whirlwind",
+      "opts": {},
+      "normal": "spinner",
+      "nameJa": "バスケ回転",
+      "nameZh": "篮球旋转",
+      "nameEn": "Basket Spin",
+      "description": "文字沿半圈回转",
+      "basketballInterpretation": "快速转身传球绕过防守"
+    },
+    {
+      "text": "シュート",
+      "aliases": "",
+      "kind": "beam",
+      "opts": {},
+      "normal": "royal",
+      "nameJa": "ロングシュート",
+      "nameZh": "远射直线",
+      "nameEn": "Long Shot",
+      "description": "呈直线射出发光篮球残影",
+      "basketballInterpretation": "远投速度加快但仍有误差"
+    },
+    {
+      "text": "パス",
+      "aliases": "",
+      "kind": "magnet",
+      "opts": {},
+      "normal": "royal",
+      "nameJa": "パスちょうだい",
+      "nameZh": "传我！",
+      "nameEn": "Pass Me",
+      "description": "球员朝队友伸展出传球箭头",
+      "basketballInterpretation": "吸引队友传球并完成更稳交接"
+    },
+    {
+      "text": "リバウンド",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "リバウンド跳び",
+      "nameZh": "篮板升空",
+      "nameEn": "Rebound Leap",
+      "description": "篮球反弹后突然猛跳",
+      "basketballInterpretation": "抢篮板判定更积极"
+    },
+    {
+      "text": "ブロック",
+      "aliases": "",
+      "kind": "shield",
+      "opts": {},
+      "normal": "heavy",
+      "nameJa": "ブロックの壁",
+      "nameZh": "盖帽墙",
+      "nameEn": "Block Wall",
+      "description": "本体变为小挡板挡住敌人",
+      "basketballInterpretation": "提高篮下短时封盖"
+    },
+    {
+      "text": "コーチ",
+      "aliases": "",
+      "kind": "lecture",
+      "opts": {
+        "prop": "📋"
+      },
+      "normal": "royal",
+      "nameJa": "コーチの指示",
+      "nameZh": "教练战术",
+      "nameEn": "Coach Call",
+      "description": "突然拿出画满箭头的战术板",
+      "basketballInterpretation": "运球球员看到可选路线,部分路线可能误导"
+    },
+    {
+      "text": "スリー",
+      "aliases": "",
+      "kind": "beam",
+      "opts": {},
+      "normal": "hasty",
+      "nameJa": "スリー狙い",
+      "nameZh": "三分强投",
+      "nameEn": "Three Attempt",
+      "description": "光线像三根线从身上射出",
+      "basketballInterpretation": "三分出手更快但成功率需物理决定"
+    },
+    {
+      "text": "あつい",
+      "aliases": "",
+      "kind": "fireCharge",
+      "opts": {},
+      "normal": "angry",
+      "nameJa": "あつあつダンク",
+      "nameZh": "热到暴扣",
+      "nameEn": "Hot Dunk",
+      "description": "角色热得跳起来到处乱转",
+      "basketballInterpretation": "扣篮附火焰飞身特效,容易累"
+    },
+    {
+      "text": "おそい",
+      "aliases": "",
+      "kind": "lazy",
+      "opts": {
+        "counter": true
+      },
+      "normal": "sleepy",
+      "nameJa": "のろのろ逆転",
+      "nameZh": "慢吞吞逆袭",
+      "nameEn": "Slow Comeback",
+      "description": "动作永远晚半拍,敌人撞上反被弹走",
+      "basketballInterpretation": "慢速控球+出其不意高弧投篮"
+    },
+    {
+      "text": "NBA",
+      "aliases": "",
+      "kind": "giant",
+      "opts": {
+        "grow": 1.3
+      },
+      "normal": "royal",
+      "nameJa": "超スター登場",
+      "nameZh": "明星登场",
+      "nameEn": "Superstar Entrance",
+      "description": "大字出场自带球馆聚光灯",
+      "basketballInterpretation": "明星被盯防更紧,给队友创造空间"
+    },
+    {
+      "text": "MVP",
+      "aliases": "",
+      "kind": "giant",
+      "opts": {
+        "grow": 1.2
+      },
+      "normal": "royal",
+      "nameJa": "最優秀だぞ",
+      "nameZh": "我是MVP",
+      "nameEn": "MVP Pose",
+      "description": "自信巨大化摆姿势",
+      "basketballInterpretation": "短暂吸引所有防守然后队友空切"
+    },
+    {
+      "text": "DUNK",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "ダンク爆発",
+      "nameZh": "DUNK起飞",
+      "nameEn": "Dunk Blast",
+      "description": "文字跳上天空后猛烈砸下来",
+      "basketballInterpretation": "发起强力扣篮,球可能弹框"
+    },
+    {
+      "text": "SWISH",
+      "aliases": "",
+      "kind": "beam",
+      "opts": {},
+      "normal": "royal",
+      "nameJa": "ネットだけ",
+      "nameZh": "空心幻想",
+      "nameEn": "Nothing But Net",
+      "description": "擂台发射细线状光束",
+      "basketballInterpretation": "篮球提升传射精准但仍可能打铁"
+    },
+    {
+      "text": "CLUTCH",
+      "aliases": "",
+      "kind": "rage",
+      "opts": {
+        "countdown": true
+      },
+      "normal": "royal",
+      "nameJa": "勝負強い",
+      "nameZh": "关键先生",
+      "nameEn": "Clutch Time",
+      "description": "倒数最后三秒爆发冲刺",
+      "basketballInterpretation": "落后时提高积极性,失手会空门"
+    },
+    {
+      "text": "ROOKIE",
+      "aliases": "",
+      "kind": "charge",
+      "opts": {
+        "selfFall": true
+      },
+      "normal": "hasty",
+      "nameJa": "新人全開",
+      "nameZh": "菜鸟来了",
+      "nameEn": "Rookie Charge",
+      "description": "新手冲锋到墙上才停",
+      "basketballInterpretation": "开场飞速突破但很容易失误"
+    },
+    {
+      "text": "BOUNCE",
+      "aliases": "",
+      "kind": "uppercut",
+      "opts": {},
+      "normal": "bouncy",
+      "nameJa": "跳ね続ける",
+      "nameZh": "弹弹乐",
+      "nameEn": "Bounce All Day",
+      "description": "身体反复弹到半空",
+      "basketballInterpretation": "抢篮板弹跳大,落地不稳"
+    },
+    {
+      "text": "AIRBALL",
+      "aliases": "",
+      "kind": "random",
+      "opts": {
+        "selfStun": true
+      },
+      "normal": "chaos",
+      "nameJa": "エアボール",
+      "nameZh": "三不沾专家",
+      "nameEn": "Airball King",
+      "description": "道具篮球从篮框旁远远飞过",
+      "basketballInterpretation": "投篮戏剧化但不强迫失误"
+    }
+  ],
+  "combos": [
+    {
+      "word": "球王",
+      "name": "王者过人",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "crossover"
+      ],
+      "risk": "celebrate",
+      "description": "球王原地炫技吸来两名防守，队友已偷偷从篮下切入；炫技太久会误过回防。"
+    },
+    {
+      "word": "球迷",
+      "name": "人浪助攻",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "backdoorCut"
+      ],
+      "risk": "miscomm",
+      "description": "观众席整齐起立做波浪，吸引防守目光；跑位的队友可能接不到球。"
+    },
+    {
+      "word": "球霸",
+      "name": "我的球呢",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "screen",
+        "crossover"
+      ],
+      "risk": "tired",
+      "description": "霸占球权不肯传，强行顶过防守，突破后累到直喘。"
+    },
+    {
+      "word": "球童",
+      "name": "捡球小能手",
+      "category": "society",
+      "trigger": "rebound",
+      "primitives": [
+        "reboundBoost",
+        "tipIn"
+      ],
+      "risk": "trip",
+      "description": "矮小球童从人缝里钻到篮板落点，快速补篮，太急会绊倒。"
+    },
+    {
+      "word": "裁判",
+      "name": "假装吹哨",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "markWrong",
+        "stealBoost"
+      ],
+      "risk": "miscomm",
+      "description": "大哨子视觉假动作让对方以为要停球，真实规则不会判罚。"
+    },
+    {
+      "word": "篮筐",
+      "name": "篮圈大嘴",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "screen",
+        "bankShot"
+      ],
+      "risk": "crash",
+      "description": "一个字在篮下站成篮圈形掩护，另一人打板投篮，自己可能撞上篮架。"
+    },
+    {
+      "word": "篮板",
+      "name": "篮板预言",
+      "category": "society",
+      "trigger": "rebound",
+      "primitives": [
+        "reboundBoost",
+        "tipIn"
+      ],
+      "risk": "none",
+      "description": "篮板上浮现反弹轨迹标记，预判落点但对手也看得见。"
+    },
+    {
+      "word": "三分",
+      "name": "三分的尊严",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "pumpFake",
+        "deepThree"
+      ],
+      "risk": "wild",
+      "description": "投手向全场伸三根手指蓄力远投，球仍可能飞向观众席。"
+    },
+    {
+      "word": "绝杀",
+      "name": "最后一秒",
+      "category": "society",
+      "trigger": "lateBehind",
+      "primitives": [
+        "accuracy",
+        "deepThree"
+      ],
+      "risk": "celebrate",
+      "description": "最后时刻镜头聚焦控球者，投进才欢呼；提前摆姿势会漏人。"
+    },
+    {
+      "word": "逆转",
+      "name": "反败为胜",
+      "category": "society",
+      "trigger": "lateBehind",
+      "primitives": [
+        "stealBoost",
+        "fastBreak"
+      ],
+      "risk": "gap",
+      "description": "两人放弃稳守全力抢断快攻，抢不到就送对手空位。"
+    },
+    {
+      "word": "运球",
+      "name": "永不停球",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "crossover",
+        "giveAndGo"
+      ],
+      "risk": "trip",
+      "description": "连续左右拍球晃人后突然回传切入，转太多圈自己也绊脚。"
+    },
+    {
+      "word": "盖帽",
+      "name": "空中盖戳",
+      "category": "society",
+      "trigger": "danger",
+      "primitives": [
+        "blockBoost",
+        "reboundBoost"
+      ],
+      "risk": "tired",
+      "description": "一个角色高高跳起把球打向地板，落地回防变慢。"
+    },
+    {
+      "word": "抢断",
+      "name": "伸手就拿",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "doubleTeam",
+        "stealBoost"
+      ],
+      "risk": "gap",
+      "description": "两人从侧翼夹住持球者，偷到球后一路跑；失败漏出三分空位。"
+    },
+    {
+      "word": "空接",
+      "name": "天降连线",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "alleyOop",
+        "lowGravity"
+      ],
+      "risk": "crash",
+      "description": "先高吊球再双人飞起争着接，一不小心互撞。"
+    },
+    {
+      "word": "扣篮",
+      "name": "篮架发抖",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "screen",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "一人充当起跳踏板，另一人奋力扣篮后手脚发软。"
+    },
+    {
+      "word": "补篮",
+      "name": "再来一口",
+      "category": "society",
+      "trigger": "afterMiss",
+      "primitives": [
+        "reboundBoost",
+        "tipIn"
+      ],
+      "risk": "trip",
+      "description": "第一次投丢后篮下选手像弹珠连续弹起，可能顶到篮板。"
+    },
+    {
+      "word": "失误",
+      "name": "这球谁的",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "swapPass",
+        "markWrong"
+      ],
+      "risk": "miscomm",
+      "description": "两人互相以为对方接球，对手也被假球路绕晕；真球可能掉地。"
+    },
+    {
+      "word": "走步",
+      "name": "步数爆表",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "crossover",
+        "backdoorCut"
+      ],
+      "risk": "trip",
+      "description": "头顶弹出计步器超高速闪烁，角色原地交错，绊倒不判现实走步。"
+    },
+    {
+      "word": "哨声",
+      "name": "哔哔哔哔",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "markWrong",
+        "stunCarrier"
+      ],
+      "risk": "celebrate",
+      "description": "巨大哨声气泡让对手动作停顿，使用者却先庆祝停球。"
+    },
+    {
+      "word": "主场",
+      "name": "主场气势",
+      "category": "society",
+      "trigger": "afterScore",
+      "primitives": [
+        "spotlight",
+        "accuracy"
+      ],
+      "risk": "celebrate",
+      "description": "看台彩旗让主场球员兴奋得意，专注传球却容易过度庆祝。"
+    },
+    {
+      "word": "客场",
+      "name": "嘘声训练",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "calm",
+        "curvePass"
+      ],
+      "risk": "none",
+      "description": "面对嘘声反而冷静，用一道安静的传球绕开防守。"
+    },
+    {
+      "word": "新秀",
+      "name": "初生牛犊",
+      "category": "society",
+      "trigger": "tipoff",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "wild",
+      "description": "第一次上场爆冲到底，新人兴奋得把传球甩高。"
+    },
+    {
+      "word": "替补",
+      "name": "板凳战神",
+      "category": "society",
+      "trigger": "behind",
+      "primitives": [
+        "recover",
+        "sprint"
+      ],
+      "risk": "tired",
+      "description": "板凳从场边滑出当作起跑线，双人精神焕发片刻后体力迅速耗尽。"
+    },
+    {
+      "word": "黑马",
+      "name": "冷门逆袭",
+      "category": "society",
+      "trigger": "behind",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "出现一匹纸片黑马作假身，真正持球者反跑空切。"
+    },
+    {
+      "word": "冷门",
+      "name": "爆冷时刻",
+      "category": "society",
+      "trigger": "lateBehind",
+      "primitives": [
+        "pumpFake",
+        "lucky"
+      ],
+      "risk": "wild",
+      "description": "所有人以为必失的球打板弹了好几次，仍需真正落入篮圈。"
+    },
+    {
+      "word": "决赛",
+      "name": "最后舞台",
+      "category": "society",
+      "trigger": "late",
+      "primitives": [
+        "spotlight",
+        "accuracy"
+      ],
+      "risk": "celebrate",
+      "description": "竞技场打出总决赛灯牌，队员专注远投却可能抢先领奖。"
+    },
+    {
+      "word": "加时",
+      "name": "时间不够",
+      "category": "society",
+      "trigger": "late",
+      "primitives": [
+        "sprint",
+        "deepThree"
+      ],
+      "risk": "tired",
+      "description": "时间数字飞快倒数，队员冒汗抢投，结束后累趴。"
+    },
+    {
+      "word": "追分",
+      "name": "追追追",
+      "category": "society",
+      "trigger": "behind",
+      "primitives": [
+        "fastBreak",
+        "deepThree"
+      ],
+      "risk": "gap",
+      "description": "丢开慢节奏连打快攻，漏掉自家篮下防守。"
+    },
+    {
+      "word": "终场",
+      "name": "哨响前夕",
+      "category": "society",
+      "trigger": "late",
+      "primitives": [
+        "accuracy",
+        "bankShot"
+      ],
+      "risk": "celebrate",
+      "description": "哨声字幕从天掉落，抓最后空档投篮，出手后直接庆祝。"
+    },
+    {
+      "word": "后卫",
+      "name": "回旋运控",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "crossover",
+        "curvePass"
+      ],
+      "risk": "none",
+      "description": "小个后卫带球绕圈吸引人，高速喂给篮下队友。"
+    },
+    {
+      "word": "中锋",
+      "name": "人形篮板",
+      "category": "society",
+      "trigger": "rebound",
+      "primitives": [
+        "screen",
+        "reboundBoost"
+      ],
+      "risk": "gap",
+      "description": "高大的字像柱子一样护住禁区，三分线没人管。"
+    },
+    {
+      "word": "前锋",
+      "name": "锋线快刀",
+      "category": "society",
+      "trigger": "afterSteal",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "tired",
+      "description": "两人像剪刀一样交叉冲刺，长传过人后体力大减。"
+    },
+    {
+      "word": "教练",
+      "name": "战术板暴走",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "markWrong",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "战术板画出五条线路，两个字却走错一条，防守方也迷糊。"
+    },
+    {
+      "word": "队长",
+      "name": "队长集合",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "calm",
+        "doubleTeam"
+      ],
+      "risk": "gap",
+      "description": "队长吹哨集合两人夹击，三分弧顶被暴露。"
+    },
+    {
+      "word": "助攻",
+      "name": "你来终结",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "accuracy",
+        "giveAndGo"
+      ],
+      "risk": "none",
+      "description": "队友头顶出现发光的接球箭头，回传配合有实际传球路径。"
+    },
+    {
+      "word": "传球",
+      "name": "传个不停",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "curvePass",
+        "swapPass"
+      ],
+      "risk": "miscomm",
+      "description": "球绕着两名选手连续飞行，传得太快可能撞到队友脑门。"
+    },
+    {
+      "word": "老将",
+      "name": "老兵不死",
+      "category": "society",
+      "trigger": "late",
+      "primitives": [
+        "calm",
+        "bankShot"
+      ],
+      "risk": "tired",
+      "description": "动作缓慢但路线精准，打板后扶腰喘气。"
+    },
+    {
+      "word": "菜鸟",
+      "name": "新手教程",
+      "category": "internet",
+      "trigger": "tipoff",
+      "primitives": [
+        "markWrong",
+        "bankShot"
+      ],
+      "risk": "wild",
+      "description": "场上出现教学箭头，菜鸟却读错箭头撞上篮板。"
+    },
+    {
+      "word": "暴扣",
+      "name": "篮筐求饶",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "lowGravity",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "角色高高跃起让篮筐像果冻抖动，落地疲劳。"
+    },
+    {
+      "word": "罚球",
+      "name": "免费一球",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "accuracy",
+        "highArc"
+      ],
+      "risk": "celebrate",
+      "description": "摆好标准罚球姿势后太自信，投出真球，出手就提前欢呼。"
+    },
+    {
+      "word": "抛投",
+      "name": "空中勺子",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "highArc",
+        "bankShot"
+      ],
+      "risk": "wild",
+      "description": "球被舀成惊人的高弧度，可能越过整个篮筐。"
+    },
+    {
+      "word": "跳投",
+      "name": "弹弹投篮",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "lowGravity",
+        "highArc"
+      ],
+      "risk": "trip",
+      "description": "起跳过高，看似能盖过防守，落地时可能绊倒。"
+    },
+    {
+      "word": "假投",
+      "name": "看我骗你",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "pumpFake",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "投篮动作做到一半突然传球，队友后门切入。"
+    },
+    {
+      "word": "围堵",
+      "name": "双人夹击",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "doubleTeam",
+        "stealBoost"
+      ],
+      "risk": "gap",
+      "description": "防守像关闭的电梯门往中间挤，两侧完全空了。"
+    },
+    {
+      "word": "补防",
+      "name": "来得及时",
+      "category": "society",
+      "trigger": "danger",
+      "primitives": [
+        "recover",
+        "blockBoost"
+      ],
+      "risk": "tired",
+      "description": "从地上急弹起来补防，盖帽后弯腰喘气。"
+    },
+    {
+      "word": "板凳",
+      "name": "场边教练",
+      "category": "society",
+      "trigger": "afterConcede",
+      "primitives": [
+        "calm",
+        "recover"
+      ],
+      "risk": "none",
+      "description": "一只巨大长凳坐住气急败坏的球员，站起后更冷静。"
+    },
+    {
+      "word": "比分",
+      "name": "分数看错",
+      "category": "society",
+      "trigger": "behind",
+      "primitives": [
+        "markWrong",
+        "fastBreak"
+      ],
+      "risk": "miscomm",
+      "description": "两人错看记分牌追着不存在的领先优势狂奔，还可能误传。"
+    },
+    {
+      "word": "主力",
+      "name": "全队核心",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "giveAndGo"
+      ],
+      "risk": "gap",
+      "description": "聚光灯照向核心球员，另一人偷偷从防守盲区切入。"
+    },
+    {
+      "word": "超远",
+      "name": "远到离谱",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "accuracy",
+        "deepThree"
+      ],
+      "risk": "wild",
+      "description": "投球像火箭飞出屏幕边缘再落下，极可能落偏。"
+    },
+    {
+      "word": "压哨",
+      "name": "哨子贴脸",
+      "category": "society",
+      "trigger": "late",
+      "primitives": [
+        "pumpFake",
+        "deepThree"
+      ],
+      "risk": "miscomm",
+      "description": "最后一刻小哨子飞到球前，队友误以为暂停。"
+    },
+    {
+      "word": "篮网",
+      "name": "网中幻影",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "markWrong",
+        "bankShot"
+      ],
+      "risk": "trip",
+      "description": "篮网出现错位影子干扰防守，冲篮时会踩到自己影子。"
+    },
+    {
+      "word": "赌球",
+      "name": "全员下注",
+      "category": "internet",
+      "trigger": "perimeter",
+      "primitives": [
+        "deepThree",
+        "lucky"
+      ],
+      "risk": "wild",
+      "description": "投篮前抛出写着问号的票据，球仍按真实轨迹飞行。"
+    },
+    {
+      "word": "迟到",
+      "name": "迟到也上场",
+      "category": "society",
+      "trigger": "tipoff",
+      "primitives": [
+        "sprint",
+        "backdoorCut"
+      ],
+      "risk": "trip",
+      "description": "背着书包冲进比赛，脚下一滑形成意外空切。"
+    },
+    {
+      "word": "早退",
+      "name": "我先走了",
+      "category": "society",
+      "trigger": "afterScore",
+      "primitives": [
+        "swap",
+        "fastBreak"
+      ],
+      "risk": "gap",
+      "description": "刚得分就有人转身退场，队友赶忙补位。"
+    },
+    {
+      "word": "抢座",
+      "name": "这位置我的",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "screen",
+        "tipIn"
+      ],
+      "risk": "crash",
+      "description": "两人抢着坐同一只小板凳，意外形成挡拆。"
+    },
+    {
+      "word": "烫手",
+      "name": "烫手山芋",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "swapPass",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "篮球像烫手山芋被来回甩，太急就传丢。"
+    },
+    {
+      "word": "掉线",
+      "name": "离线重连",
+      "category": "tech",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "swapPass"
+      ],
+      "risk": "miscomm",
+      "description": "头顶信号突然归零，角色停顿后重现位置，队友可能接错球。"
+    },
+    {
+      "word": "断电",
+      "name": "灯光消失",
+      "category": "tech",
+      "trigger": "defend",
+      "primitives": [
+        "markWrong",
+        "stealBoost"
+      ],
+      "risk": "gap",
+      "description": "场地短时灯光暗下只剩发光球，防守错位，己方也丢视野。"
+    },
+    {
+      "word": "上头",
+      "name": "越投越莽",
+      "category": "internet",
+      "trigger": "behind",
+      "primitives": [
+        "sprint",
+        "deepThree"
+      ],
+      "risk": "wild",
+      "description": "角色头顶火焰熊熊，不管多远都想射，空砸概率高。"
+    },
+    {
+      "word": "沉默",
+      "name": "不许说话",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "calm",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "两人默契静悄悄切入篮下，连解说字幕都变成省略号。"
+    },
+    {
+      "word": "走神",
+      "name": "脑袋放空",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "decoyBall",
+        "markWrong"
+      ],
+      "risk": "trip",
+      "description": "四只眼睛在空中追幻影球，自己也可能绊倒。"
+    },
+    {
+      "word": "迷信",
+      "name": "开光三分",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "lucky",
+        "highArc"
+      ],
+      "risk": "celebrate",
+      "description": "投前绕球念念有词，篮筐反弹仍是物理，空手先庆祝。"
+    },
+    {
+      "word": "拒绝",
+      "name": "别来烦我",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "pushWave",
+        "blockBoost"
+      ],
+      "risk": "tired",
+      "description": "双手交叉成大叉，扑来的进攻者被推开，自己回防变慢。"
+    },
+    {
+      "word": "摸头",
+      "name": "摸摸鼓励",
+      "category": "society",
+      "trigger": "afterConcede",
+      "primitives": [
+        "recover",
+        "accuracy"
+      ],
+      "risk": "none",
+      "description": "一人摸摸另一人的脑袋，沮丧的队友重新调整投球角度。"
+    },
+    {
+      "word": "反悔",
+      "name": "不传了",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "pumpFake",
+        "crossover"
+      ],
+      "risk": "miscomm",
+      "description": "篮球举到一半突然缩回去，搭档空跑一场。"
+    },
+    {
+      "word": "发呆",
+      "name": "呆到成墙",
+      "category": "society",
+      "trigger": "danger",
+      "primitives": [
+        "paintWall",
+        "blockBoost"
+      ],
+      "risk": "gap",
+      "description": "两人呆站篮下刚好盖住球路，外线空空荡荡。"
+    },
+    {
+      "word": "脑补",
+      "name": "我以为进了",
+      "category": "internet",
+      "trigger": "afterMiss",
+      "primitives": [
+        "decoyBall",
+        "reboundBoost"
+      ],
+      "risk": "celebrate",
+      "description": "出现一个已经进球的虚影，真实球还在打铁，急忙补篮。"
+    },
+    {
+      "word": "怀疑",
+      "name": "这个球假吗",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "decoyBall",
+        "markWrong"
+      ],
+      "risk": "miscomm",
+      "description": "真实球和虚球影重叠，连持球队友都差点被骗。"
+    },
+    {
+      "word": "误会",
+      "name": "你先还是我先",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swapPass",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "两人同时伸手想传，错位混乱但可能误打误撞配合。"
+    },
+    {
+      "word": "道歉",
+      "name": "九十度低头",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "markWrong",
+        "stealBoost"
+      ],
+      "risk": "trip",
+      "description": "猛鞠躬避开对方手臂，弹起来偷球，腰弯太猛会摔。"
+    },
+    {
+      "word": "失控",
+      "name": "球比人快",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "sprint",
+        "crossover"
+      ],
+      "risk": "crash",
+      "description": "球员越运越快追不上自己的球，撞上队友。"
+    },
+    {
+      "word": "自动",
+      "name": "自动挡球",
+      "category": "tech",
+      "trigger": "danger",
+      "primitives": [
+        "blockBoost",
+        "reboundBoost"
+      ],
+      "risk": "tired",
+      "description": "篮板自动调整预测图，队员追篮板跑到脚软。"
+    },
+    {
+      "word": "人工",
+      "name": "手动微调",
+      "category": "tech",
+      "trigger": "perimeter",
+      "primitives": [
+        "accuracy",
+        "bankShot"
+      ],
+      "risk": "wild",
+      "description": "出现粗糙手绘瞄准线，手忙脚乱地微调方向。"
+    },
+    {
+      "word": "拖延",
+      "name": "还差一秒",
+      "category": "society",
+      "trigger": "lateAhead",
+      "primitives": [
+        "calm",
+        "swapPass"
+      ],
+      "risk": "miscomm",
+      "description": "两人谨慎传球消耗时间，传得太慢容易被断。"
+    },
+    {
+      "word": "催更",
+      "name": "更新呢！",
+      "category": "internet",
+      "trigger": "behind",
+      "primitives": [
+        "sprint",
+        "giveAndGo"
+      ],
+      "risk": "tired",
+      "description": "观众弹幕催更，双人越跑越快直到腿软。"
+    },
+    {
+      "word": "搬砖",
+      "name": "搬砖入篮",
+      "category": "society",
+      "trigger": "paint",
+      "primitives": [
+        "screen",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "背着砖的队员重重挡拆，另一个趁机暴扣。"
+    },
+    {
+      "word": "内耗",
+      "name": "队友抢戏",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swapPass",
+        "markWrong"
+      ],
+      "risk": "crash",
+      "description": "两人都想当主角，争着拿球撞个正着。"
+    },
+    {
+      "word": "摆烂",
+      "name": "躺平投篮",
+      "category": "internet",
+      "trigger": "behind",
+      "primitives": [
+        "highArc",
+        "lucky"
+      ],
+      "risk": "gap",
+      "description": "一人平躺抛出超高球，另一人完全不想回防。"
+    },
+    {
+      "word": "加油",
+      "name": "打气泵启动",
+      "category": "society",
+      "trigger": "afterConcede",
+      "primitives": [
+        "recover",
+        "sprint"
+      ],
+      "risk": "tired",
+      "description": "加油声变成气泵，倒地队友被鼓起来冲刺。"
+    },
+    {
+      "word": "客服",
+      "name": "请稍等候",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "curvePass"
+      ],
+      "risk": "miscomm",
+      "description": "对手耳边循环等待音乐，持球者趁机绕弯传球。"
+    },
+    {
+      "word": "请假",
+      "name": "今天不在",
+      "category": "society",
+      "trigger": "defend",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "gap",
+      "description": "队友留下一张请假条纸人，真正球员换位到另一侧。"
+    },
+    {
+      "word": "升职",
+      "name": "职位晋升",
+      "category": "society",
+      "trigger": "afterScore",
+      "primitives": [
+        "spotlight",
+        "powerDunk"
+      ],
+      "risk": "celebrate",
+      "description": "一次得分后角色头顶出现小经理帽，再冲篮可能得意过头。"
+    },
+    {
+      "word": "降薪",
+      "name": "工资缩水",
+      "category": "society",
+      "trigger": "behind",
+      "primitives": [
+        "screen",
+        "bankShot"
+      ],
+      "risk": "tired",
+      "description": "体型缩小但动作更谨慎，贴着队友挡拆打板。"
+    },
+    {
+      "word": "存款",
+      "name": "存钱罐三分",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "deepThree",
+        "lucky"
+      ],
+      "risk": "wild",
+      "description": "投篮轨迹像抛硬币，弹框后不一定入篮。"
+    },
+    {
+      "word": "欠费",
+      "name": "余额欠费",
+      "category": "tech",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "highArc"
+      ],
+      "risk": "miscomm",
+      "description": "进攻者头顶弹出欠费提示，短暂假卡顿后抛投。"
+    },
+    {
+      "word": "盲盒",
+      "name": "你猜是谁",
+      "category": "internet",
+      "trigger": "frontcourt",
+      "primitives": [
+        "decoyBall",
+        "pumpFake"
+      ],
+      "risk": "miscomm",
+      "description": "礼盒打开弹出假球影，真实球在队友手里。"
+    },
+    {
+      "word": "盲点",
+      "name": "躲进视野外",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "在防守者背后画出视觉盲点，队友从中切入。"
+    },
+    {
+      "word": "空耳",
+      "name": "听错口令",
+      "category": "internet",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swapPass",
+        "markWrong"
+      ],
+      "risk": "miscomm",
+      "description": "队友听成反方向口令，假动作可能骗倒对手也可能传错。"
+    },
+    {
+      "word": "心动",
+      "name": "扑通心跳",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "alleyOop"
+      ],
+      "risk": "celebrate",
+      "description": "全场聚光灯照向心形字，搭档从阴影中起飞空接。"
+    },
+    {
+      "word": "失恋",
+      "name": "分手抛物线",
+      "category": "society",
+      "trigger": "perimeter",
+      "primitives": [
+        "highArc",
+        "bankShot"
+      ],
+      "risk": "wild",
+      "description": "把心形碎纸扔向天空，篮球高高抛出，过于伤感容易投偏。"
+    },
+    {
+      "word": "复合",
+      "name": "重新合体",
+      "category": "society",
+      "trigger": "afterConcede",
+      "primitives": [
+        "swap",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "两个互相不理的人突然和解跑传切，磨合不足可能错过。"
+    },
+    {
+      "word": "暗恋",
+      "name": "偷偷喜欢",
+      "category": "society",
+      "trigger": "frontcourt",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "一名队员偷偷跟着目标移动，另一人突然切入空位。"
+    },
+    {
+      "word": "分手",
+      "name": "我们不合适",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "swap",
+        "curvePass"
+      ],
+      "risk": "miscomm",
+      "description": "两人向相反方向弹开，篮球从中间弯弯绕绕飞过。"
+    },
+    {
+      "word": "红包",
+      "name": "抢红包啦",
+      "category": "internet",
+      "trigger": "afterScore",
+      "primitives": [
+        "spotlight",
+        "fastBreak"
+      ],
+      "risk": "celebrate",
+      "description": "虚拟红包掉下来吸引围观，领先球员提前庆祝。"
+    },
+    {
+      "word": "福袋",
+      "name": "袋中有球",
+      "category": "society",
+      "trigger": "pressed",
+      "primitives": [
+        "decoyBall",
+        "curvePass"
+      ],
+      "risk": "none",
+      "description": "一堆布袋影子晃来晃去，真球从袋后曲传。"
+    },
+    {
+      "word": "年终",
+      "name": "年终奖发了",
+      "category": "society",
+      "trigger": "lateAhead",
+      "primitives": [
+        "spotlight",
+        "accuracy"
+      ],
+      "risk": "celebrate",
+      "description": "头顶出现年终奖金袋，球员假装领奖，回防变慢。"
+    },
+    {
+      "word": "太极",
+      "name": "以柔克刚",
+      "category": "history",
+      "trigger": "defend",
+      "primitives": [
+        "calm",
+        "stealBoost"
+      ],
+      "risk": "none",
+      "description": "队员顺势转身借对手冲劲抢球，身体动作像太极圆弧。"
+    },
+    {
+      "word": "八卦",
+      "name": "八方迷阵",
+      "category": "history",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swap",
+        "markWrong"
+      ],
+      "risk": "miscomm",
+      "description": "地上浮现八卦圆，双方被位置假象迷惑，传球也可能偏。"
+    },
+    {
+      "word": "醉拳",
+      "name": "醉步过人",
+      "category": "history",
+      "trigger": "pressed",
+      "primitives": [
+        "crossover",
+        "giveAndGo"
+      ],
+      "risk": "trip",
+      "description": "身体摇摇晃晃，脚下看似要摔却突然传球，真可能摔。"
+    },
+    {
+      "word": "轻功",
+      "name": "飞檐走篮",
+      "category": "history",
+      "trigger": "paint",
+      "primitives": [
+        "lowGravity",
+        "alleyOop"
+      ],
+      "risk": "tired",
+      "description": "从三分线边缘长跳起飞，与队友空接，落地后没力气。"
+    },
+    {
+      "word": "凌波",
+      "name": "水上凌波",
+      "category": "history",
+      "trigger": "frontcourt",
+      "primitives": [
+        "sprint",
+        "crossover"
+      ],
+      "risk": "trip",
+      "description": "在半空水纹上快速横移突破，转弯过猛落地滑倒。"
+    },
+    {
+      "word": "乾坤",
+      "name": "乾坤倒转",
+      "category": "myth",
+      "trigger": "pressed",
+      "primitives": [
+        "swap",
+        "swapPass"
+      ],
+      "risk": "miscomm",
+      "description": "两人瞬间互换攻位，篮球仍沿轨迹传出，时机错了会错手。"
+    },
+    {
+      "word": "青龙",
+      "name": "东方飞龙",
+      "category": "myth",
+      "trigger": "paint",
+      "primitives": [
+        "lowGravity",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "龙形影子从身后盘旋，角色从高处扣篮，落地慢半拍。"
+    },
+    {
+      "word": "白虎",
+      "name": "猛虎篮板",
+      "category": "myth",
+      "trigger": "rebound",
+      "primitives": [
+        "reboundBoost",
+        "tipIn"
+      ],
+      "risk": "crash",
+      "description": "虎纹字扑向篮板，两人争球可能互撞。"
+    },
+    {
+      "word": "朱雀",
+      "name": "朱雀飞焰",
+      "category": "myth",
+      "trigger": "paint",
+      "primitives": [
+        "alleyOop",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "火鸟影子托起真球，飞行路径仍会被盖帽。"
+    },
+    {
+      "word": "玄武",
+      "name": "玄武城墙",
+      "category": "myth",
+      "trigger": "danger",
+      "primitives": [
+        "paintWall",
+        "blockBoost"
+      ],
+      "risk": "gap",
+      "description": "龟壳形幻影护住篮下，三分防守真空。"
+    },
+    {
+      "word": "哪吒",
+      "name": "风火轮抄截",
+      "category": "myth",
+      "trigger": "afterSteal",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "crash",
+      "description": "彩色轮子在脚下转圈冲向篮筐，急转弯容易撞队友。"
+    },
+    {
+      "word": "悟空",
+      "name": "七十二变化",
+      "category": "myth",
+      "trigger": "pressed",
+      "primitives": [
+        "decoyBall",
+        "crossover"
+      ],
+      "risk": "miscomm",
+      "description": "出现几个外观相同的假持球影，真球在唯一一人手里。"
+    },
+    {
+      "word": "八戒",
+      "name": "能吃是福",
+      "category": "myth",
+      "trigger": "rebound",
+      "primitives": [
+        "screen",
+        "reboundBoost"
+      ],
+      "risk": "tired",
+      "description": "角色慢悠悠占住篮下位置抢板，跳两次就累。"
+    },
+    {
+      "word": "唐僧",
+      "name": "一路唠叨",
+      "category": "history",
+      "trigger": "defend",
+      "primitives": [
+        "stunCarrier",
+        "blockBoost"
+      ],
+      "risk": "gap",
+      "description": "大段经卷台词泡泡让持球者短时发愣，外线却没人管。"
+    },
+    {
+      "word": "孟婆",
+      "name": "忘了传球",
+      "category": "myth",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "stealBoost"
+      ],
+      "risk": "miscomm",
+      "description": "突然冒出一只忘事的汤碗幻影，对手短时追错传球人。"
+    },
+    {
+      "word": "月老",
+      "name": "红线助攻",
+      "category": "myth",
+      "trigger": "frontcourt",
+      "primitives": [
+        "curvePass",
+        "alleyOop"
+      ],
+      "risk": "crash",
+      "description": "红线般的传球轨迹连起两人，角度不好两人会碰撞。"
+    },
+    {
+      "word": "财神",
+      "name": "散财诱敌",
+      "category": "myth",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "backdoorCut"
+      ],
+      "risk": "celebrate",
+      "description": "金币纸片把视线拉到持球者，另一人从篮下空切。"
+    },
+    {
+      "word": "雷公",
+      "name": "雷鼓重扣",
+      "category": "myth",
+      "trigger": "paint",
+      "primitives": [
+        "pushWave",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "大鼓一响把防守者推后一步，随后暴力扣篮。"
+    },
+    {
+      "word": "铁扇",
+      "name": "扇风运球",
+      "category": "myth",
+      "trigger": "frontcourt",
+      "primitives": [
+        "curvePass",
+        "highArc"
+      ],
+      "risk": "wild",
+      "description": "巨扇吹出弧线传球和高吊投篮，风太大可能失准。"
+    },
+    {
+      "word": "书生",
+      "name": "纸扇传球",
+      "category": "history",
+      "trigger": "perimeter",
+      "primitives": [
+        "curvePass",
+        "bankShot"
+      ],
+      "risk": "miscomm",
+      "description": "羽扇上画出漂亮弧线，搭档跑错位置便落空。"
+    },
+    {
+      "word": "侠客",
+      "name": "侠义救球",
+      "category": "history",
+      "trigger": "danger",
+      "primitives": [
+        "blockBoost",
+        "fastBreak"
+      ],
+      "risk": "gap",
+      "description": "突然挡下进攻并快速反击，却把篮下空出来。"
+    },
+    {
+      "word": "将军",
+      "name": "列阵攻筐",
+      "category": "history",
+      "trigger": "frontcourt",
+      "primitives": [
+        "screen",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "两人如战阵站位掩护后合力冲筐，随后脚软。"
+    },
+    {
+      "word": "军师",
+      "name": "算尽机关",
+      "category": "history",
+      "trigger": "frontcourt",
+      "primitives": [
+        "markWrong",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "地面出现三套战术路线，队友任选一套执行，可能选错。"
+    },
+    {
+      "word": "诗人",
+      "name": "月下吟球",
+      "category": "history",
+      "trigger": "perimeter",
+      "primitives": [
+        "highArc",
+        "accuracy"
+      ],
+      "risk": "celebrate",
+      "description": "角色缓缓吟诗蓄力超高投篮，诗没吟完球已经被抢。"
+    },
+    {
+      "word": "书法",
+      "name": "笔走龙蛇",
+      "category": "history",
+      "trigger": "frontcourt",
+      "primitives": [
+        "curvePass",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "毛笔墨线描出曲线传球路，墨滴会把队友视线挡一瞬。"
+    },
+    {
+      "word": "京剧",
+      "name": "变脸挡拆",
+      "category": "history",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "pickAndRoll"
+      ],
+      "risk": "none",
+      "description": "面具转一圈换表情，队友顺势从另一侧切入。"
+    },
+    {
+      "word": "相声",
+      "name": "捧哏逗哏",
+      "category": "history",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "giveAndGo"
+      ],
+      "risk": "celebrate",
+      "description": "一人负责搞笑吸引镜头，一人默默进篮下，逗哏笑得太早。"
+    },
+    {
+      "word": "戏法",
+      "name": "看这里呀",
+      "category": "history",
+      "trigger": "pressed",
+      "primitives": [
+        "decoyBall",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "布盖住篮球一瞬出现幻影，真球被穿针传出。"
+    },
+    {
+      "word": "舞狮",
+      "name": "狮头滚动",
+      "category": "history",
+      "trigger": "paint",
+      "primitives": [
+        "screen",
+        "powerDunk"
+      ],
+      "risk": "crash",
+      "description": "两人凑近像舞狮一样前滚进入篮下，很容易相撞。"
+    },
+    {
+      "word": "茶道",
+      "name": "慢慢来吧",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "calm",
+        "bankShot"
+      ],
+      "risk": "tired",
+      "description": "仿佛一套优雅茶道流程，慢动作投篮也真实可能打铁。"
+    },
+    {
+      "word": "武士",
+      "name": "武士一闪",
+      "category": "japanese",
+      "trigger": "afterSteal",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "gap",
+      "description": "拔刀般的动作只作为速度线，两人快速反击外线空了。"
+    },
+    {
+      "word": "忍者",
+      "name": "忍法偷篮",
+      "category": "japanese",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "miscomm",
+      "description": "烟雾遮蔽持球假影，队友绕到底角完成空切。"
+    },
+    {
+      "word": "神社",
+      "name": "铃声引路",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "curvePass"
+      ],
+      "risk": "celebrate",
+      "description": "铃声吸引防守视线，真球绕弧线送到篮下。"
+    },
+    {
+      "word": "寿司",
+      "name": "寿司回转",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swapPass",
+        "bankShot"
+      ],
+      "risk": "miscomm",
+      "description": "球像回转寿司一圈一圈互传，绕太久会被断。"
+    },
+    {
+      "word": "漫画",
+      "name": "分镜跳篮",
+      "category": "japanese",
+      "trigger": "perimeter",
+      "primitives": [
+        "pumpFake",
+        "highArc"
+      ],
+      "risk": "wild",
+      "description": "画面分成夸张三格后角色高抛投篮，表现超热血但可能离谱。"
+    },
+    {
+      "word": "忍法",
+      "name": "烟雾空切",
+      "category": "japanese",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "miscomm",
+      "description": "烟雾里的假步伐把防守吸走，真接球发生在另一侧。"
+    },
+    {
+      "word": "剑道",
+      "name": "一本胜负",
+      "category": "japanese",
+      "trigger": "paint",
+      "primitives": [
+        "sprint",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "用竹刀般的直线速度特效突破，真实接触仍靠字形体。"
+    },
+    {
+      "word": "幕府",
+      "name": "将军守筐",
+      "category": "japanese",
+      "trigger": "danger",
+      "primitives": [
+        "paintWall",
+        "blockBoost"
+      ],
+      "risk": "gap",
+      "description": "两人站如大门把篮下封死，三分线无人防守。"
+    },
+    {
+      "word": "和风",
+      "name": "纸扇弧投",
+      "category": "japanese",
+      "trigger": "perimeter",
+      "primitives": [
+        "curvePass",
+        "highArc"
+      ],
+      "risk": "wild",
+      "description": "纸扇飞舞引导高弧投篮，但风向不稳定。"
+    },
+    {
+      "word": "AI",
+      "name": "算法空位",
+      "category": "tech",
+      "trigger": "frontcourt",
+      "primitives": [
+        "markWrong",
+        "accuracy"
+      ],
+      "risk": "miscomm",
+      "description": "自信给出99.9%命中预测，队友信错路线可能传丢。"
+    },
+    {
+      "word": "OK",
+      "name": "没问题的",
+      "category": "english",
+      "trigger": "afterConcede",
+      "primitives": [
+        "calm",
+        "bankShot"
+      ],
+      "risk": "none",
+      "description": "两人互比OK手势，重整呼吸后从低角度打板。"
+    },
+    {
+      "word": "NO",
+      "name": "绝不让你过",
+      "category": "english",
+      "trigger": "danger",
+      "primitives": [
+        "paintWall",
+        "blockBoost"
+      ],
+      "risk": "gap",
+      "description": "大大的NO禁止牌堵在篮下，远投路线完全让出。"
+    },
+    {
+      "word": "GO",
+      "name": "一起出发",
+      "category": "english",
+      "trigger": "afterSteal",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "tired",
+      "description": "两只GO文字弹簧一起冲锋，进篮下后筋疲力尽。"
+    },
+    {
+      "word": "EZ",
+      "name": "太简单了",
+      "category": "internet",
+      "trigger": "lateAhead",
+      "primitives": [
+        "spotlight",
+        "deepThree"
+      ],
+      "risk": "celebrate",
+      "description": "领先方双手叉腰炫耀远投，球可能在框上弹飞。"
+    },
+    {
+      "word": "HP",
+      "name": "血量见底",
+      "category": "internet",
+      "trigger": "behind",
+      "primitives": [
+        "recover",
+        "calm"
+      ],
+      "risk": "tired",
+      "description": "队员头顶HP条闪红后短暂稳定，撑不过太久。"
+    },
+    {
+      "word": "XP",
+      "name": "经验加成",
+      "category": "internet",
+      "trigger": "afterScore",
+      "primitives": [
+        "accuracy",
+        "giveAndGo"
+      ],
+      "risk": "celebrate",
+      "description": "头上弹出XP+1，马上得意忘形地尝试花哨配合。"
+    },
+    {
+      "word": "VR",
+      "name": "虚拟投篮",
+      "category": "tech",
+      "trigger": "perimeter",
+      "primitives": [
+        "decoyBall",
+        "deepThree"
+      ],
+      "risk": "miscomm",
+      "description": "戴上方框头盔看到假篮圈，真实投篮仍会偏。"
+    },
+    {
+      "word": "AR",
+      "name": "增强篮圈",
+      "category": "tech",
+      "trigger": "perimeter",
+      "primitives": [
+        "accuracy",
+        "bankShot"
+      ],
+      "risk": "none",
+      "description": "场上叠加不真实的篮圈辅助线，实际投篮略更稳。"
+    },
+    {
+      "word": "DJ",
+      "name": "节奏篮球",
+      "category": "english",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swapPass",
+        "crossover"
+      ],
+      "risk": "crash",
+      "description": "球随鼓点交换持有人，节拍错会互撞。"
+    },
+    {
+      "word": "GG",
+      "name": "比赛结束吧",
+      "category": "internet",
+      "trigger": "late",
+      "primitives": [
+        "calm",
+        "deepThree"
+      ],
+      "risk": "celebrate",
+      "description": "提前礼貌鞠躬准备终结，失手后大家尴尬。"
+    },
+    {
+      "word": "HI",
+      "name": "打个招呼",
+      "category": "english",
+      "trigger": "tipoff",
+      "primitives": [
+        "spotlight",
+        "giveAndGo"
+      ],
+      "risk": "miscomm",
+      "description": "队员热情地与对手挥手，趁机让搭档溜向空位。"
+    },
+    {
+      "word": "BR",
+      "name": "马上回来",
+      "category": "english",
+      "trigger": "defend",
+      "primitives": [
+        "markWrong",
+        "recover"
+      ],
+      "risk": "gap",
+      "description": "一个人留下BR影子假装守篮，真正队员去追球，篮下危险。"
+    },
+    {
+      "word": "ねこ",
+      "name": "猫步偷篮",
+      "category": "japanese",
+      "trigger": "afterSteal",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "trip",
+      "description": "两只假想猫爪在球旁轻拍，队友趁机快速偷分。"
+    },
+    {
+      "word": "いぬ",
+      "name": "小狗追球",
+      "category": "japanese",
+      "trigger": "defend",
+      "primitives": [
+        "doubleTeam",
+        "stealBoost"
+      ],
+      "risk": "gap",
+      "description": "两个文字像狗追飞盘般扑持球人，后方无防守。"
+    },
+    {
+      "word": "すし",
+      "name": "旋转寿司",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swapPass",
+        "curvePass"
+      ],
+      "risk": "miscomm",
+      "description": "传球绕着场地转圈，画面像旋转寿司吧台。"
+    },
+    {
+      "word": "もち",
+      "name": "年糕弹跳",
+      "category": "japanese",
+      "trigger": "rebound",
+      "primitives": [
+        "lowGravity",
+        "reboundBoost"
+      ],
+      "risk": "crash",
+      "description": "两个字像黏年糕一起弹上篮板，可能黏成一团。"
+    },
+    {
+      "word": "ゆめ",
+      "name": "梦中灌篮",
+      "category": "japanese",
+      "trigger": "paint",
+      "primitives": [
+        "lowGravity",
+        "alleyOop"
+      ],
+      "risk": "wild",
+      "description": "梦泡泡里出现超高篮框，角色忘了真正的框在哪儿。"
+    },
+    {
+      "word": "うそ",
+      "name": "真的假的",
+      "category": "japanese",
+      "trigger": "pressed",
+      "primitives": [
+        "decoyBall",
+        "crossover"
+      ],
+      "risk": "none",
+      "description": "假装投篮却让假球影从手边跑出来，真球继续运。"
+    },
+    {
+      "word": "バグ",
+      "name": "画面出错",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "markWrong",
+        "swap"
+      ],
+      "risk": "miscomm",
+      "description": "角色影像在位置间跳帧，真实传球未必跟得上。"
+    },
+    {
+      "word": "ガチ",
+      "name": "认真一点",
+      "category": "japanese",
+      "trigger": "behind",
+      "primitives": [
+        "accuracy",
+        "deepThree"
+      ],
+      "risk": "tired",
+      "description": "突然认真脸启动投篮训练，冲太快后疲劳。"
+    },
+    {
+      "word": "推し",
+      "name": "应援空切",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "spotlight",
+        "backdoorCut"
+      ],
+      "risk": "celebrate",
+      "description": "全场应援棒闪亮，大家围着偶像看，搭档偷偷空切。"
+    },
+    {
+      "word": "課金",
+      "name": "氪金幻想",
+      "category": "japanese",
+      "trigger": "perimeter",
+      "primitives": [
+        "decoyBall",
+        "lucky"
+      ],
+      "risk": "wild",
+      "description": "弹出付费按钮幻影但不真的收费，传说中的SSR球仍可能不中。"
+    },
+    {
+      "word": "社長",
+      "name": "社长开球",
+      "category": "japanese",
+      "trigger": "tipoff",
+      "primitives": [
+        "spotlight",
+        "pickAndRoll"
+      ],
+      "risk": "celebrate",
+      "description": "老板出场摆姿势吸人注意，秘书队友负责掩护。"
+    },
+    {
+      "word": "先輩",
+      "name": "前辈示范",
+      "category": "japanese",
+      "trigger": "frontcourt",
+      "primitives": [
+        "screen",
+        "giveAndGo"
+      ],
+      "risk": "none",
+      "description": "前辈先示范漂亮挡拆，后辈立即照做。"
+    },
+    {
+      "word": "後輩",
+      "name": "后辈冲刺",
+      "category": "japanese",
+      "trigger": "afterConcede",
+      "primitives": [
+        "sprint",
+        "backdoorCut"
+      ],
+      "risk": "trip",
+      "description": "大喊前辈我来了，跑太快险些撞篮柱。"
+    },
+    {
+      "word": "幽霊",
+      "name": "幽灵背刺",
+      "category": "japanese",
+      "trigger": "pressed",
+      "primitives": [
+        "markWrong",
+        "backdoorCut"
+      ],
+      "risk": "none",
+      "description": "幽灵残影飘在防守正面，真实球员从背后溜过。"
+    },
+    {
+      "word": "番長",
+      "name": "老大就是我",
+      "category": "japanese",
+      "trigger": "paint",
+      "primitives": [
+        "screen",
+        "powerDunk"
+      ],
+      "risk": "tired",
+      "description": "不良番长大摇大摆冲篮下，霸气落地后喘气。"
+    },
+    {
+      "word": "🔥❄️",
+      "name": "冰火交错",
+      "category": "internet",
+      "trigger": "frontcourt",
+      "primitives": [
+        "slowZone",
+        "alleyOop"
+      ],
+      "risk": "wild",
+      "description": "火花追着冰雾球影在空中画圈，篮下真实空接可能偏。"
+    },
+    {
+      "word": "🍕🍔",
+      "name": "快餐快攻",
+      "category": "internet",
+      "trigger": "afterSteal",
+      "primitives": [
+        "sprint",
+        "fastBreak"
+      ],
+      "risk": "tired",
+      "description": "披萨与汉堡形状的纸片一路飞，球员像外卖小哥跑得脚软。"
+    },
+    {
+      "word": "⚡🧊",
+      "name": "闪电冻篮",
+      "category": "internet",
+      "trigger": "danger",
+      "primitives": [
+        "slowZone",
+        "blockBoost"
+      ],
+      "risk": "gap",
+      "description": "篮下出现闪电形冰纹提高盖帽时机，外线完全裸露。"
+    },
+    {
+      "word": "🗿💀",
+      "name": "面无表情",
+      "category": "internet",
+      "trigger": "defend",
+      "primitives": [
+        "calm",
+        "paintWall"
+      ],
+      "risk": "gap",
+      "description": "石像和骷髅面不改色排成铁墙，三分线没人管。"
+    },
+    {
+      "word": "🐱🐶",
+      "name": "猫狗乱斗",
+      "category": "internet",
+      "trigger": "defend",
+      "primitives": [
+        "doubleTeam",
+        "stealBoost"
+      ],
+      "risk": "crash",
+      "description": "两只表情动物影子追着球滚，队友可能互相撞翻。"
+    },
+    {
+      "word": "🍵☕",
+      "name": "冷热饮品",
+      "category": "internet",
+      "trigger": "frontcourt",
+      "primitives": [
+        "calm",
+        "curvePass"
+      ],
+      "risk": "none",
+      "description": "茶杯和咖啡杯在空中画出蒸汽传球线，节奏悠闲。"
+    },
+    {
+      "word": "🌞🌙",
+      "name": "昼夜交替",
+      "category": "internet",
+      "trigger": "frontcourt",
+      "primitives": [
+        "swap",
+        "highArc"
+      ],
+      "risk": "miscomm",
+      "description": "场地亮暗一闪两人互换，抛投时机不好容易误传。"
+    },
+    {
+      "word": "🍀💰",
+      "name": "幸运打铁",
+      "category": "internet",
+      "trigger": "afterMiss",
+      "primitives": [
+        "lucky",
+        "tipIn"
+      ],
+      "risk": "celebrate",
+      "description": "幸运草与金币飞向篮框，可能只是制造更好补篮位置。"
+    }
+  ],
+  "matchups": [
+    {
+      "mode": "篮球",
+      "teamA": "球王",
+      "teamB": "裁判",
+      "name": "王者也怕哨子",
+      "description": "球王炫技时裁判声效误导，对手连携也更易准备好反制",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "三分",
+      "teamB": "盖帽",
+      "name": "空中对线",
+      "description": "远投与封盖都更频繁，进球还是只按真实物理判定",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "绝杀",
+      "teamB": "逆转",
+      "name": "谁先喊最后一球",
+      "description": "双方后半场连携变得更积极，输家可能提前庆祝",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "新秀",
+      "teamB": "老将",
+      "name": "年轻不讲武德",
+      "description": "新人高速抢攻，老将依靠成熟站位，互相容易被激怒",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "后卫",
+      "teamB": "中锋",
+      "name": "矮个对巨人",
+      "description": "外线与内线防守被聚光灯同时放大，反跑切入更重要",
+      "effect": "spotlight"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "主场",
+      "teamB": "客场",
+      "name": "谁的地盘",
+      "description": "两队各有一块相同减速区域，公平模拟主客场压力",
+      "effect": "weather"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "加时",
+      "teamB": "终场",
+      "name": "还剩几秒",
+      "description": "末段两队连携准备加速，但不能额外修改比赛计时",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "篮板",
+      "teamB": "补篮",
+      "name": "篮板球归谁",
+      "description": "补篮后的另队连携可快速恢复，制造二次篮板争夺",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "黑马",
+      "teamB": "冠军",
+      "name": "黑马挑战冠军",
+      "description": "比分领先者被聚光灯盯防，落后者空切空间增加",
+      "effect": "spotlight"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "罚球",
+      "teamB": "压哨",
+      "name": "严肃对上着急",
+      "description": "准心被一次又一次假哨干扰，真实出手仍会被盖",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "迟到",
+      "teamB": "早退",
+      "name": "一个才来一个要走",
+      "description": "两队开场疯狂交换进攻方向，战术出现跑位错觉",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "掉线",
+      "teamB": "断电",
+      "name": "全场信号故障",
+      "description": "两边各出现短暂的减速区，不妨碍本地模拟继续",
+      "effect": "weather"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "上头",
+      "teamB": "沉默",
+      "name": "暴躁对冷脸",
+      "description": "沉默发动控制时上头队缩短下一次连携等待",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "升职",
+      "teamB": "降薪",
+      "name": "工资到底去哪了",
+      "description": "金色纸片把防守注意力吸到持球者，另一人偷偷切入",
+      "effect": "spotlight"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "红包",
+      "teamB": "存款",
+      "name": "钱去哪了",
+      "description": "现金特效引发双方注意力集中，实际上篮球仍只有一颗",
+      "effect": "spotlight"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "复合",
+      "teamB": "分手",
+      "name": "爱情二次攻防",
+      "description": "一方换位连携后，另一方更容易发动反跑反制",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "太极",
+      "teamB": "醉拳",
+      "name": "稳的遇到晕的",
+      "description": "圆滑转身遇见摇晃突破，双方连携回应更快",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "青龙",
+      "teamB": "白虎",
+      "name": "东西神兽战",
+      "description": "龙影与虎纹齐出场，篮球依旧只有一颗",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "朱雀",
+      "teamB": "玄武",
+      "name": "飞焰碰铁墙",
+      "description": "强攻扣篮对抗厚重篮下防守，发动时另一队获得反应机会",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "哪吒",
+      "teamB": "悟空",
+      "name": "神话少年德比",
+      "description": "观众聚光灯两边轮番跟着抢镜的选手跑，队友可能空切",
+      "effect": "spotlight"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "唐僧",
+      "teamB": "八戒",
+      "name": "师徒去哪吃饭",
+      "description": "一队说教另一队抢板，双方连携频率增加",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "武士",
+      "teamB": "忍者",
+      "name": "明刀对暗影",
+      "description": "忍者偷跑、武士冲刺交替触发快攻反制",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "寿司",
+      "teamB": "すし",
+      "name": "中日寿司大战",
+      "description": "相同食物在不同语言上演出，观众把两边当成同一队",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "漫画",
+      "teamB": "バグ",
+      "name": "热血分镜遇到故障",
+      "description": "原本完美的分镜被跳帧效果打断，实际传球仍可被拦截",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "AI",
+      "teamB": "人工",
+      "name": "算法还是手感",
+      "description": "预测路线与手绘路线争夺注意力，后续传球仍按模拟判定",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "VR",
+      "teamB": "AR",
+      "name": "谁的篮框是真的",
+      "description": "双方视觉叠层仅生成假球和辅助线，比赛只认真球",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "GG",
+      "teamB": "EZ",
+      "name": "提前开香槟",
+      "description": "双方都容易提前庆祝，真实比赛结果并不受文案决定",
+      "effect": "chaos"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "🍕🍔",
+      "teamB": "🍵☕",
+      "name": "快餐还是慢茶",
+      "description": "两种饮食打法形成节奏差，开局同时出现中立减速区",
+      "effect": "weather"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "裁判",
+      "teamB": "哨声",
+      "name": "真假哨子",
+      "description": "两队用哨声互相误导，双方抢断冷却缩短",
+      "effect": "counter"
+    },
+    {
+      "mode": "篮球",
+      "teamA": "社長",
+      "teamB": "後輩",
+      "name": "前后辈篮球",
+      "description": "上司摆姿势吸睛，后辈冲刺反跑，聚光灯追错人",
+      "effect": "spotlight"
+    }
+  ]
+}

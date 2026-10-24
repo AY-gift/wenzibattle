@@ -1,0 +1,86 @@
+﻿文字	别名(繁体/日文,用/分隔)	kind	opts(JSON)	normal标签	日文名	中文名	英文名	设计说明
+球		whirlwind	{}	bouncy	ボール回し	球球滚滚	Ball Roll	整字旋转撞人，碰撞后足球篮球都带旋转感
+篮		shield	"{""prop"":""🏀"",""hold"":true}"	heavy	バスケットの盾	大篮筐护盾	Basket Guard	变成巨大篮圈边框阻挡冲锋，不能直接改分
+板		shield	"{""prop"":""🪧"",""hold"":true}"	heavy	ボード返し	木板反弹	Board Rebound	举起巨大板子弹回一次冲击
+框		giant	"{""grow"":1.5}"	heavy	巨大フレーム	框住了！	Frame Trap	放大成框形本体堵住通道
+筐		drop	"{""prop"":""🧺"",""count"":2}"	chaos	かご落とし	篮筐套头	Basket Drop	大竹筐掉下使对手看不清方向
+帽		drop	"{""prop"":""🎩"",""count"":2,""onHit"":""confuse""}"	royal	帽子マジック	盖帽就戴帽	Hat Trick	帽子套在对手头上使其晕眩
+哨		roar	"{""pulses"":2}"	hasty	ホイッスル連打	乱吹哨子	Whistle Panic	哨音把附近敌人震退半步
+汗		poison	"{""fx"":""water""}"	slip	汗だくスリップ	汗水打滑	Sweat Slip	脚下汗滴变成小范围滑地
+肘		sweep	{}	angry	ひじスイング	肘击旋风	Elbow Spin	身体两侧猛甩出夸张肘影
+膝		uppercut	{}	bouncy	ひざ跳ね	膝盖火箭	Knee Rocket	膝字突然弹向空中撞击
+腕		throw	{}	hasty	手首スロー	甩腕传球	Wrist Flick	像弹簧般甩动文字本体把对手推开
+腰		whirlwind	{}	spinner	腰ぐるぐる	扭腰过人	Hip Twist	整个字扭成快速旋转的陀螺
+踝		freeze	"{""onHit"":""freeze""}"	slip	足首フリーズ	脚踝冻结	Ankle Freeze	地面出现滑线绊住急转弯者
+胸		shield	{}	heavy	胸板ガード	胸膛防护	Chest Guard	挺起胸脯把前进攻击推回去
+背		clones	"{""count"":2}"	ghost	背中に注意	背后有人	Behind You	背后出现同形残影吸引追击
+肌		giant	"{""grow"":1.3}"	heavy	筋肉マッチョ	肌肉膨胀	Muscle Flex	字体笔画像充气肌肉一样变粗
+筋		charge	{}	hasty	筋肉ダッシュ	抽筋冲刺	Cramp Dash	突然抽筋弹射撞人随后站不稳
+骨		topple	"{""selfFall"":true}"	slip	骨バラバラ	散架反弹	Bone Rattle	本体短暂散成骨节弹飞目标后倒地
+弹		uppercut	{}	bouncy	ばねジャンプ	弹上云霄	Spring Jump	文字像压紧的弹簧向上弹出
+投		throw	{}	hasty	投げつけ	投掷大王	Throw Master	用抛物线甩出自身残影
+传		magnet	{}	charm	パスをよこせ	传给我！	Pass Here	两侧出现传球吸引箭头
+接		magnet	{}	royal	キャッチ上手	稳稳接住	Safe Catch	变成一对大夹子把飞来的道具夹住
+抢		barrage	{}	angry	とったぞ	抢抢抢！	Snatch Frenzy	快速小手影在目标旁乱抢
+防		shield	{}	heavy	絶対守備	防住再说	Defend First	双层防线浮现一秒
+切		sweep	{}	hasty	切り込み	切入如刀	Sharp Cut	角色像刀片一样斜向横扫
+盖		giantFall	"{""selfFall"":true}"	heavy	ふたをする	一盖定音	Cover Down	盖子般从空中落下压住目标
+扣		quake	{}	angry	ダンクどん	扣出地震	Dunk Quake	猛烈向地面一扣引起圆形震波
+跳跃		uppercut	"{""countdown"":true}"	bouncy	三段ジャンプ	三段起跳	Triple Hop	先蹲后连续三段弹跳
+三分球		beam	"{""prop"":""🏀""}"	hasty	超ロングスリー	三分穿云箭	Three Point Arrow	像光束一样抛出道具球影
+乌龙球		random	"{""selfStun"":true}"	chaos	オウンゴール!?	谁把球投反了	Wrong Basket	随机动作令本人摸不着头脑
+球鞋		charge	"{""prop"":""👟"",""hold"":true}"	hasty	スニーカーダッシュ	球鞋冒火	Sneaker Sprint	踩着运动鞋残影冲得停不下来
+护腕		shield	"{""prop"":""🧤"",""hold"":true}"	royal	リストガード	护腕开盾	Wrist Guard	护腕护住躯干阻挡冲刺
+发球		throw	"{""prop"":""🏀""}"	royal	はじめのスロー	开球投送	Opening Throw	大字浮现指示箭头完成一次投送
+篮球		kick	"{""prop"":""🏀"",""hold"":true}"	bouncy	バスケットキック	篮球踢踢	Basket Kick	文字像拿篮球当足球一样使劲踢开
+篮圈		magnet	"{""prop"":""⭕""}"	charm	リングの誘惑	篮圈吸引力	Rim Attraction	巨大圆环吸引附近道具
+篮架		mountain	{}	heavy	リングの柱	篮架铁柱	Hoop Pillar	本体像篮架立柱一样扎稳地面
+篮网		clones	"{""count"":3}"	spinner	ネットの幻	篮网假影	Net Mirage	网格残影让对手判断方向困难
+罚球		lecture	"{""countdown"":true}"	royal	フリースロー講座	罚球礼仪	Free Throw Lesson	长篇解释罚球规则令敌人打哈欠
+绝杀		rage	"{""countdown"":true}"	angry	最後の一投	最后一球	Last Shot	开始倒数后拼命冲向目标
+逆转		heal	{}	royal	逆転スイッチ	逆转开关	Comeback Switch	失败时打气激活跳跃力
+新秀		charge	"{""selfFall"":true}"	hasty	新人の全力	菜鸟猛冲	Rookie Rush	看见篮球就疯狂前冲直到摔倒
+老将		lecture	{}	royal	ベテラン授業	老将指导	Veteran Advice	拿出旧照片给敌人讲当年故事
+主场		roar	"{""pulses"":2}"	royal	ホームの声援	主场欢呼	Home Cheer	观众齐声喊叫推出冲击波
+客场		lazy	"{""counter"":true}"	royal	アウェイの冷静	客场冷面	Away Calm	嘘声中泰然自若地躲过攻击
+教练		lecture	"{""prop"":""📋""}"	royal	監督の説教	战术板说教	Coach Lecture	巨大战术板遮住对手视野
+队长		shield	"{""prop"":""📣""}"	royal	キャプテン集合	队长集合！	Captain Call	喊话队员站成一列冲撞
+替补		vanish	{}	ghost	ベンチから出現	板凳奇兵	Bench Surprise	从替补席下突然现身后跳跃
+暂停		freeze	"{""prop"":""⏸️""}"	royal	タイムアウト	全场暂停！	Time Out	巨大的暂停标志一闪而过
+录像		clones	"{""count"":2}"	ghost	リプレイ分身	录像回放	Instant Replay	同一动作重复出现多个残影
+弹幕		drop	"{""props"":[""💬"",""📢""],""count"":3}"	chaos	コメントの雨	弹幕遮屏	Comment Storm	字幕气泡砸向对手
+网球		throw	"{""prop"":""🎾""}"	bouncy	テニスボール	打错球了	Wrong Sport	擂台上丢出网球乱弹
+排球		uppercut	"{""prop"":""🏐""}"	bouncy	バレーボール	把球拍上天	Volley Shot	向上挥击把道具拍高
+足球		kick	"{""prop"":""⚽""}"	hasty	サッカーキック	踢错项目	Wrong Ball Game	一脚飞踢道具足球幻影
+乒乓		barrage	"{""prop"":""🏓""}"	hasty	ピンポン連打	乒乓连击	Ping Pong Rush	乒乓球拍残影快速连打
+摇滚		roar	"{""pulses"":3}"	angry	ロック爆音	摇滚震场	Rock Blast	音箱突然轰鸣让对手转圈
+嘻哈		whirlwind	{}	spinner	ヒップホップ回転	嘻哈转身	Hip Hop Spin	像街舞一样旋转踢向敌人
+说唱		barrage	{}	hasty	ラップ連射	连珠炮说唱	Rap Barrage	每唱一字就飞出一个小字打人
+卧底		feint	{}	ghost	スパイの影	卧底反扑	Undercover Flip	对手以为站在身旁的是友军
+路人		lazy	"{""counter"":true}"	tiny	通りすがり	路过而已	Just Passing	角色低头走过反弹来袭者
+观众		roar	"{""pulses"":2}"	charm	観客の声	观众助攻	Crowd Assist	看台嘴巴像号角呼喊
+摄影		clones	"{""count"":2}"	royal	カメラ分身	全场拍照	Photo Moment	快门发出闪光留下残影
+键帽		drop	"{""props"":[""⌨️"",""💻""],""count"":2}"	chaos	キーの雨	键帽雨	Keycap Rain	键帽像大雨一样掉落
+社交		joke	{}	charm	コミュ力爆発	社交达人	Social Butterfly	对每个人打招呼直到对手笑倒
+尴尬		topple	"{""selfFall"":true}"	slip	気まずい空気	全场尬住	Awkward Freeze	尴尬到地板开裂自己先摔
+再见		vanish	{}	ghost	またね	拜拜闪现	Goodbye Blink	说声再见就短暂消失再出现
+你好		roar	"{""pulses"":1}"	charm	こんにちは	打个招呼	Hello Wave	大声你好把所有人吓一跳
+追星		magnet	"{""prop"":""⭐""}"	charm	推しを追え	全场追星	Star Chase	敌人被明星贴纸吸引跑错
+ダンク		uppercut	{}	bouncy	ダンクジャンプ	暴跳灌篮	Dunk Jump	文字像弹簧一样向上跃起
+バスケ		whirlwind	{}	spinner	バスケ回転	篮球旋转	Basket Spin	文字沿半圈回转
+シュート		beam	{}	royal	ロングシュート	远射直线	Long Shot	呈直线射出发光篮球残影
+パス		magnet	{}	royal	パスちょうだい	传我！	Pass Me	球员朝队友伸展出传球箭头
+リバウンド		uppercut	{}	bouncy	リバウンド跳び	篮板升空	Rebound Leap	篮球反弹后突然猛跳
+ブロック		shield	{}	heavy	ブロックの壁	盖帽墙	Block Wall	本体变为小挡板挡住敌人
+コーチ		lecture	"{""prop"":""📋""}"	royal	コーチの指示	教练战术	Coach Call	突然拿出画满箭头的战术板
+スリー		beam	{}	hasty	スリー狙い	三分强投	Three Attempt	光线像三根线从身上射出
+あつい		fireCharge	{}	angry	あつあつダンク	热到暴扣	Hot Dunk	角色热得跳起来到处乱转
+おそい		lazy	"{""counter"":true}"	sleepy	のろのろ逆転	慢吞吞逆袭	Slow Comeback	动作永远晚半拍,敌人撞上反被弹走
+NBA		giant	"{""grow"":1.3}"	royal	超スター登場	明星登场	Superstar Entrance	大字出场自带球馆聚光灯
+MVP		giant	"{""grow"":1.2}"	royal	最優秀だぞ	我是MVP	MVP Pose	自信巨大化摆姿势
+DUNK		uppercut	{}	bouncy	ダンク爆発	DUNK起飞	Dunk Blast	文字跳上天空后猛烈砸下来
+SWISH		beam	{}	royal	ネットだけ	空心幻想	Nothing But Net	擂台发射细线状光束
+CLUTCH		rage	"{""countdown"":true}"	royal	勝負強い	关键先生	Clutch Time	倒数最后三秒爆发冲刺
+ROOKIE		charge	"{""selfFall"":true}"	hasty	新人全開	菜鸟来了	Rookie Charge	新手冲锋到墙上才停
+BOUNCE		uppercut	{}	bouncy	跳ね続ける	弹弹乐	Bounce All Day	身体反复弹到半空
+AIRBALL		random	"{""selfStun"":true}"	chaos	エアボール	三不沾专家	Airball King	道具篮球从篮框旁远远飞过

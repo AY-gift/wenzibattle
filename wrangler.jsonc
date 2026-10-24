@@ -1,0 +1,17 @@
+// Cloudflare Workers — static assets only (no server code): the whole site is the built dist/.
+//   /            portal (game picker)
+//   /arena/      1v1 arena        /soccer/      4v4 football        /basketball/  2v2 basketball
+// Build first: `npm run build` (set SITE_URL to the public address so OG / X cards get absolute URLs).
+// Deploy: `npx wrangler deploy` (Workers Builds runs it for every push to the production branch).
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "glyph-rumble",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /soccer → /soccer/, /soccer/index.html → /soccer/ (query strings are kept).
+    "html_handling": "auto-trailing-slash",
+    // Unknown paths get dist/404.html with a 404 status (the games are not SPAs with routes).
+    "not_found_handling": "404-page"
+  }
+}

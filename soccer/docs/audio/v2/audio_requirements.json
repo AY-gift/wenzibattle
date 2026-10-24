@@ -1,0 +1,82 @@
+{
+  "project": "Glyph Soccer 字形足球",
+  "requirements": [
+    {
+      "id": "brawl_start",
+      "filename": "brawl_start.wav",
+      "name": "乱斗开始",
+      "category": "SFX",
+      "prompt": "boxing ring bell rung twice followed by a rising stadium crowd roar, cartoon arcade fighting game",
+      "negative_prompt": "",
+      "duration": 2,
+      "seed": -1,
+      "notes": "球场乱斗开始"
+    },
+    {
+      "id": "culture_sting",
+      "filename": "culture_sting.wav",
+      "name": "文化连携发动",
+      "category": "SFX",
+      "prompt": "short comedic brass fanfare sting with a cymbal hit, playful arcade game power-up cue",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "文化连携（四字文化队）发动"
+    },
+    {
+      "id": "rivalry_horn",
+      "filename": "rivalry_horn.wav",
+      "name": "宿敌对决",
+      "category": "SFX",
+      "prompt": "deep war horn blast over two heavy taiko drum hits, epic but slightly comedic, arcade sports intro",
+      "negative_prompt": "",
+      "duration": 3,
+      "seed": -1,
+      "notes": "宿敌对决开场"
+    },
+    {
+      "id": "box_thud",
+      "filename": "box_thud.wav",
+      "name": "纸箱落地",
+      "category": "SFX",
+      "prompt": "empty cardboard box dropping onto grass and a football bouncing off it, hollow papery thump",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "纸箱障碍出现 / 球撞纸箱"
+    },
+    {
+      "id": "backfire_boing",
+      "filename": "backfire_boing.wav",
+      "name": "连携翻车",
+      "category": "SFX",
+      "prompt": "cartoon slip and fall, rubbery boing and a small crash, then a short sad trombone wah",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "文化连携失误（摔倒、撞人、踢飞）"
+    },
+    {
+      "id": "chain_pass",
+      "filename": "chain_pass.wav",
+      "name": "一脚连传",
+      "category": "SFX",
+      "prompt": "three quick football taps in a row with light whooshes between them, crisp and rhythmic",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "连续一脚传球"
+    },
+    {
+      "id": "swap_poof",
+      "filename": "swap_poof.wav",
+      "name": "瞬间换位",
+      "category": "SFX",
+      "prompt": "quick cartoon smoke poof with a tiny magical shimmer, stage magician trick",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "队友换位 / 打乱对手站位"
+    }
+  ]
+}

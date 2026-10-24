@@ -1,0 +1,126 @@
+{
+  "project": "Glyph Basketball 字形篮球",
+  "requirements": [
+    {
+      "id": "dribble_bounce",
+      "filename": "dribble_bounce.wav",
+      "name": "运球",
+      "category": "SFX",
+      "prompt": "single basketball bounce on a hardwood floor, indoor gym, short and punchy, no reverb tail",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "运球（偶尔）/ 球落地"
+    },
+    {
+      "id": "swish_net",
+      "filename": "swish_net.wav",
+      "name": "空心入网",
+      "category": "SFX",
+      "prompt": "basketball dropping cleanly through a nylon net, soft swish, indoor arena",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "投篮命中"
+    },
+    {
+      "id": "rim_clank",
+      "filename": "rim_clank.wav",
+      "name": "打铁",
+      "category": "SFX",
+      "prompt": "basketball hitting a metal rim, loud ringing clank with a short wobble, indoor gym",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "球碰篮筐"
+    },
+    {
+      "id": "backboard_bang",
+      "filename": "backboard_bang.wav",
+      "name": "打板",
+      "category": "SFX",
+      "prompt": "basketball hitting a glass backboard, hard flat bang with slight rattle, indoor arena",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "球碰篮板"
+    },
+    {
+      "id": "dunk_slam",
+      "filename": "dunk_slam.wav",
+      "name": "扣篮",
+      "category": "SFX",
+      "prompt": "powerful slam dunk, rim crash and metal spring shake, net whip, arcade sports game impact",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "扣篮"
+    },
+    {
+      "id": "sneaker_squeak",
+      "filename": "sneaker_squeak.wav",
+      "name": "球鞋摩擦",
+      "category": "SFX",
+      "prompt": "two quick sneaker squeaks on a polished hardwood court, sharp changes of direction",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "变向 / 抢断 / 急停"
+    },
+    {
+      "id": "shot_release",
+      "filename": "shot_release.wav",
+      "name": "出手",
+      "category": "SFX",
+      "prompt": "basketball leaving the hands with a soft whoosh and slight spin, close perspective",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "投篮出手 / 传球"
+    },
+    {
+      "id": "block_swat",
+      "filename": "block_swat.wav",
+      "name": "盖帽",
+      "category": "SFX",
+      "prompt": "hand swatting a basketball away hard, slap and whoosh, crowd reaction not included",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "盖帽"
+    },
+    {
+      "id": "buzzer_final",
+      "filename": "buzzer_final.wav",
+      "name": "终场蜂鸣器",
+      "category": "SFX",
+      "prompt": "arena game horn buzzer, long loud electronic buzz, basketball end of game",
+      "negative_prompt": "",
+      "duration": 2,
+      "seed": -1,
+      "notes": "终场 / 进攻超时"
+    },
+    {
+      "id": "bgm_basket",
+      "filename": "bgm_basket.wav",
+      "name": "篮球比赛 BGM",
+      "category": "BGM",
+      "prompt": "upbeat arcade basketball game theme, funky bass, hip-hop drum groove, brass stabs, energetic and playful, no vocals",
+      "negative_prompt": "",
+      "duration": 90,
+      "seed": -1,
+      "notes": "比赛中循环播放"
+    },
+    {
+      "id": "crowd_gym",
+      "filename": "crowd_gym.wav",
+      "name": "篮球馆观众",
+      "category": "Ambience",
+      "prompt": "indoor basketball arena crowd murmur with scattered claps and sneaker squeaks in the distance, no music",
+      "negative_prompt": "",
+      "duration": 20,
+      "seed": -1,
+      "notes": "比赛中背景循环"
+    }
+  ]
+}

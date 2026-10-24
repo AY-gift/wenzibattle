@@ -1,0 +1,126 @@
+{
+  "project": "Glyph Soccer 字形足球",
+  "requirements": [
+    {
+      "id": "kick_ball",
+      "filename": "kick_ball.wav",
+      "name": "踢球",
+      "category": "SFX",
+      "prompt": "single soft leather football kick, short punchy thump, close, outdoor, no reverb tail",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "传球 / 普通射门"
+    },
+    {
+      "id": "kick_power",
+      "filename": "kick_power.wav",
+      "name": "大力射门",
+      "category": "SFX",
+      "prompt": "very hard football strike, explosive leather thwack with a short whoosh, arcade sports game",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "射门（必杀射门叠加特效音）"
+    },
+    {
+      "id": "whistle_kickoff",
+      "filename": "whistle_kickoff.wav",
+      "name": "开球哨",
+      "category": "SFX",
+      "prompt": "referee whistle, one short sharp blast, outdoor stadium, slight echo",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "开球 / 进球后重新开球"
+    },
+    {
+      "id": "whistle_final",
+      "filename": "whistle_final.wav",
+      "name": "终场哨",
+      "category": "SFX",
+      "prompt": "referee whistle, three blasts, the last one long, outdoor stadium",
+      "negative_prompt": "",
+      "duration": 2.5,
+      "seed": -1,
+      "notes": "比赛结束"
+    },
+    {
+      "id": "goal_net",
+      "filename": "goal_net.wav",
+      "name": "球入网",
+      "category": "SFX",
+      "prompt": "football hitting the back of a goal net, soft swish and rope rattle, close",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "进球"
+    },
+    {
+      "id": "goal_horn",
+      "filename": "goal_horn.wav",
+      "name": "进球号角",
+      "category": "SFX",
+      "prompt": "stadium goal horn, loud brassy air horn with crowd roar building, celebratory",
+      "negative_prompt": "",
+      "duration": 2.5,
+      "seed": -1,
+      "notes": "进球"
+    },
+    {
+      "id": "post_clang",
+      "filename": "post_clang.wav",
+      "name": "击中门框",
+      "category": "SFX",
+      "prompt": "football hitting a metal goal post, loud ringing clang, short decay",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "击中门柱或横梁"
+    },
+    {
+      "id": "keeper_catch",
+      "filename": "keeper_catch.wav",
+      "name": "扑救接球",
+      "category": "SFX",
+      "prompt": "goalkeeper catching a football, padded leather slap into gloves, short",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "守门员扑救"
+    },
+    {
+      "id": "tackle_slide",
+      "filename": "tackle_slide.wav",
+      "name": "铲球",
+      "category": "SFX",
+      "prompt": "sliding tackle on grass, quick turf scrape and a soft thud, cartoon",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "抢断 / 铲球"
+    },
+    {
+      "id": "bgm_match",
+      "filename": "bgm_match.wav",
+      "name": "足球比赛 BGM",
+      "category": "BGM",
+      "prompt": "upbeat arcade football game theme, energetic brass and drums, playful and fast, chiptune flavour, stadium energy",
+      "negative_prompt": "",
+      "duration": 90,
+      "seed": -1,
+      "notes": "比赛中循环播放"
+    },
+    {
+      "id": "crowd_chant",
+      "filename": "crowd_chant.wav",
+      "name": "观众助威",
+      "category": "Ambience",
+      "prompt": "football stadium crowd chanting and clapping in rhythm, distant, outdoor, no music",
+      "negative_prompt": "",
+      "duration": 20,
+      "seed": -1,
+      "notes": "比赛中背景循环"
+    }
+  ]
+}

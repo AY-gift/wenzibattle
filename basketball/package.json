@@ -1,0 +1,21 @@
+{
+  "name": "@glyph/basketball",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Glyph Basketball — 2v2 arcade basketball with glyph characters.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "docs:audio": "node scripts/gen-audio-docs.mjs",
+    "audio:index": "node scripts/audio-index.mjs"
+  },
+  "dependencies": {
+    "@fontsource/m-plus-rounded-1c": "^5.3.0",
+    "@glyph/shared": "*",
+    "three": "^0.186.1"
+  }
+}

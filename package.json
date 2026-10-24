@@ -1,0 +1,38 @@
+{
+  "name": "glyph-games",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Glyph Rumble game family: Arena (1v1), Soccer (4v4), Basketball (2v2) — one shared character system.",
+  "workspaces": [
+    "shared",
+    "arena",
+    "soccer",
+    "basketball"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @glyph/arena",
+    "dev:arena": "npm run dev -w @glyph/arena",
+    "test": "npm test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "build": "node scripts/build-all.mjs",
+    "preview": "vite preview --outDir dist --port 4173",
+    "docs:skills": "npm run docs:skills -w @glyph/shared",
+    "dev:soccer": "npm run dev -w @glyph/soccer",
+    "dev:basketball": "npm run dev -w @glyph/basketball",
+    "audio:compress": "node scripts/compress-audio.mjs",
+    "deploy": "npm run build && wrangler deploy",
+    "preview:worker": "wrangler dev --port 8787"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/three": "^0.186.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.152.0"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

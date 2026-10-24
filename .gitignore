@@ -1,0 +1,19 @@
+node_modules
+dist
+*.log
+
+# Cloudflare / local secrets — never commit (set them in the Cloudflare dashboard instead)
+.wrangler
+.dev.vars
+.env
+.env.*
+
+# Audio masters: the games ship the compressed .mp3 (npm run audio:compress); keep .wav locally
+soundeffectRaw/
+*/public/audio/*.wav
+
+# Raw design packs as received (their contents live in shared/docs/design/)
+/*.zip
+
+# Local editor / assistant settings
+.claude/settings.local.json

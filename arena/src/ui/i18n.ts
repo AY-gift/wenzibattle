@@ -1,0 +1,213 @@
+/** UI strings. Japanese is the default; Chinese and English are switchable. */
+import { getLang, type Lang } from '@shared/i18n';
+
+// Language state and character descriptions are shared by all Glyph games.
+export { BEHAVIOR_TEXT, describeFighter, elementName, ELEMENT_TEXT, getLang, initLang, LANGS, onLangChange, setLang, TRAIT_TEXT, type Lang } from '@shared/i18n';
+
+type Dict = Record<string, string>;
+
+const ja: Dict = {
+  title: '字形乱闘 3D',
+  tagline: '文字を入れると、3Dのおもちゃになって勝手に戦う！',
+  fighterA: '選手 A',
+  fighterB: '選手 B',
+  placeholder: '文字・絵文字・顔文字',
+  random: 'ランダム',
+  randomMatch: 'ランダム対決',
+  fight: '開戦！',
+  weight: '重さ', speed: '速さ', attack: '攻撃', defense: '防御', stability: '安定', luck: '運',
+  pause: '一時停止', resume: '再開', restart: '再戦', change: '選手を変える', save: '画像を保存', share: 'シェア', again: 'もう一回',
+  draw: '引き分け', reason_ko: 'KO 勝ち', reason_ringout: 'リングアウト勝ち', reason_timeup: '判定勝ち', reason_draw: '引き分け',
+  loading: '生成中…', empty: '文字を入れてね', invalid: '見える文字を入れてね',
+  warnTruncated: '長すぎるので {n} 文字までにしました', warnTofu: 'このフォントで表示できない文字があります',
+  warnInvisible: '形が見えないので「？」の箱で戦います', warnNativeEmoji: '絵文字は端末のフォントで表示中',
+  warnFallback: '立体化できなかったので厚板モードで表示中',
+  ready: 'READY…', go: 'FIGHT!', timeUp: 'TIME UP!',
+  quality_high: '画質: 高', quality_low: '画質: 低', sound_on: '音: ON', sound_off: '音: OFF',
+  copied: 'リンクをコピーしました', shareText: '『字形乱闘 3D』で「{a}」VS「{b}」→ {w}',
+  shareDraw: '引き分け', shareWin: '「{w}」の勝ち！',
+  seed: '対戦シード', camHint: 'ドラッグで視点回転・ホイールでズーム',
+  replay: '同じ対戦を再生', vs: 'VS', element: '属性', hits: 'ヒット', maxHit: '最大ダメージ', time: '決着',
+  footer: '絵文字: Twemoji (CC-BY 4.0) / フォント: M PLUS Rounded 1c (OFL)',
+  special: '必殺技',
+  // ---- share ----
+  sharePanel: 'シェア', shareNative: 'アプリで共有…', shareNativeImg: '画像つきで共有…', shareX: 'X でポスト', shareLine: 'LINE で送る', shareBsky: 'Bluesky に投稿',
+  copyLink: '戦績リンクをコピー', saveCard: '戦績画像を保存（PNG）', challengeLink: 'この対戦カードで挑戦状を送る', challengeCopied: '挑戦リンクをコピーしました',
+  imageSaved: '画像を保存しました', shareHint: 'ボタンは各サービスの投稿画面を開くだけです。投稿するかどうかはあなたが決めます。', closeBtn: '閉じる', copyFailed: 'コピーできませんでした。下のリンクを長押ししてコピーしてください',
+  sharePost: '『字形乱闘 3D』「{a}」VS「{b}」→ {res}（{detail}）', shareChallenge: '『字形乱闘 3D』「{a}」VS「{b}」— あなたの文字なら勝てる？', shareTag: '#字形乱闘',
+  mvp: 'MVP', mvpText: '「{w}」— 必殺技「{move}」・ヒット {hits} 回', highlight: '名場面', modeArena: 'アリーナ · 1 VS 1', cardFooter: '{site} で遊べる・登録不要',
+  reportTitle: '対戦レポート', reportNote: '共有された試合の実際の結果です。', watchReplay: 'リプレイを見る', replayNote: '同じシードで再シミュレーションします（端末のフォントで展開が変わることがあります）', challengeMine: '自分の文字で挑戦する',
+  challengeBanner: '挑戦状が届いた！「開戦！」で勝負', hpScore: 'HP {a} : {b}',
+  sep: '・', end: '。', open: '「', close: '」',
+};
+
+const zh: Dict = {
+  title: '字形乱斗 3D',
+  tagline: '输入文字，它就会变成 3D 玩具自动开打！',
+  fighterA: '选手 A',
+  fighterB: '选手 B',
+  placeholder: '文字 / Emoji / 颜文字',
+  random: '随机',
+  randomMatch: '随机对决',
+  fight: '开战！',
+  weight: '重量', speed: '速度', attack: '攻击', defense: '防御', stability: '稳定', luck: '幸运',
+  pause: '暂停', resume: '继续', restart: '重赛', change: '换选手', save: '保存图片', share: '分享', again: '再战一次',
+  draw: '平局', reason_ko: 'KO 胜', reason_ringout: '场外胜', reason_timeup: '判定胜', reason_draw: '平局',
+  loading: '生成中…', empty: '请输入文字', invalid: '请输入可见的文字',
+  warnTruncated: '太长了，只保留前 {n} 个字', warnTofu: '有字符当前字体无法显示',
+  warnInvisible: '没有可见形状，改用「？」方块参战', warnNativeEmoji: 'Emoji 使用本机字体显示',
+  warnFallback: '无法生成立体模型，改用厚片模式',
+  ready: 'READY…', go: 'FIGHT!', timeUp: 'TIME UP!',
+  quality_high: '画质：高', quality_low: '画质：低', sound_on: '声音：开', sound_off: '声音：关',
+  copied: '链接已复制', shareText: '《字形乱斗 3D》「{a}」VS「{b}」→ {w}',
+  shareDraw: '平局', shareWin: '「{w}」获胜！',
+  seed: '对战种子', camHint: '拖动旋转视角 · 滚轮缩放',
+  replay: '重播同一场', vs: 'VS', element: '属性', hits: '命中', maxHit: '最大伤害', time: '决胜',
+  footer: 'Emoji: Twemoji (CC-BY 4.0) / 字体: M PLUS Rounded 1c (OFL)',
+  special: '必杀技',
+  // ---- share ----
+  sharePanel: '分享', shareNative: '系统分享…', shareNativeImg: '带图片分享…', shareX: '分享到 X', shareLine: '分享到 LINE', shareBsky: '分享到 Bluesky',
+  copyLink: '复制战报链接', saveCard: '保存战报 PNG', challengeLink: '挑战这个阵容（复制挑战链接）', challengeCopied: '挑战链接已复制',
+  imageSaved: '图片已保存', shareHint: '按钮只会打开对应平台的发帖页面，发不发由你决定。', closeBtn: '关闭', copyFailed: '复制失败，请长按下方链接手动复制',
+  sharePost: '《字形乱斗 3D》「{a}」VS「{b}」→ {res}（{detail}）', shareChallenge: '《字形乱斗 3D》「{a}」VS「{b}」—— 你的字能赢吗？', shareTag: '#字形乱斗',
+  mvp: 'MVP', mvpText: '「{w}」— 必杀技「{move}」· 命中 {hits} 次', highlight: '本场名场面', modeArena: '擂台 · 1 VS 1', cardFooter: '在 {site} 免费玩 · 无需注册',
+  reportTitle: '战报', reportNote: '这是分享者那一局的真实结果。', watchReplay: '看重播', replayNote: '用同一种子重新模拟（不同设备的字体可能让过程略有不同）', challengeMine: '用自己的字来挑战',
+  challengeBanner: '收到挑战书！点「开战！」开打', hpScore: '体力 {a} : {b}',
+  sep: '、', end: '。', open: '「', close: '」',
+};
+
+const en: Dict = {
+  title: 'Glyph Rumble 3D',
+  tagline: 'Type anything. It turns into a 3D toy and fights on its own!',
+  fighterA: 'Fighter A',
+  fighterB: 'Fighter B',
+  placeholder: 'Text, emoji, kaomoji',
+  random: 'Random',
+  randomMatch: 'Random match',
+  fight: 'FIGHT!',
+  weight: 'Weight', speed: 'Speed', attack: 'Attack', defense: 'Defense', stability: 'Stability', luck: 'Luck',
+  pause: 'Pause', resume: 'Resume', restart: 'Rematch', change: 'Change fighters', save: 'Save image', share: 'Share', again: 'Fight again',
+  draw: 'Draw', reason_ko: 'Win by KO', reason_ringout: 'Win by ring-out', reason_timeup: 'Win on decision', reason_draw: 'Draw',
+  loading: 'Building…', empty: 'Type something', invalid: 'Type something visible',
+  warnTruncated: 'Too long — kept the first {n} characters', warnTofu: 'Some characters are missing from the font',
+  warnInvisible: 'Nothing visible — fighting as a "?" box', warnNativeEmoji: 'Emoji drawn with this device’s font',
+  warnFallback: 'Could not extrude; using a thick tile instead',
+  ready: 'READY…', go: 'FIGHT!', timeUp: 'TIME UP!',
+  quality_high: 'Quality: High', quality_low: 'Quality: Low', sound_on: 'Sound: On', sound_off: 'Sound: Off',
+  copied: 'Link copied', shareText: 'Glyph Rumble 3D: "{a}" VS "{b}" → {w}',
+  shareDraw: 'Draw', shareWin: '"{w}" wins!',
+  seed: 'Battle seed', camHint: 'Drag to orbit · wheel to zoom',
+  replay: 'Replay this match', vs: 'VS', element: 'Element', hits: 'Hits', maxHit: 'Max hit', time: 'Decided at',
+  footer: 'Emoji: Twemoji (CC-BY 4.0) / Font: M PLUS Rounded 1c (OFL)',
+  special: 'Special',
+  // ---- share ----
+  sharePanel: 'Share', shareNative: 'Share via…', shareNativeImg: 'Share with image…', shareX: 'Post on X', shareLine: 'Send on LINE', shareBsky: 'Post on Bluesky',
+  copyLink: 'Copy result link', saveCard: 'Save report (PNG)', challengeLink: 'Challenge a friend with this lineup', challengeCopied: 'Challenge link copied',
+  imageSaved: 'Image saved', shareHint: 'These buttons only open each site’s own post screen — you decide whether to post.', closeBtn: 'Close', copyFailed: 'Couldn’t copy — long-press the link below to copy it',
+  sharePost: 'Glyph Rumble 3D: “{a}” VS “{b}” → {res} ({detail})', shareChallenge: 'Glyph Rumble 3D: “{a}” VS “{b}” — can your text win?', shareTag: '#GlyphRumble',
+  mvp: 'MVP', mvpText: '“{w}” — special move “{move}” · {hits} hits', highlight: 'Best moment', modeArena: 'ARENA · 1 VS 1', cardFooter: 'Play free at {site} · no sign-up',
+  reportTitle: 'Match report', reportNote: 'This is the actual result of the shared match.', watchReplay: 'Watch replay', replayNote: 'Re-simulated with the same seed (fonts on other devices can change how it plays out)', challengeMine: 'Challenge with my own text',
+  challengeBanner: 'You’ve been challenged! Hit FIGHT! to accept', hpScore: 'HP {a} : {b}',
+  sep: ', ', end: '.', open: '“', close: '”',
+};
+
+/** Battle report sentences. */
+const report: Record<Lang, Dict> = {
+  ja: {
+    overRopeBy: '「{a}」の一撃で「{b}」はロープを越えて場外へ！', slingshot: '「{a}」はロープの反動でブーメランのように戻ってきた。', ropeBounce: '「{a}」はロープに突っ込んでビヨーンと跳ね返された。',
+    signature: '「{a}」の必殺技「{move}」が炸裂！', sigFinish: '「{a}」の必殺技「{move}」で決着！', reflect: '「{a}」の鉄壁が「{b}」の攻撃を跳ね返した。', bribe: '「{b}」は「{a}」のばらまいたお金を拾うのに夢中になった。',
+    throw: '「{a}」は「{b}」を見事に投げ飛ばした。', lecture: '「{b}」は「{a}」のお説教で寝てしまった。', joke: '「{b}」は「{a}」の寒いダジャレで笑い転げた。', freeze: '「{b}」は「{a}」にカチコチに凍らされた。',
+    giant: '「{a}」は試合中に巨大化した。', confuse: '「{b}」は「{a}」のせいで知能が下がり、空気を殴り続けた。',
+    swallow: '「{a}」は「{b}」をひと口で飲み込み、砲弾のように吐き出した。', blameReflect: '「{a}」の責任転嫁で、「{b}」の攻撃が自分に跳ね返った。', soot: '「{a}」は炎で突っ込んだ結果、自分まで真っ黒こげになった。',
+    vanish: '「{a}」は一瞬消えて、背後から現れた。', lazy: '「{a}」は寝転がって攻撃を全部跳ね返した。', tremor: '「{a}」の大爆笑でリングが揺れた。', quake: '「{a}」の地響きでリングが揺れた。', chomp: '「{a}」は「{b}」にガブッとかみついた。', magnet: '「{b}」は「{a}」に吸い寄せられて一撃を食らった。',
+    drawKO: '「{a}」と「{b}」は相打ちで同時にダウン。引き分け！', drawRingout: '「{a}」と「{b}」は仲良く同時に場外へ。引き分け！',
+    judge: '時間切れ。体力差 {n} で「{a}」の判定勝ち。', judgeLuck: '時間切れ。ほぼ互角だったが、最後は運が「{a}」に味方した。',
+    selfDestruct: '「{a}」は自爆して、自分が吹き飛んだ…。', explodeFinish: '「{a}」の大爆発が「{b}」を吹き飛ばした！',
+    gasRingout: '「{a}」が神秘の気流を放ち、「{b}」を場外へ吹き飛ばした！', popRingout: '「{a}」は押し合いの末、ボヨーンと弾かれて場外へ。',
+    ringoutBy: '「{a}」の一撃で「{b}」は場外へ飛んでいった！', slipRingout: '「{a}」はすべって、そのまま場外へ消えた。',
+    selfRingout: '「{a}」は勢い余って、自分からロープを越えて場外へ…。', slamKO: '「{a}」はコーナーポストに叩きつけられて KO。', wallKO: '「{a}」は自分でコーナーポストに激突して KO…。',
+    burnKO: '「{a}」の炎で「{b}」はこんがり KO。', stompKO: '「{a}」が空から「{b}」を踏みつぶして KO！', critKO: '「{a}」の会心の一撃！「{b}」は KO。', ko: '「{a}」が「{b}」を KO した！',
+    doubleDown: '「{a}」と「{b}」が同時にずっこけた。', luckyDodge: '「{a}」は眠ったまま攻撃をかわした。', miracleDodge: '「{a}」は奇跡的に攻撃をかわした。',
+    trip: '「{a}」は倒れている「{b}」につまずいた。', upset: '小さな「{a}」が大きな「{b}」を吹っ飛ばした！', laughFall: '「{a}」は笑いすぎて自分で転んだ。',
+    wallCrash: '「{a}」は突っ込みすぎてコーナーポストに激突した。', slam: '「{a}」は「{b}」にコーナーへ叩きつけられた。', steam: '「{a}」の炎は「{b}」に当たってジュッと消えた。',
+    playDead: '「{a}」は死んだふりで「{b}」をやり過ごした。', fooled: '「{a}」はまんまと死んだふりにだまされた。', slip: '「{a}」は何もないところで突然すべった。',
+    rudeAwakening: '寝ていた「{a}」は叩き起こされて激怒した。', explode: '「{a}」が大爆発を起こした！', pop: '「{a}」と「{b}」は押し合いの末、ボヨーンと弾け飛んだ。',
+    panic: '追い詰められた「{a}」が逆ギレ突進した。', revive: '「{a}」は何事もなかったかのように起き上がった。',
+    gas: '「{a}」は謎の気流で「{b}」を吹き飛ばした。', gasMiss: '「{a}」は謎の気流を放ったが、誰もいなかった。', charm: '「{b}」は「{a}」にメロメロになった。',
+    dizzy: '「{a}」は回りすぎて目を回した。', stomp: '「{a}」は空から「{b}」を踏みつけた。', zap: '「{a}」の電撃で「{b}」がビリビリしびれた。',
+    sleep: '「{a}」は試合中に居眠りを始めた。', burn: '「{a}」の炎が「{b}」を焦がした。', crit: '「{a}」の会心の一撃が炸裂した。', surprise: '「{a}」は背後から不意打ちした。',
+    taunt: '「{a}」は余裕の挑発ポーズを決めた。', clash: '「{a}」と「{b}」は真正面から相打ちになった。', elementBonus: '「{a}」は属性の相性で「{b}」を圧倒した。',
+    dodge: '「{a}」はひらりと身をかわした。', comeback: '「{a}」は瀕死からの大逆転！', perfect: '「{a}」は無傷の完全勝利！', bigHit: '「{a}」の最大ダメージは {n}！',
+    noHits: '一発も当たらない不思議な試合だった。', clumsy: 'この試合、両者あわせて {n} 回も転んだ。', solid: '「{a}」の堅実な勝利。',
+  },
+  zh: {
+    overRopeBy: '「{a}」一记重击把「{b}」打出了围绳！', slingshot: '「{a}」被围绳弹回来，像回旋镖一样。', ropeBounce: '「{a}」撞上围绳，被“嘣”地弹了回来。',
+    signature: '「{a}」的必杀技「{move}」炸裂全场！', sigFinish: '「{a}」用必杀技「{move}」终结了比赛！', reflect: '「{a}」的铁壁把「{b}」的攻击原样弹了回去。', bribe: '「{b}」忙着捡「{a}」撒的钱，忘了比赛。',
+    throw: '「{a}」一个过肩摔把「{b}」扔了出去。', lecture: '「{b}」听「{a}」讲课听睡着了。', joke: '「{b}」被「{a}」的冷笑话笑到打滚。', freeze: '「{b}」被「{a}」冻成了冰棍。',
+    giant: '「{a}」在比赛中巨大化了。', confuse: '「{b}」被「{a}」降智，对着空气打了半天。',
+    swallow: '「{a}」一口吞下「{b}」，又像炮弹一样吐了出来。', blameReflect: '「{a}」成功甩锅，「{b}」被自己的攻击砸中。', soot: '「{a}」引火烧身冲过去，最后把自己熏得漆黑。',
+    vanish: '「{a}」突然消失，又从背后冒了出来。', lazy: '「{a}」直接躺平，把攻击全弹了回去。', tremor: '「{a}」笑得整个擂台都在抖。', quake: '「{a}」一跺脚，整个擂台都在晃。', chomp: '「{a}」一口咬住了「{b}」。', magnet: '「{b}」被「{a}」吸过去挨了一下。',
+    drawKO: '「{a}」和「{b}」同归于尽，双双倒下。平局！', drawRingout: '「{a}」和「{b}」手拉手一起掉出场外。平局！',
+    judge: '时间到。「{a}」以 {n} 点体力优势判定获胜。', judgeLuck: '时间到。双方几乎打平，最后幸运站在了「{a}」这边。',
+    selfDestruct: '「{a}」自爆了，结果把自己炸飞了……', explodeFinish: '「{a}」的大爆炸把「{b}」炸飞了！',
+    gasRingout: '「{a}」释放了神秘气流，把「{b}」吹出了场外！', popRingout: '「{a}」在推挤中被“嘭”地弹出了场外。',
+    ringoutBy: '「{a}」一击把「{b}」打飞出了场外！', slipRingout: '「{a}」脚下一滑，直接滑出了场外。',
+    selfRingout: '「{a}」冲得太猛，自己翻出了围绳……', slamKO: '「{a}」被砸在角柱上，KO。', wallKO: '「{a}」冲得太猛，自己撞上角柱 KO……',
+    burnKO: '「{a}」的火焰把「{b}」烤得焦香 KO。', stompKO: '「{a}」从天而降踩扁了「{b}」！', critKO: '「{a}」会心一击！「{b}」被 KO。', ko: '「{a}」KO 了「{b}」！',
+    doubleDown: '「{a}」和「{b}」同时摔了个狗啃泥。', luckyDodge: '「{a}」在睡觉时躲过了攻击。', miracleDodge: '「{a}」奇迹般地躲过了攻击。',
+    trip: '「{a}」被倒在地上的「{b}」绊倒了。', upset: '小小的「{a}」把大大的「{b}」撞飞了！', laughFall: '「{a}」笑得太厉害，自己摔倒了。',
+    wallCrash: '「{a}」冲得太猛，一头撞上了角柱。', slam: '「{a}」被「{b}」砸向了角柱。', steam: '「{a}」的火焰碰到「{b}」，“滋”地一声灭了。',
+    playDead: '「{a}」装死骗过了「{b}」。', fooled: '「{a}」被装死骗得团团转。', slip: '「{a}」在平地上突然滑倒了。',
+    rudeAwakening: '正在睡觉的「{a}」被打醒后暴怒了。', explode: '「{a}」引发了大爆炸！', pop: '「{a}」和「{b}」顶在一起，突然“嘭”地弹开了。',
+    panic: '被逼到角落的「{a}」反身猛冲。', revive: '「{a}」若无其事地站了起来。',
+    gas: '「{a}」用神秘气流吹飞了「{b}」。', gasMiss: '「{a}」放出了神秘气流，可惜没人在旁边。', charm: '「{b}」被「{a}」迷得神魂颠倒。',
+    dizzy: '「{a}」转得太多，晕头转向。', stomp: '「{a}」从空中踩了「{b}」一脚。', zap: '「{a}」的电击让「{b}」麻了。',
+    sleep: '「{a}」在比赛中睡着了。', burn: '「{a}」的火焰烧到了「{b}」。', crit: '「{a}」打出了会心一击。', surprise: '「{a}」从背后偷袭。',
+    taunt: '「{a}」摆出了从容的挑衅姿势。', clash: '「{a}」和「{b}」正面对撞。', elementBonus: '「{a}」凭属性克制压制了「{b}」。',
+    dodge: '「{a}」轻巧地闪开了。', comeback: '「{a}」在濒死之际大逆转！', perfect: '「{a}」毫发无伤完胜！', bigHit: '「{a}」最高一击造成 {n} 点伤害！',
+    noHits: '这是一场谁也没打中谁的神奇比赛。', clumsy: '这场比赛双方一共摔倒了 {n} 次。', solid: '「{a}」稳扎稳打取胜。',
+  },
+  en: {
+    overRopeBy: '“{a}” knocked “{b}” clean over the ropes!', slingshot: '“{a}” boomeranged back off the ropes.', ropeBounce: '“{a}” crashed into the ropes and got boinged back.',
+    signature: '“{a}” unleashed its special move, “{move}”!', sigFinish: '“{a}” finished it with “{move}”!', reflect: '“{a}”’s iron wall bounced “{b}”’s attack right back.', bribe: '“{b}” was too busy picking up “{a}”’s money to fight.',
+    throw: '“{a}” tossed “{b}” over its shoulder.', lecture: '“{b}” fell asleep during “{a}”’s lecture.', joke: '“{b}” laughed itself over at “{a}”’s terrible pun.', freeze: '“{a}” froze “{b}” solid.',
+    giant: '“{a}” went giant mid-match.', confuse: '“{a}” drained “{b}”’s IQ; it spent ages punching the air.',
+    swallow: '“{a}” swallowed “{b}” whole and spat it out like a cannonball.', blameReflect: '“{a}” shifted the blame and “{b}”’s attack bounced back.', soot: '“{a}” charged in on fire and ended up burnt black.',
+    vanish: '“{a}” vanished and reappeared right behind.', lazy: '“{a}” lay down and let every attack bounce off.', tremor: '“{a}” laughed so hard the ring shook.', quake: '“{a}” shook the whole ring.', chomp: '“{a}” took a big bite out of “{b}”.', magnet: '“{b}” got pulled in and clobbered by “{a}”.',
+    drawKO: '“{a}” and “{b}” knocked each other out. Draw!', drawRingout: '“{a}” and “{b}” fell off the ring together. Draw!',
+    judge: 'Time up. “{a}” wins on decision by {n} HP.', judgeLuck: 'Time up. Dead even — but luck sided with “{a}”.',
+    selfDestruct: '“{a}” self-destructed… and launched itself.', explodeFinish: '“{a}” exploded and blew “{b}” away!',
+    gasRingout: '“{a}” released a mysterious gust and blew “{b}” out of the ring!', popRingout: '“{a}” got stuck in a shoving match and boinged right out.',
+    ringoutBy: '“{a}” knocked “{b}” clean out of the ring!', slipRingout: '“{a}” slipped and slid straight out of the ring.',
+    selfRingout: '“{a}” charged so hard it flipped over the ropes by itself…', slamKO: '“{a}” was slammed into the corner post. KO.', wallKO: '“{a}” crashed into the corner post all by itself. KO…',
+    burnKO: '“{a}” toasted “{b}” to a crisp. KO.', stompKO: '“{a}” dropped from the sky and flattened “{b}”!', critKO: 'Critical hit from “{a}”! “{b}” is KO.', ko: '“{a}” knocked out “{b}”!',
+    doubleDown: '“{a}” and “{b}” faceplanted at the same time.', luckyDodge: '“{a}” dodged an attack while fast asleep.', miracleDodge: '“{a}” miraculously dodged a hit.',
+    trip: '“{a}” tripped over the fallen “{b}”.', upset: 'Little “{a}” sent big “{b}” flying!', laughFall: '“{a}” laughed so hard it fell over.',
+    wallCrash: '“{a}” charged too hard and smashed into the corner post.', slam: '“{a}” got slammed into the corner by “{b}”.', steam: '“{a}”’s flames fizzled out on “{b}”.',
+    playDead: '“{a}” played dead to fool “{b}”.', fooled: '“{a}” totally fell for the fake death.', slip: '“{a}” suddenly slipped on nothing at all.',
+    rudeAwakening: 'Sleeping “{a}” was rudely woken and got furious.', explode: '“{a}” went KABOOM!', pop: '“{a}” and “{b}” shoved until they boinged apart.',
+    panic: 'Cornered “{a}” went berserk.', revive: '“{a}” got up as if nothing happened.',
+    gas: '“{a}” blasted “{b}” with mysterious gas.', gasMiss: '“{a}” released mysterious gas at nobody.', charm: '“{b}” fell head over heels for “{a}”.',
+    dizzy: '“{a}” spun until it got dizzy.', stomp: '“{a}” stomped “{b}” from above.', zap: '“{a}” zapped “{b}” numb.',
+    sleep: '“{a}” fell asleep mid-match.', burn: '“{a}” singed “{b}”.', crit: '“{a}” landed a critical hit.', surprise: '“{a}” struck from behind.',
+    taunt: '“{a}” struck a smug pose.', clash: '“{a}” and “{b}” clashed head-on.', elementBonus: '“{a}” overwhelmed “{b}” with type advantage.',
+    dodge: '“{a}” sidestepped neatly.', comeback: '“{a}” came back from the brink!', perfect: '“{a}” won without a scratch!', bigHit: '“{a}”’s biggest hit: {n} damage!',
+    noHits: 'A strange match where nobody landed a single hit.', clumsy: 'The two fell over {n} times in total.', solid: 'A solid win for “{a}”.',
+  },
+};
+
+const DICTS: Record<Lang, Dict> = { ja, zh, en };
+
+function fill(s: string, p: Record<string, string | number | undefined>): string {
+  return s.replace(/\{(\w+)\}/g, (_, k) => String(p[k] ?? ''));
+}
+
+export function t(key: string, p: Record<string, string | number | undefined> = {}): string {
+  return fill(DICTS[getLang()][key] ?? DICTS.ja[key] ?? key, p);
+}
+export function hasReportKey(key: string): boolean {
+  return Object.prototype.hasOwnProperty.call(report.ja, key);
+}
+export function reportLine(key: string, p: Record<string, string | number | undefined>): string {
+  return fill(report[getLang()][key] ?? report.ja[key] ?? key, p);
+}

@@ -1,0 +1,214 @@
+{
+  "project": "Glyph Rumble 3D 字形乱斗",
+  "requirements": [
+    {
+      "id": "move_payment_fail",
+      "filename": "move_payment_fail.wav",
+      "name": "支付失败",
+      "category": "SFX",
+      "prompt": "card payment terminal rejecting a card, two low descending electronic error beeps, comedic",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 穷「余额不足」/ broke / 破产"
+    },
+    {
+      "id": "move_error_beep",
+      "filename": "move_error_beep.wav",
+      "name": "错误提示音",
+      "category": "SFX",
+      "prompt": "computer error alert, one harsh short buzz followed by a dull denied tone",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "必杀技 密码 / password / 断网 / offline / 蓝屏"
+    },
+    {
+      "id": "move_school_bell",
+      "filename": "move_school_bell.wav",
+      "name": "上下课铃",
+      "category": "SFX",
+      "prompt": "old electric school bell ringing loudly in a hallway, metallic clatter, natural decay",
+      "negative_prompt": "",
+      "duration": 2.5,
+      "seed": -1,
+      "notes": "必杀技 学生 / student「下课铃响！」/ 老师 / teacher"
+    },
+    {
+      "id": "move_microphone",
+      "filename": "move_microphone.wav",
+      "name": "校长讲话",
+      "category": "SFX",
+      "prompt": "microphone tap tap, short squeal of feedback, then a pompous throat clearing",
+      "negative_prompt": "",
+      "duration": 2,
+      "seed": -1,
+      "notes": "必杀技 校长「校长讲话」/ 老师「全体起立！」/ 先生"
+    },
+    {
+      "id": "move_sneeze",
+      "filename": "move_sneeze.wav",
+      "name": "惊天喷嚏",
+      "category": "SFX",
+      "prompt": "huge cartoon sneeze, a rising inhale then an explosive achoo with a wet spray",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 鼻「惊天喷嚏」"
+    },
+    {
+      "id": "move_quack",
+      "filename": "move_quack.wav",
+      "name": "鸭子游行",
+      "category": "SFX",
+      "prompt": "several rubber ducks quacking one after another, squeaky and silly",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 鸭 / 🦆「嘎嘎大游行」"
+    },
+    {
+      "id": "move_goose_honk",
+      "filename": "move_goose_honk.wav",
+      "name": "大鹅追杀",
+      "category": "SFX",
+      "prompt": "angry goose honking and hissing aggressively, flapping wings, comedic",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 鹅「大鹅追杀」"
+    },
+    {
+      "id": "move_champagne_pop",
+      "filename": "move_champagne_pop.wav",
+      "name": "开香槟",
+      "category": "SFX",
+      "prompt": "champagne cork popping with a loud pop and fizzing foam spray",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 赢「半场开香槟」/ W"
+    },
+    {
+      "id": "move_loading_spin",
+      "filename": "move_loading_spin.wav",
+      "name": "加载中",
+      "category": "SFX",
+      "prompt": "digital loading whir slowly rising in pitch, stalling for a moment, then a bright completion ding",
+      "negative_prompt": "",
+      "duration": 2,
+      "seed": -1,
+      "notes": "必杀技 加载中 / loading「99% 卡住」"
+    },
+    {
+      "id": "move_heart_pop",
+      "filename": "move_heart_pop.wav",
+      "name": "爱心连发",
+      "category": "SFX",
+      "prompt": "cute bubbly heart pops, three soft rising plinks with a sparkle",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 爱你 / 520 / 表白 / 好き / 大好き"
+    },
+    {
+      "id": "move_like_pop",
+      "filename": "move_like_pop.wav",
+      "name": "点赞",
+      "category": "SFX",
+      "prompt": "phone app like button tap, a soft bright pop with a tiny chime",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "必杀技 好 / 赞 / 点赞 / 关注「一键三连」"
+    },
+    {
+      "id": "move_gacha",
+      "filename": "move_gacha.wav",
+      "name": "扭蛋机",
+      "category": "SFX",
+      "prompt": "capsule toy machine crank turning with clicks, a plastic capsule dropping and popping open",
+      "negative_prompt": "",
+      "duration": 2,
+      "seed": -1,
+      "notes": "必杀技 ガチャ「何が出るかな」"
+    },
+    {
+      "id": "move_paper_flurry",
+      "filename": "move_paper_flurry.wav",
+      "name": "纸张乱飞",
+      "category": "SFX",
+      "prompt": "stack of paper sheets flapping and scattering in the air, rustling flutter",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 考试 / 作业 / 白 / 仕事 / exam"
+    },
+    {
+      "id": "move_door_slam",
+      "filename": "move_door_slam.wav",
+      "name": "门板拍人",
+      "category": "SFX",
+      "prompt": "heavy wooden door slamming shut, loud bang with a short rattle",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "必杀技 开「芝麻开门」/ 关「关门大吉」"
+    },
+    {
+      "id": "move_lock_click",
+      "filename": "move_lock_click.wav",
+      "name": "上锁",
+      "category": "SFX",
+      "prompt": "heavy metal padlock snapping shut, one solid mechanical clack",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "必杀技 锁 / 🔒「咔哒上锁」"
+    },
+    {
+      "id": "move_rocket",
+      "filename": "move_rocket.wav",
+      "name": "火箭发射",
+      "category": "SFX",
+      "prompt": "small toy rocket ignition, a sharp whoosh roaring upward and fading away",
+      "negative_prompt": "",
+      "duration": 2.5,
+      "seed": -1,
+      "notes": "必杀技 🚀「ROCKET LAUNCH」/ 📈「TO THE MOON」"
+    },
+    {
+      "id": "move_cola_fizz",
+      "filename": "move_cola_fizz.wav",
+      "name": "摇过的可乐",
+      "category": "SFX",
+      "prompt": "shaken soda bottle cap bursting open, loud pressurized fizz eruption",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "必杀技 可乐「摇过的可乐」"
+    },
+    {
+      "id": "move_cream_splat",
+      "filename": "move_cream_splat.wav",
+      "name": "奶油糊脸",
+      "category": "SFX",
+      "prompt": "cream pie splatting onto a face, wet squishy splat",
+      "negative_prompt": "",
+      "duration": 1,
+      "seed": -1,
+      "notes": "必杀技 蛋糕 / cake / 草莓 / 西瓜"
+    },
+    {
+      "id": "book_page_flip",
+      "filename": "book_page_flip.wav",
+      "name": "解说读名著",
+      "category": "SFX",
+      "prompt": "thick old book being opened, a few dry paper pages turning, close and intimate",
+      "negative_prompt": "",
+      "duration": 1.5,
+      "seed": -1,
+      "notes": "解说桥段：毒舌「舌」开始朗读古典名著"
+    }
+  ]
+}
