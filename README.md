@@ -23,7 +23,11 @@ npm run dev:basketball  # basketball at http://localhost:5175
 npm test             # all tests (shared + every game)
 npm run build        # every game → dist/ (see deploy/README.md)
 npm run docs:skills  # regenerate the per-language skill docs (shared/docs/skills/)
+npm run audio:compress   # new .wav clips → .mp3 (needs ffmpeg), then npm run audio:index -w @glyph/<game>
+npm run preview:worker   # serve dist/ exactly like Cloudflare (http://localhost:8787)
 ```
+
+**Deployment:** GitHub → Cloudflare Workers (static assets), see [docs/部署说明.md](docs/部署说明.md).
 
 Inside a game folder, `npm run dev`, `npm test` and `npm run build` work for that game alone.
 

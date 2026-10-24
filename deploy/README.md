@@ -1,5 +1,10 @@
 # Deploying the Glyph games
 
+**Production setup: Cloudflare Workers (static assets only), built from GitHub on every push to `main`.** Step-by-step guide in Chinese: [docs/部署说明.md](../docs/部署说明.md). Config: [`wrangler.jsonc`](../wrangler.jsonc), headers: [`_headers`](_headers).
+
+- Build command: `npm run build`. Deploy command: `npx wrangler deploy`. Build variable: `SITE_URL=https://<your-domain>/`.
+- Audio ships as `.mp3` (`npm run audio:compress` converts the `.wav` masters, which are not committed).
+
 ## Static build (all hosts)
 
 ```bash
@@ -12,7 +17,7 @@ Upload `dist/` to any static host (Cloudflare Pages, Netlify, Vercel, GitHub Pag
 
 - `SITE_URL` must be the public **HTTPS** address of the site root. It becomes `VITE_SITE_URL=https://example.com/arena/` for the arena build. Open Graph / X card tags need absolute URLs, or most previews show no image.
 - `og.png` (1200×630) is in each game folder and at the root. Regenerate them with `python arena/scripts/make-og.py` / `python soccer/scripts/make-og.py` (run inside that folder).
-- **Audio:** the generated `.wav` files are about 60 MB, and the BGM alone is about 35 MB. Before going public, convert them to `.ogg` / `.m4a` (and update the file names in `arena/src/ui/audioManifest.ts`), or at least serve them with long cache headers.
+- **Audio:** the games load the compressed `.mp3` clips (13 MB for all three games); the build drops any `.wav` that has an `.mp3`.
 - Optional analytics: `VITE_ANALYTICS_URL=https://…` sends anonymous JSON beacons (`{ e, p, t }`). `window.dataLayer` (GTM / GA4) and `window.plausible` are picked up automatically if you add those scripts.
 
 ## Per-match share previews (optional)
